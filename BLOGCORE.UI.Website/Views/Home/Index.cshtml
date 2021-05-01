@@ -1,0 +1,30 @@
+﻿@model List<BLOGCORE.APPLICATION.Core.DTOs.PostDto> 
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-sm-4" style="width: 18rem;">
+            <div class="card">
+                @*<img src="..." class="card-img-top" alt="...">*@
+                <div class="card-body">
+                    <div class="card-title">
+                        <h3>@item.Titulo</h3>
+                    </div>
+                    <p>@item.Cuerpo</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
