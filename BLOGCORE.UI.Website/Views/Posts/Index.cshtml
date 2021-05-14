@@ -11,78 +11,93 @@
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<div class="text-center">
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @prevDisabled">
-        Anterior
-    </a>
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @nextDisabled">
-        Siguiente
-    </a>
-</div>
+@if (Model.Any())
+{
 
-<div class="row">
-    <div class="col-lg-3 order-lg-2">
+    @if (Model.Count() > 6)
+    {
+        <div class="text-center">
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @prevDisabled">
+                Anterior
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @nextDisabled">
+                Siguiente
+            </a>
+        </div>
+    }
 
-    </div>
-    <div class="col-lg-9 order-lg-1">
-        <div class="blog-posts">
-            @foreach (var item in Model)
-            {
-                <article class="post post-large">
-                    <div class="post-image">
-                        <a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">
-                            <img src="@item.Imagen" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="" />
-                        </a>
-                    </div>
-                    <div class="post-date">
-                        @{
-                            var fecha = DateTime.Parse(item.FechaCreacion);
-                        }
-                        <span class="day">@fecha.Day</span>
-                        <span class="month">@fecha.ToString("MMM")</span>
-                    </div>
-                    <div class="post-content">
-                        <h2 class="font-weight-semibold text-6 line-height-3 mb-3"><a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">@item.Titulo</a></h2>
-                        @if (@item.Cuerpo.Length > 600)
-                        {
-                            <p>@Html.Raw(item.Cuerpo.Trim().Substring(0, 600))...</p>
-                        }
-                        else
-                        {
-                            <p>@Html.Raw(item.Cuerpo.Trim())</p>
-                        }
-                        <div class="post-meta">
-                            <span><i class="far fa-user"></i> Por <a href="#">@item.Autor</a> </span>
-                            <span><i class="far fa-calendar"></i>@item.FechaCreacion </span>
+    <div class="row">
+        <div class="col-lg-3 order-lg-2">
+
+        </div>
+        <div class="col-lg-9 order-lg-1">
+            <div class="blog-posts">
+                @foreach (var item in Model)
+                {
+                    <article class="post post-large">
+                        <div class="post-image">
+                            <a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">
+                                <img src="@item.Imagen" class="img-fluid img-thumbnail img-thumbnail-no-borders rounded-0" alt="" />
+                            </a>
                         </div>
-                    </div>
-                </article>
-            }
+                        <div class="post-date">
+                            @{
+                                var fecha = DateTime.Parse(item.FechaCreacion);
+                            }
+                            <span class="day">@fecha.Day</span>
+                            <span class="month">@fecha.ToString("MMM")</span>
+                        </div>
+                        <div class="post-content">
+                            <h2 class="font-weight-semibold text-6 line-height-3 mb-3"><a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">@item.Titulo</a></h2>
+                            @if (@item.Cuerpo.Length > 600)
+                            {
+                                <p>@Html.Raw(item.Cuerpo.Trim().Substring(0, 600))...</p>
+                            }
+                            else
+                            {
+                                <p>@Html.Raw(item.Cuerpo.Trim())</p>
+                            }
+                            <div class="post-meta">
+                                <span><i class="far fa-user"></i> Por <a href="#">@item.Autor</a> </span>
+                                <span><i class="far fa-calendar"></i>@item.FechaCreacion </span>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
         </div>
     </div>
-</div>
 
-<div class="text-center">
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex - 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @prevDisabled">
-        Anterior
-    </a>
-    <a asp-action="Index"
-       asp-route-sortOrder="@ViewData["CurrentSort"]"
-       asp-route-pageNumber="@(Model.PageIndex + 1)"
-       asp-route-currentFilter="@ViewData["CurrentFilter"]"
-       class="btn btn-default @nextDisabled">
-        Siguiente
-    </a>
-</div>
+    @if (Model.Count() > 6)
+    {
+        <div class="text-center">
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex - 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @prevDisabled">
+                Anterior
+            </a>
+            <a asp-action="Index"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-pageNumber="@(Model.PageIndex + 1)"
+               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+               class="btn btn-default @nextDisabled">
+                Siguiente
+            </a>
+        </div>
+    }
+}
+else
+{
+<p>No hay post, se el primero en crear uno</p>
+}
+
