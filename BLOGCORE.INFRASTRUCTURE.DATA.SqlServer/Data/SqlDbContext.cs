@@ -9,6 +9,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
 {
     public partial class SqlDbContext : DbContext
     {
+        public DbSet<Perfil> Perfiles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Rol> Roles { get; set; }
@@ -71,12 +72,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
                 .OnDelete(DeleteBehavior.NoAction);
             });
 
-            //modelBuilder.Entity<Usuario>(entity =>
-            //{
-            //    entity.HasOne(e => e.)
-            //});
-
-
+            modelBuilder.Entity<Usuario>()
+              .HasOne(a => a.Perfil)
+              .WithOne(b => b.Usuario)
+              .HasForeignKey<Perfil>(b => b.UsuarioId);
         }
     }
 }

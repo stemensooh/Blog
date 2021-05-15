@@ -14,18 +14,20 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
     {
         public async Task<Usuario> GetUsuarioAsync(string Email, string Password)
         {
-            await using (var db = new MysqlDbContext())
-            {
-                return db.Usuarios.Include(x => x.Roles).FirstOrDefault(x => x.Email == Email && x.Password == Password && x.Estado == true);
-            }
+            await using var db = new MysqlDbContext();
+            return await db.Usuarios.Include(x => x.Roles).FirstOrDefaultAsync(x => x.Email == Email && x.Password == Password && x.Estado == true);
         }
 
         public async Task<List<Rol>> GetRolesAsync(int[] roles)
         {
-            await using (var db = new MysqlDbContext())
-            {
-                return await db.Roles.Where(x => roles.Contains(x.Id)).ToListAsync();
-            }
+            await using var db = new MysqlDbContext();
+            return await db.Roles.Where(x => roles.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task<Usuario> GetUsuarioAsync(string username)
+        {
+            await using var db = new MysqlDbContext();
+            return await db.Usuarios.Include(x => x.Roles).FirstOrDefaultAsync(x => x.Username == username && x.Estado == true);
         }
     }
 }

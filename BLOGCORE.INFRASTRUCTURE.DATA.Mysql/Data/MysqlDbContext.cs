@@ -9,6 +9,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Data
 {
     public class MysqlDbContext : DbContext
     {
+        public DbSet<Perfil> Perfiles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Rol> Roles { get; set; }
@@ -56,6 +57,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Usuario>()
+           .HasOne(a => a.Perfil)
+           .WithOne(b => b.Usuario)
+           .HasForeignKey<Perfil>(b => b.UsuarioId);
         }
 
     }

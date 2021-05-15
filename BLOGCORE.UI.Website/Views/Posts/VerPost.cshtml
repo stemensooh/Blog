@@ -21,7 +21,7 @@
                     <div class="post-content ms-0">
                         <h2 class="font-weight-semi-bold"><a asp-controller="Posts" asp-action="VerPost" asp-route-id="@Model.ID">@Model.Titulo</a></h2>
                         <div class="post-meta">
-                            <span><i class="far fa-user"></i> Por <a href="#">@Model.Autor</a> </span>
+                            <span><i class="far fa-user"></i> Por <a asp-controller="Perfil" asp-action="Index" asp-route-username="@Model.Autor">@Model.Autor</a> </span>
                             <span><i class="far fa-eye"></i> <a href="#">@Model.Vistas Vistas</a></span>
                         </div>
                         <img src="@Model.Imagen" class="img-fluid float-start me-4 mt-2" alt="" width="550px" />

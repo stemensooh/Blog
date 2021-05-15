@@ -50,5 +50,13 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             respuestaLogin.Email = response.Email;
             return respuestaLogin;
         }
+
+        public async Task<PerfilDto> VerPerfilAsync(string username)
+        {
+            var result = await _usuarioRepositorio.GetUsuarioAsync(username);
+            if (result is null) return null;
+            return null;
+            //return new PerfilDto() { Apellido = result.Apellidos, Nombre = result.Nombres, Username = result.Username } ;
+        }
     }
 }

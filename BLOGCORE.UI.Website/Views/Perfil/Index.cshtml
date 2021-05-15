@@ -1,0 +1,11 @@
+﻿@model BLOGCORE.APPLICATION.Core.DTOs.PerfilDto
+    <br /><br />
+    <br /><br />
+@if (Model is null)
+{
+    <p>No existe el perfil</p>
+}
+else
+{
+    <p>@Model.Username</p>
+}

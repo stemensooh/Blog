@@ -19,5 +19,11 @@ namespace BLOGCORE.UI.Website.Controllers
             var authenticateResult = (HttpContext.AuthenticateAsync().Result);
             return long.Parse(authenticateResult.Principal.Claims.First(x => x.Type.Equals("UsuarioId"))?.Value ?? "0");
         }
+
+        public string GetClaim(string claim)
+        {
+            var authenticateResult = (HttpContext.AuthenticateAsync().Result);
+            return authenticateResult.Principal.Claims.First(x => x.Type.Equals(claim))?.Value ?? "";
+        }
     }
 }

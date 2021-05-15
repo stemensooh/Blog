@@ -9,6 +9,7 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
     public interface IUsuarioRepositorio
     {
         Task<Usuario> GetUsuarioAsync(string Email, string Password);
+        Task<Usuario> GetUsuarioAsync(string username);
         Task<List<Rol>> GetRolesAsync(int[] roles);
     }
 }
