@@ -31,7 +31,6 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         public DateTime? FechaEliminacion { get; set; }
         public bool Estado { get; set; }
 
-
         public Perfil  Perfil { get; set; }
         public virtual ICollection<PostVistas> Vistas { get; set; }
         public virtual ICollection<UsuarioRol> Roles { get; set; }

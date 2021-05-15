@@ -10,6 +10,6 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces
     public interface IUsuarioService
     {
         Task<RespuestaLoginDto> LoginAsync(UsuarioLoginViewModel model);
-        Task<PerfilDto> VerPerfilAsync(string username);
+        Task<PerfilDto> VerPerfilAsync(string username, bool EsAdministrador = false);
     }
 }

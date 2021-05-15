@@ -27,7 +27,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
         public async Task<Usuario> GetUsuarioAsync(string username)
         {
             await using var db = new SqlDbContext();
-            return await db.Usuarios.Include(x => x.Roles).FirstOrDefaultAsync(x => x.Username == username && x.Estado == true);
+            return await db.Usuarios.Include(x => x.Roles).ThenInclude(x => x.RolNavigation).Include(x => x.Perfil).FirstOrDefaultAsync(x => x.Username == username && x.Estado == true);
         }
     }
 }

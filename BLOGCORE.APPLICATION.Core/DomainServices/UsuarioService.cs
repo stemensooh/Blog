@@ -51,12 +51,18 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return respuestaLogin;
         }
 
-        public async Task<PerfilDto> VerPerfilAsync(string username)
+        public async Task<PerfilDto> VerPerfilAsync(string username, bool EsAdministrador = false)
         {
             var result = await _usuarioRepositorio.GetUsuarioAsync(username);
             if (result is null) return null;
-            return null;
-            //return new PerfilDto() { Apellido = result.Apellidos, Nombre = result.Nombres, Username = result.Username } ;
+            if (result.Perfil is null) return null;
+            if (result.Roles is null) return null;
+            if (!EsAdministrador)
+            {
+                if (result.Roles.Where(x => x.RolNavigation.Nombre == Constants.Constantes.Rol.SuperAdministrador.ToString() || x.RolNavigation.Nombre == Constants.Constantes.Rol.Administrador.ToString()).Any()) return null;
+            }
+
+            return new PerfilDto() { Apellido = result.Perfil?.Apellidos??"", Nombre = result.Perfil?.Nombres ?? "", Username = result.Username ?? "" } ;
         }
     }
 }

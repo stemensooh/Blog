@@ -30,6 +30,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("Direccion")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
                     b.Property<string>("Nombres")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
@@ -76,6 +80,9 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                         .HasMaxLength(200);
 
                     b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("VistasPagina")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");

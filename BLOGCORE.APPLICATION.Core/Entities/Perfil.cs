@@ -18,6 +18,8 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         [MaxLength(100)]
         public string Apellidos { get; set; }
 
+        [MaxLength(500)]
+        public string Direccion { get; set; }
 
         public long UsuarioId { get; set; }
 

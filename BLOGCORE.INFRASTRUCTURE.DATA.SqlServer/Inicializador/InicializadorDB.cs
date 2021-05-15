@@ -59,6 +59,9 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Inicializador
             _db.Usuarios.Add(usr);
             _db.SaveChanges();
 
+            _db.Perfiles.Add(new APPLICATION.Core.Entities.Perfil() { UsuarioId = usr.Id, Nombres = "Administrador", Apellidos = "Administrador" });
+            _db.SaveChanges();
+
             _db.UsuariosRol.Add(new APPLICATION.Core.Entities.UsuarioRol() { RolId = rolAdmin.Id, UsuarioId = usr.Id });
             _db.SaveChanges();
         }

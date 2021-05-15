@@ -37,8 +37,8 @@ namespace BLOGCORE.UI.Website.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                posts = posts.Where(s => s.Titulo.Contains(searchString)
-                                       || s.Autor.Contains(searchString)).ToList();
+                posts = posts.Where(s => s.Titulo.ToLower().Contains(searchString.ToLower()) || s.Autor.ToLower().Contains(searchString.ToLower())).ToList();
+
             }
 
             if (searchString != null)
