@@ -14,7 +14,7 @@
 @if (Model.Any())
 {
 
-    @if (Model.Count() > 6)
+    @if (ViewBag.CantidadPosts > 6)
     {
         <div class="text-center">
             <a asp-action="Index"
@@ -66,7 +66,7 @@
                                 <p>@Html.Raw(item.Cuerpo.Trim())</p>
                             }
                             <div class="post-meta">
-                                <span><i class="far fa-user"></i> Por <a href="#">@item.Autor</a> </span>
+                                <span><i class="far fa-user"></i> Por <a asp-controller="Perfil" asp-action="Index" asp-route-username="@item.Username">@item.Autor</a> </span>
                                 <span><i class="far fa-calendar"></i>@item.FechaCreacion </span>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    @if (Model.Count() > 6)
+    @if (ViewBag.CantidadPosts > 6)
     {
         <div class="text-center">
             <a asp-action="Index"

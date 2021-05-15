@@ -50,16 +50,20 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Inicializador
             var usr = new APPLICATION.Core.Entities.Usuario()
             {
                 Email = "stemensooh@gmail.com",
-                Estado = true,
+                Estado = (int)Constantes.EstadoUsuario.Activo,
                 FechaCreacion = DateTime.Now,
                 Password = Crypto.CifrarClave("12345678"),
-                Username = "stemensooh"
+                Username = "stemensooh",
+
+                Perfil = new APPLICATION.Core.Entities.Perfil()
+                {
+                    Apellidos = "Administrador",
+                    Nombres = "Administrador",
+                    Direccion = "",
+                }
             };
             
             _db.Usuarios.Add(usr);
-            _db.SaveChanges();
-
-            _db.Perfiles.Add(new APPLICATION.Core.Entities.Perfil() { UsuarioId = usr.Id, Nombres = "Administrador" , Apellidos = "Administrador" });
             _db.SaveChanges();
 
             _db.UsuariosRol.Add(new APPLICATION.Core.Entities.UsuarioRol() { RolId = rolAdmin.Id, UsuarioId = usr.Id });

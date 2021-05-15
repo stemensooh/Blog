@@ -15,6 +15,6 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
         Task<bool> AgregarPostAsync(Post post);
         Task<bool> EditarPostAsync(Post post);
         Task<int> EliminarPostAsync(long PostId, long UsuarioId);
-
+        Task<List<PostVistas>> GetVistasAsync(long PostId);
     }
 }

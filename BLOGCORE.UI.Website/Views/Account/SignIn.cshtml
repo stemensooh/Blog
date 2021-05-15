@@ -1,4 +1,4 @@
-﻿@model BLOGCORE.APPLICATION.Core.ViewModels.UsuarioLoginViewModel
+﻿@model BLOGCORE.APPLICATION.Core.ViewModels.UsuarioSignInViewModel
 @{
     Layout = "~/Views/Shared/_BlankLayout.cshtml";
 
@@ -14,28 +14,26 @@
             <div class="card-title">
                 <h3>INICIAR SESION</h3>
             </div>
-            <form action="Login" method="post">
+            <form action="SignIn" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <div class="form-group">
-                    <label>Usuario</label>
+                    <label>Correo electónico</label>
                     <input class="form-control" asp-for="Email" />
                     <span asp-validation-for="Email" class="text-danger"></span>
 
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Contraseña</label>
                     <input class="form-control" asp-for="Password" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success btn-block" type="submit">Iniciar Sesion</button>
+                    <a asp-controller="Account" asp-action="SignUp">Registrarse</a><br />
                     <a asp-controller="Posts" asp-action="Index">Ir al Blog</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-
-@*<partial name="_ValidationScriptsPartial">*@

@@ -78,7 +78,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
                     b.Property<long>("UsuarioId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("VistasPagina")
+                    b.Property<long>("VistasPaginaAnonimo")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("VistasPaginaUsuario")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -141,8 +144,8 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
                         .HasColumnType("varchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<bool>("Estado")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<byte>("Estado")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime");

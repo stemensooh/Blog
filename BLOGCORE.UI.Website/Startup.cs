@@ -46,7 +46,7 @@ namespace BLOGCORE.UI.Website
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, opciones =>
                 {
                     opciones.AccessDeniedPath = "/Pages/AccessDeniedPath";
-                    opciones.LoginPath = "/Auth/Index";
+                    opciones.LoginPath = "/Account/Index";
                     opciones.ExpireTimeSpan = TimeSpan.FromSeconds(double.Parse(Configuration.GetSection("Session:SessionTimeSeconds").Value));
                     opciones.SlidingExpiration = true;
                 });

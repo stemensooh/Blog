@@ -29,6 +29,7 @@ namespace BLOGCORE.UI.Website.Controllers
         {
             TempData["UrlSearch"] = Url.Action("Index", "Posts");
             var posts = await _postService.GetPostsAsync();
+            ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0 ;
 
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -143,6 +144,7 @@ namespace BLOGCORE.UI.Website.Controllers
         {
             TempData["UrlSearch"] = Url.Action("MisPosts", "Posts");
             var posts = await _postService.GetPostsAsync(GetUsuarioId());
+            ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0;
 
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -185,6 +187,9 @@ namespace BLOGCORE.UI.Website.Controllers
             //return View(posts);
         }
 
-
+        public async Task<IActionResult> Vistas(long Id)
+        {
+            return View(await _postService.GetVistas(Id, GetUsuarioId()));
+        }
     }
 }

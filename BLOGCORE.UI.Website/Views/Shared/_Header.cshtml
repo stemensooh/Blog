@@ -71,11 +71,11 @@
                                     @if (User.Identity.IsAuthenticated)
                                     {
                                         <b>@User.Identity.Name</b>
-                                        <a  style="color: white" asp-controller="Auth" asp-action="Logout">Logout</a>
+                                        <a  style="color: white" asp-controller="Account" asp-action="SignOut">Logout</a>
                                     }
                                     else
                                     {
-                                        <a  style="color: white" asp-controller="Auth" asp-action="Login">Login</a>
+                                        <a  style="color: white" asp-controller="Account" asp-action="SignIn">Login</a>
                                     }
                                 </div>
                             </div>

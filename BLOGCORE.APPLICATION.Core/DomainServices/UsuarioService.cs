@@ -1,4 +1,5 @@
 ﻿using BLOGCORE.APPLICATION.Core.DTOs;
+using BLOGCORE.APPLICATION.Core.Entities;
 using BLOGCORE.APPLICATION.Core.Interfaces;
 using BLOGCORE.APPLICATION.Core.Interfaces.Data;
 using BLOGCORE.APPLICATION.Core.ViewModels;
@@ -19,10 +20,10 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             _usuarioRepositorio = usuarioRepositorio;
         }
 
-        public async Task<RespuestaLoginDto> LoginAsync(UsuarioLoginViewModel model)
+        public async Task<RespuestaLoginDto> SignInAsync(UsuarioSignInViewModel model)
         {
             RespuestaLoginDto respuestaLogin = new RespuestaLoginDto();
-            var response = await _usuarioRepositorio.GetUsuarioAsync(model.Email, model.Password);
+            var response = await _usuarioRepositorio.SignInAsync(model.Email, model.Password);
             if (response is null)
             {
                 respuestaLogin.TieneError = true;
@@ -53,7 +54,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
 
         public async Task<PerfilDto> VerPerfilAsync(string username, bool EsAdministrador = false)
         {
-            var result = await _usuarioRepositorio.GetUsuarioAsync(username);
+            var result = await _usuarioRepositorio.GetUsuarioAsync(username, null);
             if (result is null) return null;
             if (result.Perfil is null) return null;
             if (result.Roles is null) return null;
@@ -64,5 +65,31 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
 
             return new PerfilDto() { Apellido = result.Perfil?.Apellidos??"", Nombre = result.Perfil?.Nombres ?? "", Username = result.Username ?? "" } ;
         }
+
+        public async Task<Usuario> SignUpAsync(UsuarioSignUpViewModel model)
+        {
+            var rol = await _usuarioRepositorio.GetRolAsync(Constants.Constantes.Rol.Usuario.ToString());
+            Usuario usuario = new Usuario
+            {
+                Email = model.Email,
+                Password = model.Password,
+                Username = model.Username,
+                FechaCreacion = DateTime.Now,
+                Estado = (int)Constants.Constantes.EstadoUsuario.Activo,
+
+                Perfil = new Perfil
+                {
+                    Nombres = "Por definir...",
+                    Apellidos = "Por definir...",
+                    Direccion = "Por definir..."
+                }
+            };
+
+            usuario.Roles.Add(new UsuarioRol() { RolId = rol.Id});
+
+            var result = await _usuarioRepositorio.AddUsuario(usuario);
+            return result > 0 ? usuario : null;
+        }
+
     }
 }

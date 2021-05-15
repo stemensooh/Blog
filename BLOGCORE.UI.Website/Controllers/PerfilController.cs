@@ -18,13 +18,17 @@ namespace BLOGCORE.UI.Website.Controllers
 
         public async Task<IActionResult> Index(string username)
         {
-            bool EsAdmin = GetRol() == null ? false : (GetRol().Contains(BLOGCORE.APPLICATION.Core.Constants.Constantes.Rol.Administrador.ToString()) ? true : false);
-            if (string.IsNullOrEmpty(username))
+            if (User.Identity.IsAuthenticated)
             {
-                username = User.Identity.Name;
-            }
+                bool EsAdmin = GetRol() == null ? false : (GetRol().Contains(BLOGCORE.APPLICATION.Core.Constants.Constantes.Rol.Administrador.ToString()) ? true : false);
+                if (string.IsNullOrEmpty(username))
+                {
+                    username = User.Identity.Name;
+                }
 
-            return View(await usuarioService.VerPerfilAsync(username, EsAdmin));
+                return View(await usuarioService.VerPerfilAsync(username, EsAdmin));
+            }
+            return View();
         }
     }
 }

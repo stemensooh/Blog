@@ -23,8 +23,15 @@ namespace BLOGCORE.UI.Website.Controllers
         
         public string GetRol()
         {
-            var authenticateResult = HttpContext.AuthenticateAsync().Result;
-            return authenticateResult.Principal.Claims.First(x => x.Type.Equals(ClaimTypes.Role))?.Value?? null;
+            try
+            {
+                var authenticateResult = HttpContext.AuthenticateAsync().Result;
+                return authenticateResult.Principal.Claims.First(x => x.Type.Equals(ClaimTypes.Role))?.Value ?? null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public string GetClaim(string claim)

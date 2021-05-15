@@ -12,73 +12,84 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
 {
     public class PostRepositorio : IPostRepositorio
     {
+        private readonly MysqlDbContext context;
+
+        public PostRepositorio(MysqlDbContext context)
+        {
+            this.context = context;
+        }
+
         public async Task<List<Post>> GetPostsAsync()
         {
             await using MysqlDbContext db = new MysqlDbContext();
-            return await db.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
+            return await context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
         }
 
         public async Task<List<Post>> GetPostsAsync(long UsuarioId)
         {
-            await using MysqlDbContext db = new MysqlDbContext();
-            return await db.Posts.Include(x => x.UsuarioNavigation).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
+            return await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
         }
 
         public async Task<Post> GetPostAsync(long PostId, long usuarioId, bool Pantalla)
         {
-            await using MysqlDbContext db = new MysqlDbContext();
-            var post = await db.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
-            if (Pantalla)
+            var post = await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
+            if (post != null)
             {
-                if (post != null)
+                post.VistasPaginaAnonimo += 1;
+                if (Pantalla)
                 {
-                    var vistas = await db.Vistas.Where(x => x.PostId == post.Id).ToListAsync();
+                    if (usuarioId != post.UsuarioId)
+                    {
+                        post.VistasPaginaUsuario += 1;
+                    }
+
+                    var vistas = await context.Vistas.Where(x => x.PostId == post.Id).ToListAsync();
                     if (vistas != null)
                     {
                         if (vistas.FirstOrDefault(x => x.UsuarioId == usuarioId) == null)
                         {
-                            await db.Vistas.AddAsync(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now });
-                            await db.SaveChangesAsync();
+                            await context.Vistas.AddAsync(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now });
+                            await context.SaveChangesAsync();
                         }
                     }
                 }
+
+                context.Posts.Update(post);
+                await context.SaveChangesAsync();
             }
+
             return post;
         }
         
         public async Task<Post> GetPostAsync(long PostId, long UsuarioId)
         {
-            await using MysqlDbContext db = new MysqlDbContext();
-            return await db.Posts.Include(x => x.UsuarioNavigation).FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
+            return await context.Posts.Include(x => x.UsuarioNavigation).FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
         }
 
         public async Task<bool> EditarPostAsync(Post post)
         {
-            await using MysqlDbContext db = new MysqlDbContext();
             post.FechaModificacion = DateTime.Now;
-            db.Posts.Update(post);
-            return await db.SaveChangesAsync() > 0 ? true : false;
+            context.Posts.Update(post);
+            return await context.SaveChangesAsync() > 0 ? true : false;
         }
         
         public async Task<bool> AgregarPostAsync(Post post)
         {
-            await using MysqlDbContext db = new MysqlDbContext();
             post.FechaCreacion = DateTime.Now;
             post.Estado = true;
-            await db.Posts.AddAsync(post);
-            return await db.SaveChangesAsync() > 0 ? true : false;
+            await context.Posts.AddAsync(post);
+            return await context.SaveChangesAsync() > 0 ? true : false;
         }
 
         public async Task<int> EliminarPostAsync(long PostId, long UsuarioId)
         {
             int result = 0;
-            await using MysqlDbContext db = new MysqlDbContext();
             Post post;
-            post = await db.Posts.FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
+            post = await context.Posts.FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
             if (post is null)
             {
                 result = 1; // Post no existe
-                post = await db.Posts.FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
+                post = await context.Posts.FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
                 if (post is null)
                 {
                     result = 2; // Post de otro usuario
@@ -89,10 +100,15 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
                 result = 3; //Eliminado
                 post.FechaEliminacion = DateTime.Now;
                 post.Estado = false;
-                db.Posts.Update(post);
-                await db.SaveChangesAsync();
+                context.Posts.Update(post);
+                await context.SaveChangesAsync();
             }
             return result;
+        }
+
+        public async Task<List<PostVistas>> GetVistasAsync(long PostId)
+        {
+            return await context.Vistas.Include(x => x.UsuarioNavigation).ThenInclude(x => x.Perfil).Where(x => x.PostId == PostId).ToListAsync();
         }
     }
 }

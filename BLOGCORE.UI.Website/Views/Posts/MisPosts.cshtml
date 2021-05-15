@@ -22,7 +22,8 @@
 @if (Model.Any())
 {
 
-    @if (Model.Count() > 6)
+
+    @if (ViewBag.CantidadPosts > 3)
     {
         <div class="text-center">
             <a asp-action="MisPosts"
@@ -41,7 +42,7 @@
             </a>
         </div>
     }
-
+    <br />
     <div class="row">
         <div class="col">
             <div class="blog-posts">
@@ -50,7 +51,7 @@
                     <div class="masonry row" data-plugin-masonry data-plugin-options="{'itemSelector': '.masonry-item'}">
                         @foreach (var item in Model)
                         {
-                            <div class="masonry-item no-default-style col-md-4">
+                            <div class=" bg- masonry-item no-default-style col-md-4">
                                 <article class="post post-medium border-0 pb-0 mb-5">
                                     <div class="post-image">
                                         <a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">
@@ -58,30 +59,21 @@
                                         </a>
                                     </div>
                                     <div class="post-content">
-                                        <h2 class="font-weight-semibold text-5 line-height-6 mt-3 mb-2"><a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">@item.Titulo</a></h2>
-                                        @if (@item.Cuerpo.Length > 100)
-                                        {
-                                            <p>@Html.Raw(item.Cuerpo.Trim().Substring(0, 100))...</p>
-                                        }
-                                        else
-                                        {
-                                            <p>@Html.Raw(item.Cuerpo.Trim())</p>
-                                        }
-
-                                        <div class="post-meta">
-                                            <span><i class="far fa-user"></i> Por <a href="#">@item.Autor</a> </span>
-                                            <span><i class="far fa-calendar"></i>@item.FechaCreacion </span>
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <span class="d-block mt-2"><a asp-controller="Posts" asp-action="Registrar" asp-route-id="@item.ID" class="btn btn-xs btn-info text-1 text-uppercase">Editar</a></span>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <span class="d-block mt-2"><button type="button" onclick="EliminarRegistro('@Url.Action("EliminarPost", "Posts")', '@Url.Action("MisPosts", "Posts")', @item.ID)" class="btn btn-xs btn-danger text-1 text-uppercase">Eliminar</button></span>
-                                                </div>
+                                        <div class="row">
+                                            <div class="col-sm-6 text-center">
+                                                <span class="d-block mt-2"><a asp-controller="Posts" asp-action="Registrar" asp-route-id="@item.ID" class="btn btn-xs btn-info text-1 text-uppercase">Editar</a></span>
                                             </div>
-
+                                            <div class="col-sm-6 text-center">
+                                                <span class="d-block mt-2"><button type="button" onclick="EliminarRegistro('@Url.Action("EliminarPost", "Posts")', '@Url.Action("MisPosts", "Posts")', @item.ID)" class="btn btn-xs btn-danger text-1 text-uppercase">Eliminar</button></span>
+                                            </div>
                                         </div>
-
+                                        <h2 class="font-weight-semibold text-5 line-height-6 mt-3 mb-2"><a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">@item.Titulo</a></h2>
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar"></i>@item.FechaCreacion </span><br />
+                                            <span><i class="far fa-eye"></i><a asp-controller="Posts" asp-action="Vistas" asp-route-id="@item.ID">@item.Vistas Vistas Usuario</a></span><br />
+                                            <span><i class="far fa-eye"></i>@item.VistasPaginaUsuario Vistas Pantalla Usuario</span><br />
+                                            <span><i class="far fa-eye"></i>@item.VistasPaginaAnonimo Vistas Pantalla Anonimo</span>
+                                        </div>
                                     </div>
                                 </article>
                             </div>
@@ -91,8 +83,8 @@
             </div>
         </div>
     </div>
-
-    @if (Model.Count() > 6)
+    <br />
+    @if (ViewBag.CantidadPosts > 3)
     {
         <div class="text-center">
             <a asp-action="MisPosts"
@@ -111,6 +103,7 @@
             </a>
         </div>
     }
+
 }
 else
 {

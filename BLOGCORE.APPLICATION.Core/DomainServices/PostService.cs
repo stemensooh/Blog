@@ -79,5 +79,29 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
         {
             return await _postRepositorio.EliminarPostAsync(PostId, UsuarioId);
         }
+
+        public async Task<List<UsuarioDto>> GetVistas(long PostId, long UsuarioId)
+        {
+            var existe = await _postRepositorio.GetPostAsync(PostId, UsuarioId);
+            if (existe is null) return null;
+
+            var result = await _postRepositorio.GetVistasAsync(PostId);
+            if (result is null) return null;
+
+            var usuarios = new List<UsuarioDto>();
+            foreach (var item in result)
+            {
+                var usuario = new UsuarioDto();
+                usuario.Apellidos = item.UsuarioNavigation.Perfil.Apellidos;
+                usuario.Nombres = item.UsuarioNavigation.Perfil.Nombres;
+                usuario.Username = item.UsuarioNavigation.Username;
+                usuario.Email = item.UsuarioNavigation.Email;
+                usuario.Id = item.Id;
+                usuario.FechaVista = item.FechaVista.ToString("dd/MM/yyyy HH:mm:ss");
+                usuarios.Add(usuario);
+            }
+
+            return usuarios;
+        }
     }
 }

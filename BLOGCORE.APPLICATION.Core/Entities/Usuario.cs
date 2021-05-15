@@ -29,7 +29,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
         public DateTime? FechaEliminacion { get; set; }
-        public bool Estado { get; set; }
+        public byte Estado { get; set; }
 
         public Perfil  Perfil { get; set; }
         public virtual ICollection<PostVistas> Vistas { get; set; }

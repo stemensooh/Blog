@@ -37,7 +37,8 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         [Column(TypeName = "varchar(5000)")]
         public string Imagen { get; set; }
 
-        public long VistasPagina { get; set; }
+        public long VistasPaginaUsuario { get; set; }
+        public long VistasPaginaAnonimo { get; set; }
 
         public virtual Usuario UsuarioNavigation { get; set; }
 

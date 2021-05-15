@@ -13,5 +13,12 @@ namespace BLOGCORE.APPLICATION.Core.Constants
             Usuario,
             SuperAdministrador
         }
+
+        public enum EstadoUsuario
+        {
+            Inactivo,
+            Activo,
+            PorConfirmar
+        }
     }
 }
