@@ -1,0 +1,38 @@
+﻿@model List<BLOGCORE.APPLICATION.Core.DTOs.UsuarioDto>
+
+<br />
+<br />
+<br />
+
+@if (Model is null)
+{
+    <p>No hay vistas</p>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Email</th>
+                <th>Ip</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a asp-controller="Perfil" asp-action="Index" asp-route-username="@item.Username">@item.Username</a></td>
+                    <td>@item.Nombres</td>
+                    <td>@item.Apellidos</td>
+                    <td>@item.Email</td>
+                    <td>@item.Ip</td>
+                    <td>@item.FechaVista</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

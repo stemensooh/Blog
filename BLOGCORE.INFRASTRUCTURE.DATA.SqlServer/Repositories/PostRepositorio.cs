@@ -26,30 +26,26 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
 
         public async Task<List<Post>> GetPostsAsync(long UsuarioId)
         {
-            return await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
+            return await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
         }
 
-        public async Task<Post> GetPostAsync(long PostId, long usuarioId, bool Pantalla)
+        public async Task<Post> GetPostAsync(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
-            var post = await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
+            var post = await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
             if (post != null)
             {
-                post.VistasPaginaAnonimo += 1;
+                if (usuarioId == 0)
+                {
+                    await context.VistasAnonimas.AddAsync(new PostVistasAnonimas() { PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
+                    await context.SaveChangesAsync();
+                }
+
                 if (Pantalla)
                 {
                     if (usuarioId != post.UsuarioId)
                     {
-                        post.VistasPaginaUsuario += 1;
-                    }
-
-                    var vistas = await context.Vistas.Where(x => x.PostId == post.Id).ToListAsync();
-                    if (vistas != null)
-                    {
-                        if (vistas.FirstOrDefault(x => x.UsuarioId == usuarioId) == null)
-                        {
-                            await context.Vistas.AddAsync(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now });
-                            await context.SaveChangesAsync();
-                        }
+                        await context.Vistas.AddAsync(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
+                        await context.SaveChangesAsync();
                     }
                 }
 
@@ -59,6 +55,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
 
             return post;
         }
+
 
         public async Task<Post> GetPostAsync(long PostId, long UsuarioId)
         {
@@ -108,6 +105,11 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
         public async Task<List<PostVistas>> GetVistasAsync(long PostId)
         {
             return await context.Vistas.Include(x => x.UsuarioNavigation).ThenInclude(x => x.Perfil).Where(x => x.PostId == PostId).ToListAsync();
+        }
+
+        public async Task<List<PostVistasAnonimas>> GetVistasAnonimaAsync(long PostId)
+        {
+            return await context.VistasAnonimas.Where(x => x.PostId == PostId).ToListAsync();
         }
     }
 }

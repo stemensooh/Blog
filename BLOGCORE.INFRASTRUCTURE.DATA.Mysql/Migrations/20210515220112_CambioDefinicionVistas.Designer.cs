@@ -3,55 +3,21 @@ using System;
 using BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
 {
     [DbContext(typeof(MysqlDbContext))]
-    partial class MysqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210515220112_CambioDefinicionVistas")]
+    partial class CambioDefinicionVistas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.AccesoUsuario", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("DescripcionAcceso")
-                        .HasColumnType("varchar(500)")
-                        .HasMaxLength(500);
-
-                    b.Property<string>("Email")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<DateTime>("FechaAcceso")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Ip")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("Password")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
-
-                    b.Property<int>("TipoAcceso")
-                        .HasColumnType("int");
-
-                    b.Property<long>("UsuarioId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccesoUsuarios");
-                });
 
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Perfil", b =>
                 {
@@ -66,10 +32,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
                     b.Property<string>("Direccion")
                         .HasColumnType("varchar(500)")
                         .HasMaxLength(500);
-
-                    b.Property<string>("Ip")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
 
                     b.Property<string>("Nombres")
                         .HasColumnType("varchar(100)")
@@ -111,10 +73,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
                     b.Property<string>("Imagen")
                         .HasColumnType("varchar(5000)");
 
-                    b.Property<string>("Ip")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
-
                     b.Property<string>("Titulo")
                         .HasColumnType("varchar(200)")
                         .HasMaxLength(200);
@@ -141,10 +99,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
                     b.Property<DateTime>("FechaVista")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Ip")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
-
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
@@ -158,29 +112,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Vistas");
-                });
-
-            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.PostVistasAnonimas", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("FechaVista")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Ip")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
-
-                    b.Property<long>("PostId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("VistasAnonimas");
                 });
 
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Rol", b =>
@@ -223,10 +154,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
 
                     b.Property<DateTime?>("FechaModificacion")
                         .HasColumnType("datetime");
-
-                    b.Property<string>("Ip")
-                        .HasColumnType("varchar(20)")
-                        .HasMaxLength(20);
 
                     b.Property<string>("Password")
                         .HasColumnType("varchar(100)")
@@ -291,15 +218,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
                     b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Usuario", "UsuarioNavigation")
                         .WithMany("Vistas")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.PostVistasAnonimas", b =>
-                {
-                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Post", "PostNavigation")
-                        .WithMany()
-                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

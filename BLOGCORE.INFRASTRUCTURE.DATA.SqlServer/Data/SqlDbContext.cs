@@ -11,10 +11,12 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
     {
         public DbSet<Perfil> Perfiles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<AccesoUsuario> AccesoUsuarios { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Rol> Roles { get; set; }
         public DbSet<UsuarioRol> UsuariosRol { get; set; }
         public DbSet<PostVistas> Vistas { get; set; }
+        public DbSet<PostVistasAnonimas> VistasAnonimas { get; set; }
 
         public string DefaultConecctionString = string.Empty;
 

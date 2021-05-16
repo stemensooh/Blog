@@ -3,14 +3,16 @@ using System;
 using BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Migrations
 {
     [DbContext(typeof(MysqlDbContext))]
-    partial class MysqlDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210515230602_TablaAccesoUsuarioYTablaVistasAnonimas")]
+    partial class TablaAccesoUsuarioYTablaVistasAnonimas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

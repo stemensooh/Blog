@@ -11,6 +11,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         public Post()
         {
             Vistas = new HashSet<PostVistas>();
+            VistasAnonimas = new HashSet<PostVistasAnonimas>();
         }
 
         [Key]
@@ -23,6 +24,9 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         [MaxLength(50000)]
         //[Column(TypeName = "varchar(8000)")]
         public string Cuerpo { get; set; }
+
+        [MaxLength(20)]
+        public string Ip { get; set; }
 
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
@@ -37,11 +41,12 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         [Column(TypeName = "varchar(5000)")]
         public string Imagen { get; set; }
 
-        public long VistasPaginaUsuario { get; set; }
-        public long VistasPaginaAnonimo { get; set; }
+        //public long VistasPaginaUsuario { get; set; }
+        //public long VistasPaginaAnonimo { get; set; }
 
         public virtual Usuario UsuarioNavigation { get; set; }
 
         public virtual ICollection<PostVistas> Vistas { get; set; }
+        public virtual ICollection<PostVistasAnonimas> VistasAnonimas { get; set; }
     }
 }

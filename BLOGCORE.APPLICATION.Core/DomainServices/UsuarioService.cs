@@ -23,7 +23,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
         public async Task<RespuestaLoginDto> SignInAsync(UsuarioSignInViewModel model)
         {
             RespuestaLoginDto respuestaLogin = new RespuestaLoginDto();
-            var response = await _usuarioRepositorio.SignInAsync(model.Email, model.Password);
+            var response = await _usuarioRepositorio.SignInAsync(model.Email, model.Password, model.Ip);
             if (response is null)
             {
                 respuestaLogin.TieneError = true;
@@ -91,5 +91,11 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return result > 0 ? usuario : null;
         }
 
+        public async Task<List<AccesoUsuarioDto>> GetAccesosUsuarios()
+        {
+            var result = await _usuarioRepositorio.GetAccesoUsuarios();
+            if (result is null) return null;
+            return result.Select(c => new AccesoUsuarioDto(c)).ToList();
+        }
     }
 }

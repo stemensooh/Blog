@@ -129,5 +129,8 @@ function MensajeExitosoSwalConfirmacionRedireccion(Mensaje, modulo, url) {
     }).then(function () {
         window.location.href = url;
     });
+}
 
+function isEmpty(val) {
+    return (val === undefined || val === null || val.length <= 0 || val.length === "") ? true : false;
 }

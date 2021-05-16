@@ -14,8 +14,7 @@ else
         <thead>
             <tr>
                 <th>Usuario</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
+                <th>Ip</th>
                 <th>Fecha</th>
             </tr>
         </thead>
@@ -24,8 +23,7 @@ else
             {
                 <tr>
                     <td><a asp-controller="Perfil" asp-action="Index" asp-route-username="@item.Username">@item.Username</a></td>
-                    <td>@item.Nombres</td>
-                    <td>@item.Apellidos</td>
+                    <td>@item.Ip</td>
                     <td>@item.FechaVista</td>
                 </tr>
             }

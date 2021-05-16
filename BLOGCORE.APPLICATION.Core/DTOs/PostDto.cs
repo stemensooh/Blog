@@ -15,7 +15,6 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
 
         public PostDto(Post post)
         {
-            Vistas = post.Vistas != null && post.Vistas.Any() ? post.Vistas.Count() : 0 ;
             ID = post.Id;
             Titulo = post.Titulo;
             Cuerpo = post.Cuerpo;
@@ -23,8 +22,10 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
             FechaCreacion = post.FechaCreacion.ToString("dd/MM/yyyy");
             Autor = post.UsuarioNavigation?.Username??"";
             Username = post.UsuarioNavigation?.Username??"";
-            VistasPaginaUsuario = post.VistasPaginaUsuario;
-            VistasPaginaAnonimo = post.VistasPaginaAnonimo;
+            
+            VistasPaginaAnonimo = post.VistasAnonimas != null && post.VistasAnonimas.Any() ? post.VistasAnonimas.Count() : 0;
+            VistasPaginaUsuario = post.Vistas != null && post.Vistas.Any() ? post.Vistas.Count() : 0;
+            Vistas = post.Vistas != null && post.Vistas.Any() ? post.Vistas.GroupBy(x => x.UsuarioId).Count() : 0;
         }
 
         public long ID { get; set; }

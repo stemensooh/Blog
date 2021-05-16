@@ -13,5 +13,6 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces
         Task<RespuestaLoginDto> SignInAsync(UsuarioSignInViewModel model);
         Task<PerfilDto> VerPerfilAsync(string username, bool EsAdministrador = false);
         Task<Usuario> SignUpAsync(UsuarioSignUpViewModel model);
+        Task<List<AccesoUsuarioDto>> GetAccesosUsuarios();
     }
 }

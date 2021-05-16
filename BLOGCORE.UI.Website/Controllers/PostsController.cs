@@ -76,7 +76,7 @@ namespace BLOGCORE.UI.Website.Controllers
         public async Task<IActionResult> RegistrarAsync(long ID)
         {
             PostViewModel model = new PostViewModel();
-            var post = await _postService.GetPostAsync(ID, 0, false);
+            var post = await _postService.GetPostAsync(ID, GetUsuarioId(), false, "");
             if (post != null)
             {
                 model.ID = post.ID;
@@ -100,7 +100,7 @@ namespace BLOGCORE.UI.Website.Controllers
                 pantalla = true;
             }
 
-            return View(await _postService.GetPostAsync(ID, usuarioId, pantalla));
+            return View(await _postService.GetPostAsync(ID, usuarioId, pantalla, GetIp()));
         }
 
         [HttpPost]
@@ -187,9 +187,16 @@ namespace BLOGCORE.UI.Website.Controllers
             //return View(posts);
         }
 
-        public async Task<IActionResult> Vistas(long Id)
+        [Authorize(Roles = "SuperAdministrador,Administrador")]
+        public async Task<IActionResult> VistasUsuario(long Id)
         {
-            return View(await _postService.GetVistas(Id, GetUsuarioId()));
+            return View(await _postService.GetVistasUsuario(Id, GetUsuarioId()));
+        }
+
+        [Authorize(Roles = "SuperAdministrador,Administrador")]
+        public async Task<IActionResult> VistasAnonimas(long Id)
+        {
+            return View(await _postService.GetVistasAnonima(Id, GetUsuarioId()));
         }
     }
 }

@@ -12,5 +12,6 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         public string Apellidos { get; set; }
         public string Email { get; set; }
         public string FechaVista { get; set; }
+        public string Ip { get; set; }
     }
 }

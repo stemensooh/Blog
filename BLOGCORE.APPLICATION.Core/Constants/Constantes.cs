@@ -20,5 +20,11 @@ namespace BLOGCORE.APPLICATION.Core.Constants
             Activo,
             PorConfirmar
         }
+
+        public enum AccesoUsuario
+        {
+            fallido,
+            exitoso
+        }
     }
 }

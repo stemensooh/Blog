@@ -19,6 +19,43 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.AccesoUsuario", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DescripcionAcceso")
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("FechaAcceso")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("TipoAcceso")
+                        .HasColumnType("int");
+
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccesoUsuarios");
+                });
+
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Perfil", b =>
                 {
                     b.Property<long>("Id")
@@ -33,6 +70,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.Property<string>("Direccion")
                         .HasColumnType("nvarchar(500)")
                         .HasMaxLength(500);
+
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Nombres")
                         .HasColumnType("nvarchar(100)")
@@ -75,17 +116,15 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.Property<string>("Imagen")
                         .HasColumnType("varchar(5000)");
 
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
                     b.Property<string>("Titulo")
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
                     b.Property<long>("UsuarioId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("VistasPaginaAnonimo")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("VistasPaginaUsuario")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -105,6 +144,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.Property<DateTime>("FechaVista")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
@@ -118,6 +161,30 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Vistas");
+                });
+
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.PostVistasAnonimas", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("FechaVista")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<long>("PostId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("VistasAnonimas");
                 });
 
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Rol", b =>
@@ -162,6 +229,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
 
                     b.Property<DateTime?>("FechaModificacion")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Ip")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(100)")
@@ -228,6 +299,15 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                         .WithMany("Vistas")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.PostVistasAnonimas", b =>
+                {
+                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Post", "PostNavigation")
+                        .WithMany("VistasAnonimas")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

@@ -26,6 +26,9 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         [MaxLength(100)]
         public string Email { get; set; }
 
+        [MaxLength(20)]
+        public string Ip { get; set; }
+
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }
         public DateTime? FechaEliminacion { get; set; }

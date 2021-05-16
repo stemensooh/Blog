@@ -1,0 +1,30 @@
+﻿@model List<BLOGCORE.APPLICATION.Core.DTOs.AccesoUsuarioDto>
+
+@if (Model is null)
+{
+    <p>No hay datos</p>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Tipo</th>
+                <th>Mensaje</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Email</td>
+                    <td>@item.Ip</td>
+                    <td>@item.DescripcionAcceso</td>
+                    <td>@item.FechaAcceso</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

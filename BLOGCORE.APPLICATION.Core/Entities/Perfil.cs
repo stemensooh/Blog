@@ -21,6 +21,9 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         [MaxLength(500)]
         public string Direccion { get; set; }
 
+        [MaxLength(20)]
+        public string Ip { get; set; }
+
         public long UsuarioId { get; set; }
 
 

@@ -14,5 +14,7 @@ namespace BLOGCORE.APPLICATION.Core.ViewModels
         [Required(ErrorMessage = "La contraseña es requerida")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public string Ip { get; set; }
     }
 }

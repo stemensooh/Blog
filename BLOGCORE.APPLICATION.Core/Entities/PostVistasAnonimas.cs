@@ -6,25 +6,24 @@ using System.Text;
 
 namespace BLOGCORE.APPLICATION.Core.Entities
 {
-    public class PostVistas
+    public class PostVistasAnonimas
     {
         [Key]
         public long Id { get; set; }
 
-        [ForeignKey("Usuario")]
-        public long UsuarioId { get; set; }
 
         [ForeignKey("Post")]
         public long PostId { get; set; }
 
+
         public DateTime FechaVista { get; set; }
+
 
         [MaxLength(20)]
         public string Ip { get; set; }
 
 
 
-        public virtual Usuario UsuarioNavigation { get; set; }
         public virtual Post PostNavigation { get; set; }
     }
 }

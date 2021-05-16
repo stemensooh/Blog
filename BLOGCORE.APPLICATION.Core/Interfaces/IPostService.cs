@@ -11,9 +11,10 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces
     {
         Task<List<PostDto>> GetPostsAsync();
         Task<List<PostDto>> GetPostsAsync(long UsuarioId);
-        Task<PostDto> GetPostAsync(long PostId, long usuarioId, bool Pantalla);
+        Task<PostDto> GetPostAsync(long PostId, long usuarioId, bool Pantalla, string Ip);
         Task<bool> AgregarPostAsync(PostViewModel model);
         Task<int> EliminarPostAsync(long PostId, long UsuarioId);
-        Task<List<UsuarioDto>> GetVistas(long PostId, long UsuarioId);
+        Task<List<UsuarioDto>> GetVistasUsuario(long PostId, long UsuarioId);
+        Task<List<UsuarioDto>> GetVistasAnonima(long PostId, long UsuarioId);
     }
 }

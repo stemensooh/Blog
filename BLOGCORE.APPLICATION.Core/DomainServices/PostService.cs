@@ -28,10 +28,10 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return postDtos;
         }
 
-        public async Task<PostDto> GetPostAsync(long PostId, long usuarioId, bool Pantalla)
+        public async Task<PostDto> GetPostAsync(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
             PostDto postDto = new PostDto();
-            var post = await _postRepositorio.GetPostAsync(PostId, usuarioId, Pantalla);
+            var post = await _postRepositorio.GetPostAsync(PostId, usuarioId, Pantalla, Ip);
             if (post is null)
             {
                 return null;
@@ -80,7 +80,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return await _postRepositorio.EliminarPostAsync(PostId, UsuarioId);
         }
 
-        public async Task<List<UsuarioDto>> GetVistas(long PostId, long UsuarioId)
+        public async Task<List<UsuarioDto>> GetVistasUsuario(long PostId, long UsuarioId)
         {
             var existe = await _postRepositorio.GetPostAsync(PostId, UsuarioId);
             if (existe is null) return null;
@@ -98,6 +98,29 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                 usuario.Email = item.UsuarioNavigation.Email;
                 usuario.Id = item.Id;
                 usuario.FechaVista = item.FechaVista.ToString("dd/MM/yyyy HH:mm:ss");
+                usuario.Ip = item.Ip ?? "";
+                usuarios.Add(usuario);
+            }
+
+            return usuarios;
+        }
+
+        public async Task<List<UsuarioDto>> GetVistasAnonima(long PostId, long UsuarioId)
+        {
+            var existe = await _postRepositorio.GetPostAsync(PostId, UsuarioId);
+            if (existe is null) return null;
+
+            var result = await _postRepositorio.GetVistasAnonimaAsync(PostId);
+            if (result is null) return null;
+
+            var usuarios = new List<UsuarioDto>();
+            foreach (var item in result)
+            {
+                var usuario = new UsuarioDto();
+                usuario.Username = "Anonimo";
+                usuario.Id = item.Id;
+                usuario.FechaVista = item.FechaVista.ToString("dd/MM/yyyy HH:mm:ss");
+                usuario.Ip = item.Ip ?? "";
                 usuarios.Add(usuario);
             }
 

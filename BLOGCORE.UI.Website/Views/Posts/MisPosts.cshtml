@@ -70,9 +70,10 @@
                                         <h2 class="font-weight-semibold text-5 line-height-6 mt-3 mb-2"><a asp-controller="Posts" asp-action="VerPost" asp-route-id="@item.ID">@item.Titulo</a></h2>
                                         <div class="post-meta">
                                             <span><i class="far fa-calendar"></i>@item.FechaCreacion </span><br />
-                                            <span><i class="far fa-eye"></i><a asp-controller="Posts" asp-action="Vistas" asp-route-id="@item.ID">@item.Vistas Vistas Usuario</a></span><br />
-                                            <span><i class="far fa-eye"></i>@item.VistasPaginaUsuario Vistas Pantalla Usuario</span><br />
-                                            <span><i class="far fa-eye"></i>@item.VistasPaginaAnonimo Vistas Pantalla Anonimo</span>
+                                            <span><i class="far fa-eye"></i>@item.Vistas Vistas Usuario</span><br />
+                                            @*<span><i class="far fa-eye"></i><a asp-controller="Posts" asp-action="VistasUsuario" asp-route-id="@item.ID">@item.Vistas Vistas Usuario</a></span><br />*@
+                                            @*<span><i class="far fa-eye"></i>@item.VistasPaginaUsuario Vistas Pantalla Usuario</span><br />*@
+                                            <span><i class="far fa-eye"></i>@item.VistasPaginaAnonimo Vistas Anonimas</span>
                                         </div>
                                     </div>
                                 </article>
