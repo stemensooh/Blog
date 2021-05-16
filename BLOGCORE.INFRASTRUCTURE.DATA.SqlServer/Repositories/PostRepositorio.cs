@@ -56,7 +56,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
             return post;
         }
 
-
         public async Task<Post> GetPostAsync(long PostId, long UsuarioId)
         {
             return await context.Posts.Include(x => x.UsuarioNavigation).FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
@@ -68,7 +67,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
             context.Posts.Update(post);
             return await context.SaveChangesAsync() > 0 ? true : false;
         }
-        
+
         public async Task<bool> AgregarPostAsync(Post post)
         {
             post.FechaCreacion = DateTime.Now;

@@ -21,7 +21,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
 
         public async Task<List<Post>> GetPostsAsync()
         {
-            await using MysqlDbContext db = new MysqlDbContext();
             return await context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
         }
 
