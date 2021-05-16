@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLOGCORE.UI.Website.Controllers
 {
-    //[Authorize(Roles = "SuperAdministrador,Administrador")]
+    [Authorize(Roles = "SuperAdministrador,Administrador")]
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioRepositorio usuarioRepositorio;
