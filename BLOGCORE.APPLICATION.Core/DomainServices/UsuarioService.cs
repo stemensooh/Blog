@@ -20,10 +20,10 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             _usuarioRepositorio = usuarioRepositorio;
         }
 
-        public async Task<RespuestaLoginDto> SignInAsync(UsuarioSignInViewModel model)
+        public RespuestaLoginDto SignIn(UsuarioSignInViewModel model)
         {
             RespuestaLoginDto respuestaLogin = new RespuestaLoginDto();
-            var response = await _usuarioRepositorio.SignInAsync(model.Email, model.Password, model.Ip);
+            var response =  _usuarioRepositorio.SignIn(model.Email, model.Password, model.Ip);
             if (response is null)
             {
                 respuestaLogin.TieneError = true;
@@ -33,7 +33,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
 
             if(response.Roles != null && response.Roles.Any())
             {
-                var roles = await _usuarioRepositorio.GetRolesAsync(response.Roles.Select(c => c.RolId).ToArray());
+                var roles =  _usuarioRepositorio.GetRoles(response.Roles.Select(c => c.RolId).ToArray());
 
                 if (roles.FirstOrDefault(x => x.Nombre == Constants.Constantes.Rol.Usuario.ToString()) != null)
                     respuestaLogin.Rol = Constants.Constantes.Rol.Usuario.ToString();
@@ -52,9 +52,9 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return respuestaLogin;
         }
 
-        public async Task<PerfilDto> VerPerfilAsync(string username, bool EsAdministrador = false)
+        public PerfilDto VerPerfil(string username, bool EsAdministrador = false)
         {
-            var result = await _usuarioRepositorio.GetUsuarioAsync(username, null);
+            var result =  _usuarioRepositorio.GetUsuario(username, null);
             if (result is null) return null;
             if (result.Perfil is null) return null;
             if (result.Roles is null) return null;
@@ -66,9 +66,9 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return new PerfilDto() { Apellido = result.Perfil?.Apellidos??"", Nombre = result.Perfil?.Nombres ?? "", Username = result.Username ?? "" } ;
         }
 
-        public async Task<Usuario> SignUpAsync(UsuarioSignUpViewModel model)
+        public Usuario SignUp(UsuarioSignUpViewModel model)
         {
-            var rol = await _usuarioRepositorio.GetRolAsync(Constants.Constantes.Rol.Usuario.ToString());
+            var rol =  _usuarioRepositorio.GetRol(Constants.Constantes.Rol.Usuario.ToString());
             Usuario usuario = new Usuario
             {
                 Email = model.Email,
@@ -87,13 +87,13 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
 
             usuario.Roles.Add(new UsuarioRol() { RolId = rol.Id});
 
-            var result = await _usuarioRepositorio.AddUsuario(usuario);
+            var result =  _usuarioRepositorio.AddUsuario(usuario);
             return result > 0 ? usuario : null;
         }
 
-        public async Task<List<AccesoUsuarioDto>> GetAccesosUsuarios()
+        public List<AccesoUsuarioDto> GetAccesosUsuarios()
         {
-            var result = await _usuarioRepositorio.GetAccesoUsuarios();
+            var result =  _usuarioRepositorio.GetAccesoUsuarios();
             if (result is null) return null;
             return result.Select(c => new AccesoUsuarioDto(c)).ToList();
         }

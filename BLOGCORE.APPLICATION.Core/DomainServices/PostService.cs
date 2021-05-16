@@ -20,18 +20,18 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             _postRepositorio = postRepositorio;
         }
 
-        public async Task<List<PostDto>> GetPostsAsync()
+        public  List<PostDto> GetPosts()
         {
             List<PostDto> postDtos = new List<PostDto>();
-            var posts = await _postRepositorio.GetPostsAsync();
+            var posts =  _postRepositorio.GetPosts();
             postDtos = posts.Select(c => new PostDto(c)).ToList();
             return postDtos;
         }
 
-        public async Task<PostDto> GetPostAsync(long PostId, long usuarioId, bool Pantalla, string Ip)
+        public  PostDto GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
             PostDto postDto = new PostDto();
-            var post = await _postRepositorio.GetPostAsync(PostId, usuarioId, Pantalla, Ip);
+            var post =  _postRepositorio.GetPost(PostId, usuarioId, Pantalla, Ip);
             if (post is null)
             {
                 return null;
@@ -40,20 +40,20 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return postDto;
         }
 
-        public async Task<List<PostDto>> GetPostsAsync(long UsuarioId)
+        public  List<PostDto> GetPosts(long UsuarioId)
         {
             List<PostDto> postDtos = new List<PostDto>();
-            var posts = await _postRepositorio.GetPostsAsync(UsuarioId);
+            var posts =  _postRepositorio.GetPosts(UsuarioId);
             postDtos = posts.Select(c => new PostDto(c)).ToList();
             return postDtos;
         }
 
-        public async Task<bool> AgregarPostAsync(PostViewModel model)
+        public  bool AgregarPost(PostViewModel model)
         {
             Post post = new Post();
             if (model.ID > 0)
             {
-                post = await _postRepositorio.GetPostAsync(model.ID, model.UsuarioId);
+                post =  _postRepositorio.GetPost(model.ID, model.UsuarioId);
                 if (post is null)
                 {
                     return false;
@@ -61,7 +61,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                 post.Titulo = model.Titulo;
                 post.Cuerpo = model.Cuerpo;
                 post.Imagen = model.Imagen;
-                return await _postRepositorio.EditarPostAsync(post);
+                return  _postRepositorio.EditarPost(post);
             }
             else
             {
@@ -71,21 +71,21 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                 post.Imagen = model.Imagen;
                 post.UsuarioId = model.UsuarioId;
                 
-                return await _postRepositorio.AgregarPostAsync(post);
+                return  _postRepositorio.AgregarPost(post);
             }
         }
 
-        public async Task<int> EliminarPostAsync(long PostId, long UsuarioId)
+        public  int EliminarPost(long PostId, long UsuarioId)
         {
-            return await _postRepositorio.EliminarPostAsync(PostId, UsuarioId);
+            return  _postRepositorio.EliminarPost(PostId, UsuarioId);
         }
 
-        public async Task<List<UsuarioDto>> GetVistasUsuario(long PostId, long UsuarioId)
+        public  List<UsuarioDto> GetVistasUsuario(long PostId, long UsuarioId)
         {
-            var existe = await _postRepositorio.GetPostAsync(PostId, UsuarioId);
+            var existe =  _postRepositorio.GetPost(PostId, UsuarioId);
             if (existe is null) return null;
 
-            var result = await _postRepositorio.GetVistasAsync(PostId);
+            var result =  _postRepositorio.GetVistas(PostId);
             if (result is null) return null;
 
             var usuarios = new List<UsuarioDto>();
@@ -105,12 +105,12 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return usuarios;
         }
 
-        public async Task<List<UsuarioDto>> GetVistasAnonima(long PostId, long UsuarioId)
+        public  List<UsuarioDto> GetVistasAnonima(long PostId, long UsuarioId)
         {
-            var existe = await _postRepositorio.GetPostAsync(PostId, UsuarioId);
+            var existe =  _postRepositorio.GetPost(PostId, UsuarioId);
             if (existe is null) return null;
 
-            var result = await _postRepositorio.GetVistasAnonimaAsync(PostId);
+            var result =  _postRepositorio.GetVistasAnonima(PostId);
             if (result is null) return null;
 
             var usuarios = new List<UsuarioDto>();

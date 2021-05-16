@@ -19,72 +19,72 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
             this.context = context;
         }
 
-        public async Task<List<Post>> GetPostsAsync()
+        public List<Post> GetPosts()
         {
-            return await context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
+            return context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToList();
         }
 
-        public async Task<List<Post>> GetPostsAsync(long UsuarioId)
+        public List<Post> GetPosts(long UsuarioId)
         {
-            return await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
+            return context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToList();
         }
 
-        public async Task<Post> GetPostAsync(long PostId, long usuarioId, bool Pantalla, string Ip)
+        public Post GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
-            var post = await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
+            var post = context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).FirstOrDefault(x => x.Id == PostId && x.Estado == true);
             if (post != null)
             {
                 if (usuarioId == 0)
                 {
-                    await context.VistasAnonimas.AddAsync(new PostVistasAnonimas() { PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
-                    await context.SaveChangesAsync();
+                    context.VistasAnonimas.Add(new PostVistasAnonimas() { PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
+                    context.SaveChanges();
                 }
 
                 if (Pantalla)
                 {
                     if (usuarioId != post.UsuarioId)
                     {
-                        await context.Vistas.AddAsync(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
-                        await context.SaveChangesAsync();
+                        context.Vistas.Add(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
+                        context.SaveChanges();
                     }
                 }
 
                 context.Posts.Update(post);
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
 
             return post;
         }
-        
-        public async Task<Post> GetPostAsync(long PostId, long UsuarioId)
+
+        public Post GetPost(long PostId, long UsuarioId)
         {
-            return await context.Posts.Include(x => x.UsuarioNavigation).FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
+            return context.Posts.Include(x => x.UsuarioNavigation).FirstOrDefault(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
         }
 
-        public async Task<bool> EditarPostAsync(Post post)
+        public bool EditarPost(Post post)
         {
             post.FechaModificacion = DateTime.Now;
             context.Posts.Update(post);
-            return await context.SaveChangesAsync() > 0 ? true : false;
+            return context.SaveChanges() > 0 ? true : false;
         }
-        
-        public async Task<bool> AgregarPostAsync(Post post)
+
+        public bool AgregarPost(Post post)
         {
             post.FechaCreacion = DateTime.Now;
             post.Estado = true;
-            await context.Posts.AddAsync(post);
-            return await context.SaveChangesAsync() > 0 ? true : false;
+            context.Posts.Add(post);
+            return context.SaveChanges() > 0 ? true : false;
         }
 
-        public async Task<int> EliminarPostAsync(long PostId, long UsuarioId)
+        public int EliminarPost(long PostId, long UsuarioId)
         {
             int result = 0;
             Post post;
-            post = await context.Posts.FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
+            post = context.Posts.FirstOrDefault(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
             if (post is null)
             {
                 result = 1; // Post no existe
-                post = await context.Posts.FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
+                post = context.Posts.FirstOrDefault(x => x.Id == PostId && x.Estado == true);
                 if (post is null)
                 {
                     result = 2; // Post de otro usuario
@@ -96,19 +96,19 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
                 post.FechaEliminacion = DateTime.Now;
                 post.Estado = false;
                 context.Posts.Update(post);
-                await context.SaveChangesAsync();
+                context.SaveChanges();
             }
             return result;
         }
 
-        public async Task<List<PostVistas>> GetVistasAsync(long PostId)
+        public List<PostVistas> GetVistas(long PostId)
         {
-            return await context.Vistas.Include(x => x.UsuarioNavigation).ThenInclude(x => x.Perfil).Where(x => x.PostId == PostId).ToListAsync();
+            return context.Vistas.Include(x => x.UsuarioNavigation).ThenInclude(x => x.Perfil).Where(x => x.PostId == PostId).ToList();
         }
 
-        public async Task<List<PostVistasAnonimas>> GetVistasAnonimaAsync(long PostId)
+        public List<PostVistasAnonimas> GetVistasAnonima(long PostId)
         {
-            return await context.VistasAnonimas.Where(x => x.PostId == PostId).ToListAsync();
+            return context.VistasAnonimas.Where(x => x.PostId == PostId).ToList();
         }
     }
 }

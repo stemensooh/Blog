@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLOGCORE.UI.Website.Controllers
 {
-    [Authorize(Roles = "SuperAdministrador,Administrador")]
+    //[Authorize(Roles = "SuperAdministrador,Administrador")]
     public class UsuarioController : BaseController
     {
         private readonly IUsuarioRepositorio usuarioRepositorio;
@@ -26,9 +26,9 @@ namespace BLOGCORE.UI.Website.Controllers
             return View();
         }
 
-        public async Task<IActionResult> AccesosUsuario()
+        public IActionResult AccesosUsuario()
         {
-            return View(await usuarioService.GetAccesosUsuarios());
+            return View( usuarioService.GetAccesosUsuarios());
         }
 
     }

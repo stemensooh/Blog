@@ -31,13 +31,14 @@ namespace BLOGCORE.UI.Website
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var db = string.IsNullOrEmpty(Configuration.GetConnectionString("DBActive"))? "sql" : Configuration.GetConnectionString("DBActive");
+            APPLICATION.Core.Utilities.CultureInfoUtil.SetCultureInfo();
+            var db = string.IsNullOrEmpty(Configuration["DBActive"]) ? "sql" : Configuration["DBActive"];
             App_Code.AppCode.InitialConfig(Configuration);
             services.AddControllersWithViews();
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(double.Parse(Configuration.GetSection("Session:SessionTimeSeconds").Value));
+                options.IdleTimeout = TimeSpan.FromSeconds(double.Parse(Configuration.GetSection("SessionTimeSeconds").Value));
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
@@ -47,7 +48,7 @@ namespace BLOGCORE.UI.Website
                 {
                     opciones.AccessDeniedPath = "/Pages/AccessDeniedPath";
                     opciones.LoginPath = "/Account/Index";
-                    opciones.ExpireTimeSpan = TimeSpan.FromSeconds(double.Parse(Configuration.GetSection("Session:SessionTimeSeconds").Value));
+                    opciones.ExpireTimeSpan = TimeSpan.FromSeconds(double.Parse(Configuration.GetSection("SessionTimeSeconds").Value));
                     opciones.SlidingExpiration = true;
                 });
 

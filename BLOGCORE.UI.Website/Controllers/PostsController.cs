@@ -25,58 +25,68 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> IndexAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public IActionResult Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            TempData["UrlSearch"] = Url.Action("Index", "Posts");
-            var posts = await _postService.GetPostsAsync();
-            ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0 ;
-
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewData["CurrentFilter"] = searchString;
-
-            if (!string.IsNullOrEmpty(searchString))
+            ViewBag.MensajeError = "";
+            try
             {
-                posts = posts.Where(s => s.Titulo.ToLower().Contains(searchString.ToLower()) || s.Autor.ToLower().Contains(searchString.ToLower())).ToList();
+                TempData["UrlSearch"] = Url.Action("Index", "Posts");
+                var posts = _postService.GetPosts();
+                ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0;
 
+                ViewData["CurrentSort"] = sortOrder;
+                ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+                ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+                ViewData["CurrentFilter"] = searchString;
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    posts = posts.Where(s => s.Titulo.ToLower().Contains(searchString.ToLower()) || s.Autor.ToLower().Contains(searchString.ToLower())).ToList();
+
+                }
+
+                if (searchString != null)
+                {
+                    pageNumber = 1;
+                }
+                else
+                {
+                    searchString = currentFilter;
+                }
+
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        posts = posts.OrderByDescending(s => s.Titulo).ToList();
+                        break;
+                    case "Date":
+                        posts = posts.OrderBy(s => s.FechaCreacion).ToList();
+                        break;
+                    case "date_desc":
+                        posts = posts.OrderByDescending(s => s.FechaCreacion).ToList();
+                        break;
+                    default:
+                        posts = posts.OrderBy(s => s.Titulo).ToList();
+                        break;
+                }
+
+                int pageSize = 6;
+                var result = (PaginatedList<PostDto>.Create(posts.ToList(), pageNumber ?? 1, pageSize)).Result;
+
+                return View(result);
             }
-
-            if (searchString != null)
+            catch (Exception ex)
             {
-                pageNumber = 1;
+                ViewBag.MensajeError = ex.Message;
+                _logger.LogError($"Index => {ex.Message}");
+                return View();
             }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    posts = posts.OrderByDescending(s => s.Titulo).ToList();
-                    break;
-                case "Date":
-                    posts = posts.OrderBy(s => s.FechaCreacion).ToList();
-                    break;
-                case "date_desc":
-                    posts = posts.OrderByDescending(s => s.FechaCreacion).ToList();
-                    break;
-                default:
-                    posts = posts.OrderBy(s => s.Titulo).ToList();
-                    break;
-            }
-
-            int pageSize = 6;
-            return View(await PaginatedList<PostDto>.Create(posts.ToList(), pageNumber ?? 1, pageSize));
-
-            //return View(posts);
         }
 
-        public async Task<IActionResult> RegistrarAsync(long ID)
+        public  IActionResult Registrar(long ID)
         {
             PostViewModel model = new PostViewModel();
-            var post = await _postService.GetPostAsync(ID, GetUsuarioId(), false, "");
+            var post =  _postService.GetPost(ID, GetUsuarioId(), false, "");
             if (post != null)
             {
                 model.ID = post.ID;
@@ -89,8 +99,17 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> VerPostAsync(long ID)
+        public  IActionResult VerPost(long ID)
         {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
             bool pantalla = false;
             long usuarioId = 0;
 
@@ -99,14 +118,14 @@ namespace BLOGCORE.UI.Website.Controllers
                 usuarioId = GetUsuarioId();
                 pantalla = true;
             }
-
-            return View(await _postService.GetPostAsync(ID, usuarioId, pantalla, GetIp()));
+            var result = _postService.GetPost(ID, usuarioId, pantalla, GetIp());
+            return View(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EliminarPostAsync(long ID)
+        public  IActionResult EliminarPost(long ID)
         {
-            var result = await _postService.EliminarPostAsync(ID, GetUsuarioId());
+            var result =  _postService.EliminarPost(ID, GetUsuarioId());
             switch (result)
             {
                 case 1:
@@ -121,12 +140,12 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistrarAsync(PostViewModel model)
+        public  IActionResult Registrar(PostViewModel model)
         {
             if (ModelState.IsValid)
             {
                 model.UsuarioId = GetUsuarioId();
-                var result = await _postService.AgregarPostAsync(model);
+                var result =  _postService.AgregarPost(model);
                 if (result)
                 {
                     return RedirectToAction("MisPosts");
@@ -140,10 +159,10 @@ namespace BLOGCORE.UI.Website.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> MisPostsAsync(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public  IActionResult MisPosts(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             TempData["UrlSearch"] = Url.Action("MisPosts", "Posts");
-            var posts = await _postService.GetPostsAsync(GetUsuarioId());
+            var posts =  _postService.GetPosts(GetUsuarioId());
             ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0;
 
             ViewData["CurrentSort"] = sortOrder;
@@ -182,21 +201,19 @@ namespace BLOGCORE.UI.Website.Controllers
             }
 
             int pageSize = 3;
-            return View(await PaginatedList<PostDto>.Create(posts.ToList(), pageNumber ?? 1, pageSize));
-
-            //return View(posts);
+            return View((PaginatedList<PostDto>.Create(posts.ToList(), pageNumber ?? 1, pageSize)).Result);
         }
 
         [Authorize(Roles = "SuperAdministrador,Administrador")]
-        public async Task<IActionResult> VistasUsuario(long Id)
+        public  IActionResult VistasUsuario(long Id)
         {
-            return View(await _postService.GetVistasUsuario(Id, GetUsuarioId()));
+            return View( _postService.GetVistasUsuario(Id, GetUsuarioId()));
         }
 
         [Authorize(Roles = "SuperAdministrador,Administrador")]
-        public async Task<IActionResult> VistasAnonimas(long Id)
+        public  IActionResult VistasAnonimas(long Id)
         {
-            return View(await _postService.GetVistasAnonima(Id, GetUsuarioId()));
+            return View( _postService.GetVistasAnonima(Id, GetUsuarioId()));
         }
     }
 }

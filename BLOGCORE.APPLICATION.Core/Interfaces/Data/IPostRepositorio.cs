@@ -8,15 +8,15 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
 {
     public interface IPostRepositorio
     {
-        Task<List<Post>> GetPostsAsync();
-        Task<List<Post>> GetPostsAsync(long UsuarioId);
-        Task<Post> GetPostAsync(long PostId, long usuarioId, bool Pantalla, string Ip);
-        Task<Post> GetPostAsync(long PostId, long UsuarioId);
-        Task<bool> AgregarPostAsync(Post post);
-        Task<bool> EditarPostAsync(Post post);
-        Task<int> EliminarPostAsync(long PostId, long UsuarioId);
-        Task<List<PostVistas>> GetVistasAsync(long PostId);
-        Task<List<PostVistasAnonimas>> GetVistasAnonimaAsync(long PostId);
+        List<Post> GetPosts();
+        List<Post> GetPosts(long UsuarioId);
+        Post GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
+        Post GetPost(long PostId, long UsuarioId);
+        bool AgregarPost(Post post);
+        bool EditarPost(Post post);
+        int EliminarPost(long PostId, long UsuarioId);
+        List<PostVistas> GetVistas(long PostId);
+        List<PostVistasAnonimas> GetVistasAnonima(long PostId);
         
     }
 }

@@ -9,12 +9,12 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces
 {
     public interface IPostService
     {
-        Task<List<PostDto>> GetPostsAsync();
-        Task<List<PostDto>> GetPostsAsync(long UsuarioId);
-        Task<PostDto> GetPostAsync(long PostId, long usuarioId, bool Pantalla, string Ip);
-        Task<bool> AgregarPostAsync(PostViewModel model);
-        Task<int> EliminarPostAsync(long PostId, long UsuarioId);
-        Task<List<UsuarioDto>> GetVistasUsuario(long PostId, long UsuarioId);
-        Task<List<UsuarioDto>> GetVistasAnonima(long PostId, long UsuarioId);
+        List<PostDto> GetPosts();
+        List<PostDto> GetPosts(long UsuarioId);
+        PostDto GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
+        bool AgregarPost(PostViewModel model);
+        int EliminarPost(long PostId, long UsuarioId);
+        List<UsuarioDto> GetVistasUsuario(long PostId, long UsuarioId);
+        List<UsuarioDto> GetVistasAnonima(long PostId, long UsuarioId);
     }
 }

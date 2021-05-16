@@ -10,9 +10,9 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces
 {
     public interface IUsuarioService
     {
-        Task<RespuestaLoginDto> SignInAsync(UsuarioSignInViewModel model);
-        Task<PerfilDto> VerPerfilAsync(string username, bool EsAdministrador = false);
-        Task<Usuario> SignUpAsync(UsuarioSignUpViewModel model);
-        Task<List<AccesoUsuarioDto>> GetAccesosUsuarios();
+        RespuestaLoginDto SignIn(UsuarioSignInViewModel model);
+        PerfilDto VerPerfil(string username, bool EsAdministrador = false);
+        Usuario SignUp(UsuarioSignUpViewModel model);
+        List<AccesoUsuarioDto> GetAccesosUsuarios();
     }
 }

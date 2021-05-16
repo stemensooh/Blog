@@ -13,7 +13,6 @@
 
 @if (Model.Any())
 {
-
     @if (ViewBag.CantidadPosts > 6)
     {
         <div class="text-center">
@@ -101,3 +100,9 @@ else
 <p>No hay post, se el primero en crear uno</p>
 }
 
+<br />
+<br />
+<br />
+<h1>
+    @ViewBag.MensajeError
+</h1>

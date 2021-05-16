@@ -8,13 +8,13 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
 {
     public interface IUsuarioRepositorio
     {
-        Task<Usuario> SignInAsync(string Email, string Password, string Ip);
-        Task<Usuario> GetUsuarioAsync(string username, string email);
-        Task<List<Rol>> GetRolesAsync(int[] roles);
-        Task<Rol> GetRolAsync(string rol);
-        Task<int> AddUsuario(Usuario usuario);
-        Task<int> AddRol(Rol rol);
-        Task<int> AddPerfil(Perfil perfil);
-        Task<List<AccesoUsuario>> GetAccesoUsuarios();
+        Usuario SignIn(string Email, string Password, string Ip);
+        Usuario GetUsuario(string username, string email);
+        List<Rol> GetRoles(int[] roles);
+        Rol GetRol(string rol);
+        int AddUsuario(Usuario usuario);
+        int AddRol(Rol rol);
+        int AddPerfil(Perfil perfil);
+        List<AccesoUsuario> GetAccesoUsuarios();
     }
 }

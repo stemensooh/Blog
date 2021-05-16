@@ -5,6 +5,7 @@ using BLOGCORE.APPLICATION.Core.Utilities;
 using BLOGCORE.APPLICATION.Core.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,13 @@ namespace BLOGCORE.UI.Website.Controllers
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IConfiguration configuration;
 
-        public AccountController(IUsuarioService usuarioService, IUsuarioRepositorio usuarioRepositorio)
+        public AccountController(IUsuarioService usuarioService, IUsuarioRepositorio usuarioRepositorio, IConfiguration configuration)
         {
             _usuarioService = usuarioService;
             _usuarioRepositorio = usuarioRepositorio;
+            this.configuration = configuration;
         }
 
         public IActionResult Index()
@@ -42,29 +45,36 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignInAsync(UsuarioSignInViewModel model)
+        public  IActionResult SignIn(UsuarioSignInViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                model.Ip = GetIp();
-                model.Password = Crypto.CifrarClave(model.Password);
-                var usr = await _usuarioService.SignInAsync(model);
-                if (usr.TieneError)
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError(string.Empty, usr.MensajeLogin);
-                    return View(model);
+                    model.Ip = GetIp();
+                    model.Password = Crypto.CifrarClave(model.Password);
+                    var usr = _usuarioService.SignIn(model);
+                    if (usr.TieneError)
+                    {
+                        ModelState.AddModelError(string.Empty, usr.MensajeLogin);
+                        return View(model);
+                    }
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, usr.Username),
+                        new Claim(ClaimTypes.Role, usr.Rol),
+                        new Claim("UsuarioId", usr.UsuarioId.ToString()),
+                    };
+
+                     HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", ClaimTypes.Name, ClaimTypes.Role)));
+
+                    return RedirectToAction("Index", "Posts");
+
                 }
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, usr.Username),
-                    new Claim(ClaimTypes.Role, usr.Rol),
-                    new Claim("UsuarioId", usr.UsuarioId.ToString()),
-                };
-
-                await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", ClaimTypes.Name, ClaimTypes.Role)));
-
-                return RedirectToAction("Index", "Posts");
+            }
+            catch (Exception ex)
+            {
 
             }
             return View(model);
@@ -84,19 +94,19 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignUpAsync(UsuarioSignUpViewModel model)
+        public  IActionResult SignUp(UsuarioSignUpViewModel model)
         {
             if (ModelState.IsValid)
             {
                 Usuario usr = null;
-                usr = await _usuarioRepositorio.GetUsuarioAsync(model.Username, null);
+                usr =  _usuarioRepositorio.GetUsuario(model.Username, null);
                 if(usr != null)
                 {
                     ModelState.AddModelError("Username", "Este nombre de usuario ya se encuentra registrado");
                     return View(model);
                 }
 
-                usr = await _usuarioRepositorio.GetUsuarioAsync(null, model.Email);
+                usr =  _usuarioRepositorio.GetUsuario(null, model.Email);
                 if (usr != null)
                 {
                     ModelState.AddModelError("Email", "Este correo electónico ya se encuentra registrado");
@@ -105,13 +115,13 @@ namespace BLOGCORE.UI.Website.Controllers
 
                 string password = model.Password;
                 model.Password = Crypto.CifrarClave(model.Password);
-                var result = await _usuarioService.SignUpAsync(model);
+                var result =  _usuarioService.SignUp(model);
                 if (result is null)
                 {
                     ModelState.AddModelError(string.Empty, "Ha habido un error al crear el usuario");
                 }
 
-                return await SignInAsync(new UsuarioSignInViewModel() { Email = model.Email, Password = password });
+                return SignIn(new UsuarioSignInViewModel() { Email = model.Email, Password = password });
             }
 
             return View(model);
@@ -119,9 +129,9 @@ namespace BLOGCORE.UI.Website.Controllers
         #endregion
 
 
-        public async Task<IActionResult> SignOutAsync()
+        public  IActionResult SignOut()
         {
-            await HttpContext.SignOutAsync();
+             HttpContext.SignOutAsync();
             return RedirectToAction("SignIn");
         }
     }

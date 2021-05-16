@@ -19,7 +19,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
             this.context = context;
         }
 
-        public async Task<Usuario> SignInAsync(string Email, string Password, string Ip)
+        public  Usuario SignIn(string Email, string Password, string Ip)
         {
             AccesoUsuario acceso = new AccesoUsuario();
             acceso.Ip = Ip;
@@ -30,11 +30,11 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
             acceso.TipoAcceso = (byte)APPLICATION.Core.Constants.Constantes.AccesoUsuario.exitoso;
             acceso.DescripcionAcceso = "Acceso exitoso.";
 
-            Usuario usr = await context.Usuarios.Include(x => x.Roles).FirstOrDefaultAsync(x => x.Email == Email && x.Password == Password && x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo);
+            Usuario usr =  context.Usuarios.Include(x => x.Roles).FirstOrDefault(x => x.Email == Email && x.Password == Password && x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo);
             if (usr is null)
             {
                 acceso.TipoAcceso = (byte)APPLICATION.Core.Constants.Constantes.AccesoUsuario.fallido;
-                Usuario existe = await context.Usuarios.Include(x => x.Roles).FirstOrDefaultAsync(x => x.Email == Email && x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo);
+                Usuario existe =  context.Usuarios.Include(x => x.Roles).FirstOrDefault(x => x.Email == Email && x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo);
                 if(existe != null)
                 {
                     acceso.UsuarioId = existe.Id;
@@ -55,48 +55,48 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
                 acceso.DescripcionAcceso += " La Ip ingresada no es valida";
             }
 
-            await context.AccesoUsuarios.AddAsync(acceso);
-            await context.SaveChangesAsync();
+             context.AccesoUsuarios.Add(acceso);
+             context.SaveChanges();
 
             return usr;
         }
 
-        public async Task<List<Rol>> GetRolesAsync(int[] roles)
+        public  List<Rol> GetRoles(int[] roles)
         {
-            return await context.Roles.Where(x => roles.Contains(x.Id)).ToListAsync();
+            return  context.Roles.Where(x => roles.Contains(x.Id)).ToList();
         }
 
-        public async Task<Usuario> GetUsuarioAsync(string username, string email)
+        public  Usuario GetUsuario(string username, string email)
         {
-            return await context.Usuarios.Include(x => x.Roles).ThenInclude(x => x.RolNavigation).Include(x => x.Perfil).FirstOrDefaultAsync(x => (x.Email == email || x.Username == username) && (x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo || x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.PorConfirmar  ));
+            return  context.Usuarios.Include(x => x.Roles).ThenInclude(x => x.RolNavigation).Include(x => x.Perfil).FirstOrDefault(x => (x.Email == email || x.Username == username) && (x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo || x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.PorConfirmar  ));
         }
 
-        public async Task<int> AddUsuario(Usuario usuario)
+        public  int AddUsuario(Usuario usuario)
         {
-            await context.Usuarios.AddAsync(usuario);
-            return await context.SaveChangesAsync();
+             context.Usuarios.Add(usuario);
+            return  context.SaveChanges();
         }
         
-        public async Task<int> AddRol(Rol rol)
+        public  int AddRol(Rol rol)
         {
-            await context.Roles.AddAsync(rol);
-            return await context.SaveChangesAsync();
+             context.Roles.Add(rol);
+            return  context.SaveChanges();
         }
         
-        public async Task<int> AddPerfil(Perfil perfil)
+        public  int AddPerfil(Perfil perfil)
         {
-            await context.Perfiles.AddAsync(perfil);
-            return await context.SaveChangesAsync();
+             context.Perfiles.Add(perfil);
+            return  context.SaveChanges();
         }
 
-        public async Task<Rol> GetRolAsync(string rol)
+        public  Rol GetRol(string rol)
         {
-            return await context.Roles.FirstOrDefaultAsync(x => x.Nombre == rol);
+            return  context.Roles.FirstOrDefault(x => x.Nombre == rol);
         }
 
-        public async Task<List<AccesoUsuario>> GetAccesoUsuarios()
+        public  List<AccesoUsuario> GetAccesoUsuarios()
         {
-            return await context.AccesoUsuarios.ToListAsync();
+            return  context.AccesoUsuarios.ToList();
         }
     }
 }

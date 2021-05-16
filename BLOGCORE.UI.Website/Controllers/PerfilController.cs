@@ -16,7 +16,7 @@ namespace BLOGCORE.UI.Website.Controllers
             this.usuarioService = usuarioService;
         }
 
-        public async Task<IActionResult> Index(string username)
+        public  IActionResult Index(string username)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -26,7 +26,7 @@ namespace BLOGCORE.UI.Website.Controllers
                     username = User.Identity.Name;
                 }
 
-                return View(await usuarioService.VerPerfilAsync(username, EsAdmin));
+                return View( usuarioService.VerPerfil(username, EsAdmin));
             }
             return View();
         }
