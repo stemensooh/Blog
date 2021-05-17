@@ -9,7 +9,7 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces
 {
     public interface IPostService
     {
-        List<PostDto> GetPosts();
+        Task<List<PostDto>> GetPosts();
         List<PostDto> GetPosts(long UsuarioId);
         PostDto GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
         bool AgregarPost(PostViewModel model);

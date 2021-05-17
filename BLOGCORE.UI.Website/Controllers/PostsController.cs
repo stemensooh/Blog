@@ -25,13 +25,13 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             ViewBag.MensajeError = "";
             try
             {
                 TempData["UrlSearch"] = Url.Action("Index", "Posts");
-                var posts = _postService.GetPosts();
+                var posts = await _postService.GetPosts();
                 ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0;
 
                 ViewData["CurrentSort"] = sortOrder;
@@ -103,23 +103,23 @@ namespace BLOGCORE.UI.Website.Controllers
         {
             try
             {
+                bool pantalla = false;
+                long usuarioId = 0;
 
+                if (User.Identity.IsAuthenticated)
+                {
+                    usuarioId = GetUsuarioId();
+                    pantalla = true;
+                }
+                var result = _postService.GetPost(ID, usuarioId, pantalla, GetIp());
+                return View(result);
             }
             catch (Exception ex)
             {
 
                 throw;
             }
-            bool pantalla = false;
-            long usuarioId = 0;
-
-            if (User.Identity.IsAuthenticated)
-            {
-                usuarioId = GetUsuarioId();
-                pantalla = true;
-            }
-            var result = _postService.GetPost(ID, usuarioId, pantalla, GetIp());
-            return View(result);
+            
         }
 
         [HttpPost]

@@ -20,10 +20,10 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             _postRepositorio = postRepositorio;
         }
 
-        public  List<PostDto> GetPosts()
+        public async Task<List<PostDto>> GetPosts()
         {
             List<PostDto> postDtos = new List<PostDto>();
-            var posts =  _postRepositorio.GetPosts();
+            var posts = await _postRepositorio.GetPosts();
             postDtos = posts.Select(c => new PostDto(c)).ToList();
             return postDtos;
         }

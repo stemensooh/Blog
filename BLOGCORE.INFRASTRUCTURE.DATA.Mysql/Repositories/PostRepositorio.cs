@@ -19,9 +19,9 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
             this.context = context;
         }
 
-        public List<Post> GetPosts()
+        public async Task<List<Post>> GetPosts()
         {
-            return context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToList();
+            return await context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
         }
 
         public List<Post> GetPosts(long UsuarioId)
