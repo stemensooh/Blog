@@ -9,8 +9,8 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
     public interface IPostRepositorio
     {
         Task<List<Post>> GetPosts();
-        List<Post> GetPosts(long UsuarioId);
-        Post GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
+        Task<List<Post>> GetPosts(long UsuarioId);
+        Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
         Post GetPost(long PostId, long UsuarioId);
         bool AgregarPost(Post post);
         bool EditarPost(Post post);

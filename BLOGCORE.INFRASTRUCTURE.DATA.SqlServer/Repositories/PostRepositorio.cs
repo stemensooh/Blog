@@ -24,33 +24,33 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
             return await context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
         }
 
-        public  List<Post> GetPosts(long UsuarioId)
+        public async Task<List<Post>> GetPosts(long UsuarioId)
         {
-            return  context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToList();
+            return await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
         }
 
-        public  Post GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
+        public async Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
-            var post =  context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).FirstOrDefault(x => x.Id == PostId && x.Estado == true);
+            var post = await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
             if (post != null)
             {
                 if (usuarioId == 0)
                 {
-                     context.VistasAnonimas.Add(new PostVistasAnonimas() { PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
-                     context.SaveChanges();
+                    await context.VistasAnonimas.AddAsync(new PostVistasAnonimas() { PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
+                    await context.SaveChangesAsync();
                 }
 
                 if (Pantalla)
                 {
                     if (usuarioId != post.UsuarioId)
                     {
-                         context.Vistas.Add(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
-                         context.SaveChanges();
+                        await context.Vistas.AddAsync(new PostVistas() { UsuarioId = usuarioId, PostId = post.Id, FechaVista = DateTime.Now, Ip = Ip });
+                        await context.SaveChangesAsync();
                     }
                 }
 
                 context.Posts.Update(post);
-                 context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
             return post;

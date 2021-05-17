@@ -28,10 +28,10 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return postDtos;
         }
 
-        public  PostDto GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
+        public async Task<PostDto> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
             PostDto postDto = new PostDto();
-            var post =  _postRepositorio.GetPost(PostId, usuarioId, Pantalla, Ip);
+            var post = await _postRepositorio.GetPost(PostId, usuarioId, Pantalla, Ip);
             if (post is null)
             {
                 return null;
@@ -40,10 +40,10 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return postDto;
         }
 
-        public  List<PostDto> GetPosts(long UsuarioId)
+        public async Task<List<PostDto>> GetPosts(long UsuarioId)
         {
             List<PostDto> postDtos = new List<PostDto>();
-            var posts =  _postRepositorio.GetPosts(UsuarioId);
+            var posts = await  _postRepositorio.GetPosts(UsuarioId);
             postDtos = posts.Select(c => new PostDto(c)).ToList();
             return postDtos;
         }

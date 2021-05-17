@@ -71,7 +71,7 @@ namespace BLOGCORE.UI.Website.Controllers
                 }
 
                 int pageSize = 6;
-                var result = (PaginatedList<PostDto>.Create(posts.ToList(), pageNumber ?? 1, pageSize)).Result;
+                var result = await (PaginatedList<PostDto>.Create(posts.ToList(), pageNumber ?? 1, pageSize));
 
                 return View(result);
             }
@@ -83,10 +83,10 @@ namespace BLOGCORE.UI.Website.Controllers
             }
         }
 
-        public  IActionResult Registrar(long ID)
+        public async Task<IActionResult> Registrar(long ID)
         {
             PostViewModel model = new PostViewModel();
-            var post =  _postService.GetPost(ID, GetUsuarioId(), false, "");
+            var post = await _postService.GetPost(ID, GetUsuarioId(), false, "");
             if (post != null)
             {
                 model.ID = post.ID;
@@ -99,7 +99,7 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [AllowAnonymous]
-        public  IActionResult VerPost(long ID)
+        public async Task<IActionResult> VerPost(long ID)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace BLOGCORE.UI.Website.Controllers
                     usuarioId = GetUsuarioId();
                     pantalla = true;
                 }
-                var result = _postService.GetPost(ID, usuarioId, pantalla, GetIp());
+                var result = await _postService.GetPost(ID, usuarioId, pantalla, GetIp());
                 return View(result);
             }
             catch (Exception ex)
@@ -159,10 +159,10 @@ namespace BLOGCORE.UI.Website.Controllers
             return View(model);
         }
 
-        public  IActionResult MisPosts(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> MisPosts(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             TempData["UrlSearch"] = Url.Action("MisPosts", "Posts");
-            var posts =  _postService.GetPosts(GetUsuarioId());
+            var posts = await _postService.GetPosts(GetUsuarioId());
             ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0;
 
             ViewData["CurrentSort"] = sortOrder;
