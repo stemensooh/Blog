@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace BLOGCORE.UI.Website
 {
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
