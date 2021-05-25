@@ -1,10 +1,14 @@
 using BLOGCORE.APPLICATION.Core.DomainServices;
 using BLOGCORE.APPLICATION.Core.Interfaces;
 using BLOGCORE.APPLICATION.Core.Interfaces.Data;
+using BLOGCORE.APPLICATION.Core.Interfaces.Storage;
 using BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Data;
 using BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data;
 using BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Inicializador;
 using BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories;
+using GS.IO.BLOB.IOServices;
+using GS.IO.DISK.IOServices;
+using GS.IO.Interfaces.IOServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -72,12 +76,24 @@ namespace BLOGCORE.UI.Website
 
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPostService, PostService>();
-            
+            //services.AddScoped<IIOService>(provider => new S3IOService(Configuration["AMAZON:bucketName"], Configuration["AMAZON:accesskey"], Configuration["AMAZON:secretekey"]));
 
+            if (Configuration["TipoAlmacenamiento"] == "1")
+            {
+                services.AddScoped<IIOService, DiskIOService>();
+            }
+            else if (Configuration["TipoAlmacenamiento"] == "2")
+            {
+                services.AddScoped<IIOService>(provider => new BlobIOService(Configuration.GetConnectionString("BlobStorage")));
+            }
+            else
+            {
+                services.AddScoped<IIOService, DiskIOService>();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IInicializadorDB dbInicial)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IInicializadorDB dbInicial, IConfiguration configuration)
         {
             if (env.IsDevelopment())
             {
@@ -87,6 +103,7 @@ namespace BLOGCORE.UI.Website
             {
                 app.UseExceptionHandler("/Pages/Page404");
             }
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -104,6 +121,7 @@ namespace BLOGCORE.UI.Website
                     pattern: "{controller=Posts}/{action=Index}/{id?}");
             });
 
+            App_Code.AppCode.InitialVariables(configuration, env);
         }
     }
 }

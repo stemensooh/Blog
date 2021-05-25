@@ -9,10 +9,8 @@ namespace BLOGCORE.APPLICATION.Core.ViewModels
     {
         public long ID { get; set; }
 
-        [Required(ErrorMessage = "El titulo es requerido")]
         public string Titulo { get; set; }
 
-        [Required(ErrorMessage = "El Cuerpo es requerido")]
         public string Cuerpo { get; set; }
 
         public string Imagen { get; set; }

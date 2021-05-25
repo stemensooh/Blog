@@ -24,7 +24,7 @@
                             <span><i class="far fa-user"></i> Por <a asp-controller="Perfil" asp-action="Index" asp-route-username="@Model.Username">@Model.Autor</a> </span>
                             <span><i class="far fa-eye"></i> <a href="#">@Model.Vistas Vistas</a></span>
                         </div>
-                        <img src="@Model.Imagen" class="img-fluid float-start me-4 mt-2" alt="" width="550px" />
+                        <img src="data:image/png;base64, @Model.Imagen" class="img-fluid float-start me-4 mt-2" alt="" width="550px" />
                         <p>@Html.Raw(Model.Cuerpo)</p>
                     </div>
                 </article>

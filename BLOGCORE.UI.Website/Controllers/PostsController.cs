@@ -2,11 +2,17 @@
 using BLOGCORE.APPLICATION.Core.Interfaces;
 using BLOGCORE.APPLICATION.Core.ViewModels;
 using BLOGCORE.UI.Website.Helper;
+using BLOGCORE.UI.Website.Models;
+using GS.IO.Interfaces.IOServices;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,11 +23,17 @@ namespace BLOGCORE.UI.Website.Controllers
     {
         private readonly ILogger<PostsController> _logger;
         private readonly IPostService _postService;
-
-        public PostsController(ILogger<PostsController> logger, IPostService postService)
+        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IConfiguration _configuration;
+        private readonly IIOService _iIOService;
+        private string mensaje;
+        public PostsController(ILogger<PostsController> logger, IPostService postService, IWebHostEnvironment hostEnvironment, IConfiguration configuration, IIOService iIOService)
         {
             _logger = logger;
             _postService = postService;
+            _hostEnvironment = hostEnvironment;
+            _configuration = configuration;
+            _iIOService = iIOService;
         }
 
         [AllowAnonymous]
@@ -30,8 +42,15 @@ namespace BLOGCORE.UI.Website.Controllers
             ViewBag.MensajeError = "";
             try
             {
+                List<PostDto> posts = new List<PostDto>();
                 TempData["UrlSearch"] = Url.Action("Index", "Posts");
-                var posts = await _postService.GetPosts();
+                var resultPosts = await _postService.GetPosts();
+
+                foreach (var item in resultPosts)
+                {
+                    posts.Add(MapPost(item));
+                }
+
                 ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0;
 
                 ViewData["CurrentSort"] = sortOrder;
@@ -42,7 +61,6 @@ namespace BLOGCORE.UI.Website.Controllers
                 if (!string.IsNullOrEmpty(searchString))
                 {
                     posts = posts.Where(s => s.Titulo.ToLower().Contains(searchString.ToLower()) || s.Autor.ToLower().Contains(searchString.ToLower())).ToList();
-
                 }
 
                 if (searchString != null)
@@ -85,16 +103,75 @@ namespace BLOGCORE.UI.Website.Controllers
 
         public async Task<IActionResult> Registrar(long ID)
         {
-            PostViewModel model = new PostViewModel();
+            PostSiteViewModel model = new PostSiteViewModel();
+            MemoryStream ms = null;
             var post = await _postService.GetPost(ID, GetUsuarioId(), false, "");
             if (post != null)
             {
                 model.ID = post.ID;
                 model.Titulo = post.Titulo;
                 model.Cuerpo = post.Cuerpo;
-                model.Imagen = post.Imagen;
+                model.MantenerImage = string.IsNullOrEmpty(post.Imagen) ? false : true;
+
+                model.ImagenRuta = post.Imagen;
+                model.ImagenBase64 = ObtenerImagenBase64(_configuration["TipoAlmacenamiento"], post.Imagen, "");
             }
 
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Registrar(PostSiteViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string RutaImagen = "";
+                using MemoryStream ms = new MemoryStream();
+
+                if (model.Imagen == null)
+                {
+                    RutaImagen = model.ImagenRuta;
+                }
+                else
+                {
+                    model.Imagen.CopyTo(ms);
+                    if (_configuration["TipoAlmacenamiento"] == "1")
+                    {
+                        RutaImagen = Path.Combine(_configuration["DirectorioImagenes"], Guid.NewGuid().ToString() + "_" + model.Imagen.FileName);
+                        if (ms != null)
+                        {
+                            _iIOService.GuardarArchivo(ms, Path.Combine("wwwroot", RutaImagen), ref mensaje);
+                        }
+                    }
+                    else
+                    {
+                        if (ms != null)
+                        {
+                            RutaImagen = Guid.NewGuid().ToString() + "_" + model.Imagen.FileName;
+                            _iIOService.GuardarArchivo(ms, RutaImagen, ref mensaje, "images");
+                        }
+                    }
+                }
+
+                PostViewModel post = new PostViewModel
+                {
+                    ID = model.ID,
+                    Imagen = RutaImagen,
+                    Titulo = model.Titulo,
+                    Cuerpo = model.Cuerpo,
+                    UsuarioId = GetUsuarioId()
+                };
+
+                var result = _postService.AgregarPost(post);
+                if (result)
+                {
+                    return RedirectToAction("MisPosts");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "No se ha podido actualizar el registro correctamente");
+                }
+            }
             return View(model);
         }
 
@@ -112,6 +189,10 @@ namespace BLOGCORE.UI.Website.Controllers
                     pantalla = true;
                 }
                 var result = await _postService.GetPost(ID, usuarioId, pantalla, GetIp());
+                if(result != null)
+                {
+                    result.Imagen = ObtenerImagenBase64(_configuration["TipoAlmacenamiento"], result.Imagen, "");
+                }
                 return View(result);
             }
             catch (Exception ex)
@@ -139,30 +220,18 @@ namespace BLOGCORE.UI.Website.Controllers
             }
         }
 
-        [HttpPost]
-        public  IActionResult Registrar(PostViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                model.UsuarioId = GetUsuarioId();
-                var result =  _postService.AgregarPost(model);
-                if (result)
-                {
-                    return RedirectToAction("MisPosts");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "No se ha podido actualizar el registro correctamente");
-                }
-               
-            }
-            return View(model);
-        }
-
         public async Task<IActionResult> MisPosts(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
             TempData["UrlSearch"] = Url.Action("MisPosts", "Posts");
-            var posts = await _postService.GetPosts(GetUsuarioId());
+
+            List<PostDto> posts = new List<PostDto>();
+            var resultPosts = await _postService.GetPosts(GetUsuarioId());
+
+            foreach (var item in resultPosts)
+            {
+                posts.Add(MapPost(item));
+            }
+
             ViewBag.CantidadPosts = posts != null && posts.Any() ? posts.Count() : 0;
 
             ViewData["CurrentSort"] = sortOrder;
@@ -211,9 +280,100 @@ namespace BLOGCORE.UI.Website.Controllers
         }
 
         [Authorize(Roles = "SuperAdministrador,Administrador")]
-        public  IActionResult VistasAnonimas(long Id)
+        public IActionResult VistasAnonimas(long Id)
         {
             return View( _postService.GetVistasAnonima(Id, GetUsuarioId()));
         }
+
+        [AllowAnonymous]
+        public async Task<PartialViewResult> VerPostsRecientes()
+        {
+            List<PostDto> posts = new List<PostDto>();
+            var resultPosts = await _postService.GetPosts(2);
+            foreach (var item in resultPosts)
+            {
+                posts.Add(MapPost(item));
+            }
+
+            return PartialView("_TopPostsPartial", posts);
+        }
+
+        #region Metodos privados
+
+        private PostDto MapPost(PostDto item)
+        {
+            var post = new PostDto();
+            post.ID = item.ID;
+            post.Titulo = item.Titulo;
+            post.Cuerpo = item.Cuerpo;
+            post.Imagen = ObtenerImagenBase64(_configuration["TipoAlmacenamiento"], item.Imagen, "");
+            post.Fecha = item.Fecha;
+            post.FechaCreacion = item.FechaCreacion;
+            post.Autor = item.Autor;
+            post.Username = item.Username;
+            post.VistasPaginaAnonimo = item.VistasPaginaAnonimo;
+            post.VistasPaginaUsuario = item.VistasPaginaUsuario;
+            post.Vistas = item.Vistas;
+            return post;
+        }
+
+        private string UploadedFile(IFormFile Imagen)
+        {
+            string uniqueFileName = null;
+
+            if (Imagen != null)
+            {
+                if (!System.IO.Directory.Exists(StartupDto.UploadsFolder))
+                {
+                    System.IO.Directory.CreateDirectory(StartupDto.UploadsFolder);
+                }
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + Imagen.FileName;
+                string filePath = Path.Combine(StartupDto.UploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    Imagen.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
+
+        private string ObtenerImagenBase64(string TipoAlmacenamiento, string Imagen, string FileName)
+        {
+            MemoryStream ms = null;
+            if (TipoAlmacenamiento == "1")
+            {
+                ms = _iIOService.ObtenerArchivo(Path.Combine("wwwroot", Imagen), ref mensaje, "images");
+            }
+            else
+            {
+                ms = _iIOService.ObtenerArchivo(Imagen, ref mensaje, "images");
+            }
+
+            return ms == null ? "" : Convert.ToBase64String(ms.ToArray());
+        
+        }
+
+        #endregion
+
+        //{
+        //    string RutaImagen;
+        //    MemoryStream ms = null;
+        //    if (TipoAlmacenamiento == "1")
+        //    {
+        //        RutaImagen = Path.Combine(_configuration["DirectorioImagenes"], Guid.NewGuid().ToString() + "_" + FileName);
+        //        if (ms != null)
+        //        {
+        //            _iIOService.GuardarArchivo(ms, Path.Combine("wwwroot", RutaImagen), ref mensaje);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (ms != null)
+        //        {
+        //            RutaImagen = Guid.NewGuid().ToString() + "_" + FileName;
+        //            _iIOService.GuardarArchivo(ms, RutaImagen, ref mensaje, "images");
+        //        }
+        //    }
+        //}
     }
 }

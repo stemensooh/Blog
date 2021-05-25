@@ -47,6 +47,14 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             postDtos = posts.Select(c => new PostDto(c)).ToList();
             return postDtos;
         }
+        
+        public async Task<List<PostDto>> GetPosts(int Top)
+        {
+            List<PostDto> postDtos = new List<PostDto>();
+            var posts = await  _postRepositorio.GetPosts(Top);
+            postDtos = posts.Select(c => new PostDto(c)).ToList();
+            return postDtos;
+        }
 
         public  bool AgregarPost(PostViewModel model)
         {

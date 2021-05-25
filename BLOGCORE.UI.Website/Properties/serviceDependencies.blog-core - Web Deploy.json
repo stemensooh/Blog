@@ -1,10 +1,10 @@
 {
   "dependencies": {
     "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/blogcore/databases/blogcore",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/blogcore-server/databases/blogcore-database",
       "type": "mssql.azure",
       "connectionId": "SqlConnection",
-      "secretStore": "AzureAppSettings"
+      "secretStore": null
     }
   }
 }

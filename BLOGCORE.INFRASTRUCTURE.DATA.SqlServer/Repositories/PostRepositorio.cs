@@ -24,6 +24,11 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
             return await context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
         }
 
+        public async Task<List<Post>> GetPosts(int Top)
+        {
+            return await context.Posts.OrderByDescending(x => x.Id).Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.Estado == true).Take(Top).ToListAsync();
+        }
+        
         public async Task<List<Post>> GetPosts(long UsuarioId)
         {
             return await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();

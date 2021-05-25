@@ -94,5 +94,21 @@
     <script src="~/assets/lib/dataTables/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            Load();
+        });
+
+        function Load() {
+             $.post("@Url.Action("VerPostsRecientes", "Posts")", function (result) {
+                if (!isEmpty(result)) {
+                    $("#PostsRecientes").empty().html(result);
+                }
+            }).
+            fail(function (error) {
+                MsgAjaxError(error);
+            });
+        }
+    </script>
 </body>
 </html>

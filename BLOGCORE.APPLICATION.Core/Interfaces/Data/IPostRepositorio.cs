@@ -9,6 +9,7 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
     public interface IPostRepositorio
     {
         Task<List<Post>> GetPosts();
+        Task<List<Post>> GetPosts(int Top);
         Task<List<Post>> GetPosts(long UsuarioId);
         Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
         Post GetPost(long PostId, long UsuarioId);
