@@ -1,9 +1,9 @@
 ﻿using BLOGCORE.APPLICATION.Core.DTOs;
 using BLOGCORE.APPLICATION.Core.Interfaces;
+using BLOGCORE.APPLICATION.Core.Interfaces.Storage;
 using BLOGCORE.APPLICATION.Core.ViewModels;
 using BLOGCORE.UI.Website.Helper;
 using BLOGCORE.UI.Website.Models;
-using GS.IO.Interfaces.IOServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -25,15 +25,15 @@ namespace BLOGCORE.UI.Website.Controllers
         private readonly IPostService _postService;
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IConfiguration _configuration;
-        private readonly IIOService _iIOService;
+        private readonly IStorageService _storageService;
         private string mensaje;
-        public PostsController(ILogger<PostsController> logger, IPostService postService, IWebHostEnvironment hostEnvironment, IConfiguration configuration, IIOService iIOService)
+        public PostsController(ILogger<PostsController> logger, IPostService postService, IWebHostEnvironment hostEnvironment, IConfiguration configuration, IStorageService storageService)
         {
             _logger = logger;
             _postService = postService;
             _hostEnvironment = hostEnvironment;
             _configuration = configuration;
-            _iIOService = iIOService;
+            _storageService = storageService;
         }
 
         [AllowAnonymous]
@@ -110,9 +110,9 @@ namespace BLOGCORE.UI.Website.Controllers
             {
                 model.ID = post.ID;
                 model.Titulo = post.Titulo;
+                model.Categoria = post.CategoriaId;
                 model.Cuerpo = post.Cuerpo;
                 model.MantenerImage = string.IsNullOrEmpty(post.Imagen) ? false : true;
-
                 model.ImagenRuta = post.Imagen;
                 model.ImagenBase64 = ObtenerImagenBase64(_configuration["TipoAlmacenamiento"], post.Imagen, "");
             }
@@ -137,18 +137,18 @@ namespace BLOGCORE.UI.Website.Controllers
                     model.Imagen.CopyTo(ms);
                     if (_configuration["TipoAlmacenamiento"] == "1")
                     {
-                        RutaImagen = Path.Combine(_configuration["DirectorioImagenes"], Guid.NewGuid().ToString() + "_" + model.Imagen.FileName);
+                        RutaImagen = Path.Combine(_configuration["DirectorioImagenes"], Guid.NewGuid().ToString() + Path.GetExtension(model.Imagen.FileName));
                         if (ms != null)
                         {
-                            _iIOService.GuardarArchivo(ms, Path.Combine("wwwroot", RutaImagen), ref mensaje);
+                            _storageService.GuardarArchivo(ms, Path.Combine("wwwroot", RutaImagen), ref mensaje);
                         }
                     }
                     else
                     {
                         if (ms != null)
                         {
-                            RutaImagen = Guid.NewGuid().ToString() + "_" + model.Imagen.FileName;
-                            _iIOService.GuardarArchivo(ms, RutaImagen, ref mensaje, "images");
+                            RutaImagen = Guid.NewGuid().ToString() + Path.GetExtension(model.Imagen.FileName);
+                            _storageService.GuardarArchivo(ms, RutaImagen, ref mensaje, "images");
                         }
                     }
                 }
@@ -158,6 +158,7 @@ namespace BLOGCORE.UI.Website.Controllers
                     ID = model.ID,
                     Imagen = RutaImagen,
                     Titulo = model.Titulo,
+                    Categoria = model.Categoria,
                     Cuerpo = model.Cuerpo,
                     UsuarioId = GetUsuarioId()
                 };
@@ -342,11 +343,11 @@ namespace BLOGCORE.UI.Website.Controllers
             MemoryStream ms = null;
             if (TipoAlmacenamiento == "1")
             {
-                ms = _iIOService.ObtenerArchivo(Path.Combine("wwwroot", Imagen), ref mensaje, "images");
+                ms = _storageService.ObtenerArchivo(Path.Combine("wwwroot", Imagen), ref mensaje, "images");
             }
             else
             {
-                ms = _iIOService.ObtenerArchivo(Imagen, ref mensaje, "images");
+                ms = _storageService.ObtenerArchivo(Imagen, ref mensaje, "images");
             }
 
             return ms == null ? "" : Convert.ToBase64String(ms.ToArray());

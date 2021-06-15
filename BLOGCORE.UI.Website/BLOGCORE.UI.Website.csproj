@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.14">
       <PrivateAssets>all</PrivateAssets>
@@ -16,28 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BLOGCORE.INFRASTRUCTURE.DATA.Mysql\BLOGCORE.INFRASTRUCTURE.DATA.Mysql.csproj" />
-    <ProjectReference Include="..\BLOGCORE.INFRASTRUCTURE.DATA.Postgre\BLOGCORE.INFRASTRUCTURE.DATA.Postgre.csproj" />
     <ProjectReference Include="..\BLOGCORE.INFRASTRUCTURE.DATA.SqlServer\BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.csproj" />
+    <ProjectReference Include="..\BLOGCORE.INFRASTRUCTURE.STORAGE\BLOGCORE.INFRASTRUCTURE.STORAGE.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\assets\lib\summernote\css\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="GS.IO">
-      <HintPath>..\Libraries\GS.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="GS.IO.BLOB">
-      <HintPath>..\Libraries\GS.IO.BLOB.dll</HintPath>
-    </Reference>
-    <Reference Include="GS.IO.DISK">
-      <HintPath>..\Libraries\GS.IO.DISK.dll</HintPath>
-    </Reference>
-    <Reference Include="GS.TOOLS">
-      <HintPath>..\Libraries\GS.TOOLS.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

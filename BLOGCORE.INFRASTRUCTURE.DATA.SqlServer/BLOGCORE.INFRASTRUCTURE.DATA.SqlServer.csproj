@@ -21,4 +21,8 @@
     <ProjectReference Include="..\BLOGCORE.APPLICATION.Core\BLOGCORE.APPLICATION.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

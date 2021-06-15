@@ -11,6 +11,8 @@ namespace BLOGCORE.APPLICATION.Core.ViewModels
 
         public string Titulo { get; set; }
 
+        public int Categoria { get; set; }
+
         public string Cuerpo { get; set; }
 
         public string Imagen { get; set; }

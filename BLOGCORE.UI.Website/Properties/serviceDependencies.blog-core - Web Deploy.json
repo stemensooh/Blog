@@ -5,6 +5,12 @@
       "type": "mssql.azure",
       "connectionId": "SqlConnection",
       "secretStore": null
+    },
+    "storage1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/blogcorestorage",
+      "type": "storage.azure",
+      "connectionId": "BlobStorage",
+      "secretStore": null
     }
   }
 }

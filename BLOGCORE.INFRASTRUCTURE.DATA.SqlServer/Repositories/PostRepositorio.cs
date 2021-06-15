@@ -21,22 +21,22 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
 
         public async Task<List<Post>> GetPosts()
         {
-            return await context.Posts.Include(x => x.UsuarioNavigation).Where(x => x.Estado == true).ToListAsync();
+            return await context.Posts.Include(x => x.Usuario).Include(x => x.Categoria).Where(x => x.Estado == true).ToListAsync();
         }
 
         public async Task<List<Post>> GetPosts(int Top)
         {
-            return await context.Posts.OrderByDescending(x => x.Id).Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.Estado == true).Take(Top).ToListAsync();
+            return await context.Posts.OrderByDescending(x => x.Id).Include(x => x.Usuario).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.Estado == true).Take(Top).ToListAsync();
         }
         
         public async Task<List<Post>> GetPosts(long UsuarioId)
         {
-            return await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
+            return await context.Posts.Include(x => x.Usuario).Include(x => x.Categoria).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
         }
 
         public async Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
-            var post = await context.Posts.Include(x => x.UsuarioNavigation).Include(x => x.Vistas).Include(x => x.VistasAnonimas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
+            var post = await context.Posts.Include(x => x.Usuario).Include(x => x.Vistas).Include(x => x.VistasAnonimas).FirstOrDefaultAsync(x => x.Id == PostId && x.Estado == true);
             if (post != null)
             {
                 if (usuarioId == 0)
@@ -63,7 +63,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
 
         public  Post GetPost(long PostId, long UsuarioId)
         {
-            return  context.Posts.Include(x => x.UsuarioNavigation).FirstOrDefault(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
+            return  context.Posts.Include(x => x.Usuario).FirstOrDefault(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
         }
 
         public  bool EditarPost(Post post)

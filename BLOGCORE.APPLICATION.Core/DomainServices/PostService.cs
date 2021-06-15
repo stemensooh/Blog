@@ -67,6 +67,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                     return false;
                 }
                 post.Titulo = model.Titulo;
+                post.CategoriaId = model.Categoria;
                 post.Cuerpo = model.Cuerpo;
                 post.Imagen = model.Imagen;
                 return  _postRepositorio.EditarPost(post);
@@ -75,6 +76,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             {
                 post.Id = model.ID;
                 post.Titulo = model.Titulo;
+                post.CategoriaId = model.Categoria;
                 post.Cuerpo = model.Cuerpo;
                 post.Imagen = model.Imagen;
                 post.UsuarioId = model.UsuarioId;

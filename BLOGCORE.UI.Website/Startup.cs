@@ -2,13 +2,12 @@ using BLOGCORE.APPLICATION.Core.DomainServices;
 using BLOGCORE.APPLICATION.Core.Interfaces;
 using BLOGCORE.APPLICATION.Core.Interfaces.Data;
 using BLOGCORE.APPLICATION.Core.Interfaces.Storage;
-using BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Data;
+//using BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Data;
 using BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data;
 using BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Inicializador;
 using BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories;
-using GS.IO.BLOB.IOServices;
-using GS.IO.DISK.IOServices;
-using GS.IO.Interfaces.IOServices;
+using BLOGCORE.INFRASTRUCTURE.STORAGE;
+using BLOGCORE.INFRASTRUCTURE.STORAGE.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -65,14 +64,14 @@ namespace BLOGCORE.UI.Website
                 services.AddScoped<IPostRepositorio, PostRepositorio>();
                 services.AddScoped<IInicializadorDB, InicializadorDB>();
             }
-            else if (db == "mysql")
-            {
-                services.AddDbContext<MysqlDbContext>(
-                   options => options.UseMySQL(Configuration.GetConnectionString("MysqlConnection")));
-                services.AddScoped<IUsuarioRepositorio, INFRASTRUCTURE.DATA.Mysql.Repositories.UsuarioRepositorio>();
-                services.AddScoped<IPostRepositorio, INFRASTRUCTURE.DATA.Mysql.Repositories.PostRepositorio>();
-                services.AddScoped<IInicializadorDB, INFRASTRUCTURE.DATA.Mysql.Inicializador.InicializadorDB>();
-            }
+            //else if (db == "mysql")
+            //{
+            //    services.AddDbContext<MysqlDbContext>(
+            //       options => options.UseMySQL(Configuration.GetConnectionString("MysqlConnection")));
+            //    services.AddScoped<IUsuarioRepositorio, INFRASTRUCTURE.DATA.Mysql.Repositories.UsuarioRepositorio>();
+            //    services.AddScoped<IPostRepositorio, INFRASTRUCTURE.DATA.Mysql.Repositories.PostRepositorio>();
+            //    services.AddScoped<IInicializadorDB, INFRASTRUCTURE.DATA.Mysql.Inicializador.InicializadorDB>();
+            //}
 
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPostService, PostService>();
@@ -80,15 +79,16 @@ namespace BLOGCORE.UI.Website
 
             if (Configuration["TipoAlmacenamiento"] == "1")
             {
-                services.AddScoped<IIOService, DiskIOService>();
+                services.AddScoped<IStorageService, DiskStorageService>();
             }
             else if (Configuration["TipoAlmacenamiento"] == "2")
             {
-                services.AddScoped<IIOService>(provider => new BlobIOService(Configuration.GetConnectionString("BlobStorage")));
+                //services.AddScoped<IIOService>(provider => new BlobIOService(Configuration.GetConnectionString("BlobStorage")));
+                services.AddScoped<IStorageService>(provider => new BlobStorageService(Configuration.GetConnectionString("BlobStorage")));
             }
             else
             {
-                services.AddScoped<IIOService, DiskIOService>();
+                services.AddScoped<IStorageService, DiskStorageService>();
             }
         }
 

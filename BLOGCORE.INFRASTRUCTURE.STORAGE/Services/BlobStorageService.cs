@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs.Models;
 using BLOGCORE.APPLICATION.Core.DTOs;
 using BLOGCORE.APPLICATION.Core.Interfaces.Storage;
+using BLOGCORE.INFRASTRUCTURE.STORAGE.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,35 +13,107 @@ namespace BLOGCORE.INFRASTRUCTURE.STORAGE
 {
     public class BlobStorageService : IStorageService
     {
-        private string _connectionString;
-        private string _accountKey;
-        private string _accountName;
+        private readonly BlobIOUtilities blobIOUtilities;
 
-        public BlobStorageService(string connectionString, string accountKey, string accountName)
+        public BlobStorageService(string connectionString)
         {
-            _connectionString = connectionString;
-            _accountKey = accountKey;
-            _accountName = accountName;
+            blobIOUtilities = new BlobIOUtilities(connectionString);
         }
 
-        public async Task<TaskResponseDto> GuardarImagen(MemoryStream ms, string Name, string containerName = null)
+        public bool EliminarArchivo(string RutaArchivo, ref string mensaje, string containerName = null)
         {
-            TaskResponseDto taskResponseDto = new TaskResponseDto();
             try
             {
-                BlobContainerClient containerClient = new BlobContainerClient(_connectionString, containerName);
-                BlobClient blobClient = containerClient.GetBlobClient(Name);
-                BlobContentInfo info = await blobClient.UploadAsync(ms, true);
-                taskResponseDto.Data = info;
+                var (IsSucceed, Message) = blobIOUtilities.DeleteFileAsync(RutaArchivo, containerName).Result;
+
+                if (!IsSucceed)
+                    mensaje = Message;
+                else
+                    return IsSucceed;
             }
             catch (Exception ex)
             {
-                taskResponseDto.TieneError = true;
+                mensaje = "EliminarArchivo (Blob) => " + ex.Message;
             }
 
-            return taskResponseDto;
+            return false;
         }
 
+        public bool GuardarArchivo(MemoryStream ms, string RutaArchivo, ref string mensaje, string containerName = null)
+        {
+            try
+            {
+                var (IsSucceed, Message) = blobIOUtilities.UpLoadFileAsync(RutaArchivo, ms, containerName).Result;
 
+                if (!IsSucceed)
+                    mensaje = Message;
+                else
+                    return IsSucceed;
+            }
+            catch (Exception ex)
+            {
+                mensaje = "GuardarArchivo (Blob) => " + ex.Message;
+            }
+
+            return false;
+        }
+
+        public MemoryStream ObtenerArchivo(string RutaArchivo, ref string mensaje, string containerName = null)
+        {
+            try
+            {
+                var (Stream, Message) = blobIOUtilities.DownLoadFileAsync(RutaArchivo, containerName).Result;
+                {
+                    if (Stream == null)
+                        mensaje = Message;
+                    else
+                    {
+                        var ms = new MemoryStream();
+                        Stream.CopyTo(ms);
+                        return ms;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = "ObtenerArchivo (Blob) => " + ex.Message;
+            }
+
+            return null;
+        }
+
+        public bool ValidarRutaArchivo(string RutaArchivo, ref string mensaje, string containerName = null)
+        {
+            try
+            {
+                var (IsSucceed, Message) = blobIOUtilities.FileExistsAsync(RutaArchivo, containerName).Result;
+
+                if (!IsSucceed)
+                    mensaje = Message;
+                else
+                    return IsSucceed;
+            }
+            catch (Exception ex)
+            {
+                mensaje = "ValidarRutaArchivo (Blob) => " + ex.Message;
+            }
+
+            return false;
+        }
+
+        public bool GenerarDirectorio(string RutaDirectorio, ref string mensaje, string containerName = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool GenerarRecovery<T>(ref T Obj, bool DBResult, string DirectorioRecovery, string NombreArchivo, ref string XmlRecovery, ref string mensaje, string containerName = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<T> ObtenerRecovery<T>(string DirectorioRecovery, string PrefijoArchivo, ref string mensaje, string containerName = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

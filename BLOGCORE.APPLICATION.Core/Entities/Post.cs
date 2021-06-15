@@ -44,7 +44,9 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         //public long VistasPaginaUsuario { get; set; }
         //public long VistasPaginaAnonimo { get; set; }
 
-        public virtual Usuario UsuarioNavigation { get; set; }
+        public virtual Usuario Usuario { get; set; }
+        public virtual Categoria Categoria { get; set; }
+        public virtual int CategoriaId { get; set; }
 
         public virtual ICollection<PostVistas> Vistas { get; set; }
         public virtual ICollection<PostVistasAnonimas> VistasAnonimas { get; set; }
