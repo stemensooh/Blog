@@ -1,0 +1,79 @@
+
+<div class="container-fluid" class="mt-4 mr-5 ml-5">
+    <div class="row" *ngIf="post.length > 0">
+        <div class="col-xl-6 box-col-12 xl-100">
+            <!-- <app-post-card-primary></app-post-card-primary> -->
+            <div class="card" (click)="VerPost(post[0].id)" style="cursor: pointer;">
+
+                <div class="blog-box blog-shadow">
+
+                    <img class="img-fluid" src="{{'data:image/jpg;base64,' + post[0].imagen}}" alt="" >
+                    <!-- <img class="img-fluid" src="assets/images/sin-imagen.jpg" alt="" *ngIf="!post[0].imagen"> -->
+
+                    <div class="blog-details">
+                        <p class="digits">{{post[0].fecha | date:'dd MMMM yyyy' }}</p>
+                        <h4>{{post[0].titulo}}</h4>
+                        <ul class="blog-social">
+                            <li><i class="icofont icofont-user"></i>{{post[0].autor}}</li>
+                            <li class="digits"><i class="icofont icofont-thumbs-up"></i>{{ post[0].vistas }} Hits</li>
+                            <li class="digits"><i class="icofont icofont-ui-chat"></i>{{post[0].vistas}} Comments</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 box-col-12 xl-100">
+            <div class="card" (click)="VerPost(post[1].id)" style="cursor: pointer;">
+                <div class="blog-box blog-list row">
+                    <div class="col-sm-5">
+                        <img class="img-fluid sm-100-w" src="{{'data:image/jpg;base64,' + post[1].imagen}}" alt="" >
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="blog-details">
+                            <div class="blog-date digits">
+                                <span>{{ post[1].fecha | date:'dd' }}</span>
+                                {{ post[1].fecha | date:'MMMM yyyy'  }}
+                            </div>
+                            <h6>{{post[1].titulo}}</h6>
+                            <div class="blog-bottom-content">
+                                <ul class="blog-social">
+                                    <li>by: {{post[1].autor}}</li>
+                                    <li class="digits">{{post[1].vistas}} Hits</li>
+                                </ul>
+                                <hr>
+                                <p class="mt-0">{{post[1].cuerpo | slice: 0:120 }}...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" (click)="VerPost(post[2].id)" style="cursor: pointer;">
+                <div class="blog-box blog-list row">
+                    <div class="col-sm-5">
+                        <img class="img-fluid sm-100-w" src="{{'data:image/jpg;base64,' + post[2].imagen}}" alt="" >
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="blog-details">
+                            <div class="blog-date digits">
+                                <span>{{ post[2].fecha | date:'dd' }}</span>
+                                {{ post[2].fecha | date:'MMMM yyyy'  }}
+                            </div>
+                            <h6>{{post[2].titulo}}</h6>
+                            <div class="blog-bottom-content">
+                                <ul class="blog-social">
+                                    <li>by: {{post[2].autor}}</li>
+                                    <li class="digits">{{post[2].vistas}} Hits</li>
+                                </ul>
+                                <hr>
+                                <p class="mt-0">{{post[2].cuerpo | slice: 0:120 }}...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3 box-col-6 xl-50" *ngFor="let post of posts">
+            <app-post-card [post]="post"></app-post-card>
+        </div>
+    </div>
+</div>

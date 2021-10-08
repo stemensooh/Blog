@@ -13,5 +13,10 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         public string Email { get; set; }
         public string FechaVista { get; set; }
         public string Ip { get; set; }
+        public string Token { get; set; }
+        public string RefreshToken { get; set; }
+        public string Errors { get; set; }
+        public bool Autenticado { get; set; }
+        public DateTime ExpiresIn { get; set; }
     }
 }

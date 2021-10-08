@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLOGCORE.APPLICATION.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,5 +13,6 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         public string Email { get; set; }
         public bool TieneError { get; set; }
         public string MensajeLogin { get; set; }
+        public Usuario Usuario { get; set; }
     }
 }

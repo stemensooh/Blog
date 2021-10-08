@@ -49,6 +49,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             respuestaLogin.UsuarioId = response.Id;
             respuestaLogin.Username = response.Username;
             respuestaLogin.Email = response.Email;
+            respuestaLogin.Usuario = response;
             return respuestaLogin;
         }
 

@@ -1,0 +1,12 @@
+
+
+<div class="container-fluid" class="mt-4 mr-5 ml-5">
+    <div class="container mb-5">
+        <button class="btn btn-success">Agregar Post</button>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xl-3 box-col-6 xl-50" *ngFor="let post of posts">
+            <app-post-card [post]="post"></app-post-card>
+        </div>
+    </div>
+</div>

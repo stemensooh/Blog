@@ -30,7 +30,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
             acceso.TipoAcceso = (byte)APPLICATION.Core.Constants.Constantes.AccesoUsuario.exitoso;
             acceso.DescripcionAcceso = "Acceso exitoso.";
 
-            Usuario usr = context.Usuarios.Include(x => x.Roles).FirstOrDefault(x => x.Email == Email && x.Password == Password && x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo);
+            Usuario usr = context.Usuarios.Include(x => x.Perfil).Include(x => x.Roles).FirstOrDefault(x => x.Email == Email && x.Password == Password && x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo);
             if (usr is null)
             {
                 acceso.TipoAcceso = (byte)APPLICATION.Core.Constants.Constantes.AccesoUsuario.fallido;
@@ -59,6 +59,15 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
             context.SaveChanges();
 
             return usr;
+        }
+
+        public async Task<Usuario> CurrentUser(string username)
+        {
+            return await context.Usuarios
+                .Include(x => x.Perfil)
+                .Include(x => x.Roles)
+                .ThenInclude(x => x.RolNavigation)
+                .FirstOrDefaultAsync(x => x.Username == username && x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo);
         }
 
         public List<Rol> GetRoles(int[] roles)
