@@ -7,11 +7,11 @@ namespace BLOGCORE.APPLICATION.Core.ViewModels
 {
     public class PostViewModel
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         public string Titulo { get; set; }
 
-        public int Categoria { get; set; }
+        public int[] Categoria { get; set; }
 
         public string Cuerpo { get; set; }
 

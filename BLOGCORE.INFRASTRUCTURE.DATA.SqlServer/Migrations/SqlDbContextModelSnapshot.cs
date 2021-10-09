@@ -15,7 +15,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.14")
+                .HasAnnotation("ProductVersion", "3.1.17")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -75,6 +75,28 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.CategoriasPost", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("PostId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("CategoriasPosts");
+                });
+
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Perfil", b =>
                 {
                     b.Property<long>("Id")
@@ -116,9 +138,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Cuerpo")
                         .HasColumnType("nvarchar(max)")
                         .HasMaxLength(50000);
@@ -146,12 +165,16 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
+                    b.Property<long>("TotalVistas")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TotalVistasAnonimas")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("UsuarioId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoriaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -293,6 +316,21 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.ToTable("UsuariosRol");
                 });
 
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.CategoriasPost", b =>
+                {
+                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Categoria", "CategoriaNavigation")
+                        .WithMany("Posts")
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Post", "PostNavigation")
+                        .WithMany("Categorias")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Perfil", b =>
                 {
                     b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Usuario", "Usuario")
@@ -304,12 +342,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
 
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Post", b =>
                 {
-                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Categoria", "Categoria")
-                        .WithMany("Posts")
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")

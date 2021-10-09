@@ -13,8 +13,8 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
         Task<List<Post>> GetPosts(long UsuarioId);
         Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
         Post GetPost(long PostId, long UsuarioId);
-        bool AgregarPost(Post post);
-        bool EditarPost(Post post);
+        Post AgregarPost(Post post);
+        Post EditarPost(Post post);
         int EliminarPost(long PostId, long UsuarioId);
         List<PostVistas> GetVistas(long PostId);
         List<PostVistasAnonimas> GetVistasAnonima(long PostId);

@@ -115,7 +115,6 @@ namespace BLOGCORE.UI.Website.Angular.Controllers
                 }
                 string RutaImagen = "";
                 
-
                 if (model.Imagen == null)
                 {
                     RutaImagen = model.ImagenRuta;
@@ -142,7 +141,7 @@ namespace BLOGCORE.UI.Website.Angular.Controllers
 
                 PostViewModel post = new PostViewModel
                 {
-                    ID = model.ID,
+                    Id = model.Id,
                     Imagen = RutaImagen,
                     Titulo = model.Titulo,
                     Categoria = model.Categoria,
@@ -289,18 +288,22 @@ namespace BLOGCORE.UI.Website.Angular.Controllers
 
         private PostDto MapPost(PostDto item)
         {
-            var post = new PostDto();
-            post.ID = item.ID;
-            post.Titulo = item.Titulo;
-            post.Cuerpo = item.Cuerpo;
-            post.Imagen = ObtenerImagenBase64(_configuration["TipoAlmacenamiento"], item.Imagen, "");
-            post.Fecha = item.Fecha;
-            post.FechaCreacion = item.FechaCreacion;
-            post.Autor = item.Autor;
-            post.Username = item.Username;
-            post.VistasPaginaAnonimo = item.VistasPaginaAnonimo;
-            post.VistasPaginaUsuario = item.VistasPaginaUsuario;
-            post.Vistas = item.Vistas;
+            var post = new PostDto
+            {
+                ID = item.ID,
+                Titulo = item.Titulo,
+                Cuerpo = item.Cuerpo,
+                Imagen = ObtenerImagenBase64(_configuration["TipoAlmacenamiento"], item.Imagen, ""),
+                Fecha = item.Fecha,
+                FechaCreacion = item.FechaCreacion,
+                Autor = item.Autor,
+                Username = item.Username,
+                VistasPaginaAnonimo = item.VistasPaginaAnonimo,
+                VistasPaginaUsuario = item.VistasPaginaUsuario,
+                Vistas = item.Vistas,
+                CategoriaId = item.CategoriaId,
+                CategoriaName = item.CategoriaName
+            };
             return post;
         }
 

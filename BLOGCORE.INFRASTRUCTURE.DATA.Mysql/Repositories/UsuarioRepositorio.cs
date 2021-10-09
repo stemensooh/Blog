@@ -98,5 +98,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
         {
             return  context.AccesoUsuarios.ToList();
         }
+
+        public Task<Usuario> CurrentUser(string username)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

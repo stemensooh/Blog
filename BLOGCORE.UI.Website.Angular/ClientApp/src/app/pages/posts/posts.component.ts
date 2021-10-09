@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PostService } from '../../core/services/post.service';
 import { Post } from '../../core/models/post/post.model';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-posts',
@@ -12,7 +14,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   private postsSubscription!: Subscription;
   public posts: Post[] = [];
 
-  constructor(private _postService: PostService) { }
+  constructor(private _postService: PostService, private _route: Router) { }
   ngOnDestroy(): void {
     this.postsSubscription.unsubscribe();
   }
@@ -25,6 +27,10 @@ export class PostsComponent implements OnInit, OnDestroy {
         this.posts = posts;
       });
 
+  }
+
+  nuevoPost(){
+    this._route.navigate(['/posts/add']);
   }
 
 }

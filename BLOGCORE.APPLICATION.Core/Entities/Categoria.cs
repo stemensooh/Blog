@@ -9,7 +9,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
     {
         public Categoria()
         {
-            Posts = new HashSet<Post>();
+            Posts = new HashSet<CategoriasPost>();
         }
 
         [Key]
@@ -19,7 +19,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         public string Descripcion { get; set; }
         public DateTime FechaCreacion { get; set; }
 
-        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<CategoriasPost> Posts { get; set; }
 
     }
 }

@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   VerPost(id: number){
-    console.log(id);
+    // console.log(id);
     this._router.navigate(['/posts', id]);
     
   }

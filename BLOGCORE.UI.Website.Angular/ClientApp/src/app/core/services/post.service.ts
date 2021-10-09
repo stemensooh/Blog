@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post/post.model';
 import { Subject } from 'rxjs';
+import { PostFormModel } from '../models/post/post-form.model';
 
 const URL_POST = `${environment.urlApi}/posts`;
 
@@ -19,6 +20,7 @@ export class PostService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
     }),
   };
 
@@ -43,6 +45,17 @@ export class PostService {
 
   allMyPosts() {
     return this.postsSubject.asObservable();
+  }
+
+  search(
+    sortOrder: string,
+    currentFilter: string,
+    searchString: string,
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ) {
+    let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this._http.get<Post[]>(urlFinal);
   }
 
   obtenerPosts(
@@ -76,9 +89,13 @@ export class PostService {
     return this.postsMasVistoSubject.asObservable();
   }
 
-  verPost(id: number){
+  verPost(id: number) {
     let urlFinal = `${URL_POST}/VerPost/${id}`;
     return this._http.get<Post>(urlFinal);
   }
 
+  addPost(form: PostFormModel) {
+    let urlFinal = `${URL_POST}/Registrar`;
+    return this._http.post<PostFormModel>(urlFinal, form, this.httpOptions);
+  }
 }

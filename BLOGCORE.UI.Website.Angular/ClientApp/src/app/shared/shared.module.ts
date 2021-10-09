@@ -8,6 +8,7 @@ import { TapToTopComponent } from './tap-to-top/tap-to-top.component';
 import { FeatherIconsComponent } from '../components/feather-icons/feather-icons.component';
 import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -23,6 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CommonModule,
     NgbModule,
+    FormsModule,
     RouterModule
   ],
   exports: [

@@ -18,23 +18,29 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         {
             ID = post.Id;
             Titulo = post.Titulo;
-            Categoria = post.Categoria?.Descripcion ?? "";
-            CategoriaId = post.CategoriaId;
+
+            if (post.Categorias.Count() > 0)
+            {
+                CategoriaId = post.Categorias.Select(x => x.CategoriaId).ToArray();
+                CategoriaName = post.Categorias.Select(x => x.CategoriaNavigation.Descripcion).ToArray();
+            }
+            
             Cuerpo = post.Cuerpo;
             Imagen = post.Imagen;
             Fecha = post.FechaCreacion;
             FechaCreacion = post.FechaCreacion.ToString("dd/MM/yyyy");
             Autor = post.Usuario?.Username ?? "";
             Username = post.Usuario?.Username ?? "";
-            VistasPaginaAnonimo = post.VistasAnonimas != null && post.VistasAnonimas.Any() ? post.VistasAnonimas.Count() : 0;
-            VistasPaginaUsuario = post.Vistas != null && post.Vistas.Any() ? post.Vistas.Count() : 0;
-            Vistas = post.Vistas != null && post.Vistas.Any() ? post.Vistas.GroupBy(x => x.UsuarioId).Count() : 0;
+            VistasPaginaAnonimo = post.VistasAnonimas != null && post.VistasAnonimas.Any() ? post.VistasAnonimas.Count() : post.TotalVistasAnonimas;
+            VistasPaginaUsuario = post.Vistas != null && post.Vistas.Any() ? post.Vistas.Count() : post.TotalVistas;
+            Vistas = ( post.Vistas != null && post.Vistas.Any() )? post.Vistas.GroupBy(x => x.UsuarioId).Count() : post.TotalVistas;
         }
 
         public long ID { get; set; }
         public string Titulo { get; set; }
-        public string Categoria { get; set; }
-        public int CategoriaId { get; set; }
+        //public string Categoria { get; set; }
+        public int[] CategoriaId { get; set; }
+        public string[] CategoriaName { get; set; }
         public string Cuerpo { get; set; }
         public string Imagen { get; set; }
         public DateTime Fecha { get; set; }

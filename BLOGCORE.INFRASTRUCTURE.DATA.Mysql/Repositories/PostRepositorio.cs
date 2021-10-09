@@ -21,7 +21,9 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
 
         public async Task<List<Post>> GetPosts()
         {
-            return await context.Posts.Include(x => x.Usuario).Include(x => x.Categoria).Where(x => x.Estado == true).ToListAsync();
+            return await context.Posts.Include(x => x.Usuario)
+                .Include(x => x.Categorias).ThenInclude(x => x.CategoriaNavigation)
+                .Where(x => x.Estado == true).ToListAsync();
         }
 
         public async Task<List<Post>> GetPosts(int Top)
@@ -31,7 +33,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
 
         public async Task<List<Post>> GetPosts(long UsuarioId)
         {
-            return await context.Posts.Include(x => x.Usuario).Include(x => x.Categoria).Include(x => x.Vistas).Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
+            return await context.Posts.Include(x => x.Usuario)
+                .Include(x => x.Categorias).ThenInclude(x => x.CategoriaNavigation)
+                .Include(x => x.Vistas)
+                .Include(x => x.VistasAnonimas).Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
         }
 
         public async Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
@@ -66,19 +71,19 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
             return context.Posts.Include(x => x.Usuario).FirstOrDefault(x => x.Id == PostId && x.UsuarioId == UsuarioId && x.Estado == true);
         }
 
-        public bool EditarPost(Post post)
+        public Post EditarPost(Post post)
         {
             post.FechaModificacion = DateTime.Now;
             context.Posts.Update(post);
-            return context.SaveChanges() > 0 ? true : false;
+            return context.SaveChanges() > 0 ? post : null;
         }
 
-        public bool AgregarPost(Post post)
+        public Post AgregarPost(Post post)
         {
             post.FechaCreacion = DateTime.Now;
             post.Estado = true;
             context.Posts.Add(post);
-            return context.SaveChanges() > 0 ? true : false;
+            return context.SaveChanges() > 0 ? post : null;
         }
 
         public int EliminarPost(long PostId, long UsuarioId)

@@ -110,7 +110,7 @@ namespace BLOGCORE.UI.Website.Controllers
             {
                 model.ID = post.ID;
                 model.Titulo = post.Titulo;
-                model.Categoria = post.CategoriaId;
+                //model.Categoria = post.CategoriaId;
                 model.Cuerpo = post.Cuerpo;
                 model.MantenerImage = string.IsNullOrEmpty(post.Imagen) ? false : true;
                 model.ImagenRuta = post.Imagen;
@@ -155,10 +155,10 @@ namespace BLOGCORE.UI.Website.Controllers
 
                 PostViewModel post = new PostViewModel
                 {
-                    ID = model.ID,
+                    Id = model.ID,
                     Imagen = RutaImagen,
                     Titulo = model.Titulo,
-                    Categoria = model.Categoria,
+                    //Categoria = model.Categoria,
                     Cuerpo = model.Cuerpo,
                     UsuarioId = GetUsuarioId()
                 };

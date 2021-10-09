@@ -4,6 +4,7 @@ import { HomeComponent } from '../../pages/home/home.component';
 import { PostsComponent } from '../../pages/posts/posts.component';
 import { PostsDetailComponent } from '../../pages/posts-detail/posts-detail.component';
 import { AboutComponent } from '../../pages/about/about.component';
+import { PostsFormComponent } from '../../pages/posts-form/posts-form.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -26,15 +27,15 @@ export const AdminLayoutRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: "posts/add",
+    component: PostsFormComponent,
+  },
+  {
+    path: "posts/edit/:id",
+    component: PostsFormComponent,
+  },
+  {
     path: "posts/:id",
     component: PostsDetailComponent,
-  },
-  {
-    path: "maps",
-    //component: MapsComponent,
-  },
-  {
-    path: "ventas",
-    //loadChildren: () => import("src/app/pages/ventas/ventas.module").then((m) => m.VentasModule),
   },
 ];

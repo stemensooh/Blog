@@ -1,8 +1,8 @@
 export class Post {
   id!: number;
   titulo!: string;
-  categoria!: string;
-  categoriaId!: number;
+  categoriaId!: number[];
+  categoriaName!: string[];
   cuerpo!: string;
   imagen!: string;
   fecha!: Date;

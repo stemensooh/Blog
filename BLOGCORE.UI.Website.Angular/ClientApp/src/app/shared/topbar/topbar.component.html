@@ -19,18 +19,20 @@
         </li>
       </ul>
 
-      <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+      <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" #f="ngForm"
+        (ngSubmit)="search(f)">
         <div class="form-group mb-0" [ngClass]="{ 'focused': focus === true }">
           <div class="input-group input-group-alternative">
             <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-search"></i></span>
+              <span class="input-group-text">
+                <i class="icofont icofont-search"></i>
+              </span>
             </div>
-            <input class="form-control" placeholder="Buscar" type="text" (focus)="focus = true"
-            (blur)="focus = false">
+            <input class="form-control" placeholder="Buscar" type="text" (focus)="focus = true" (blur)="focus = false" ngModel name="searchText" id="searchText">
           </div>
         </div>
       </form>
-      
+
     </div>
   </div>
 </nav>

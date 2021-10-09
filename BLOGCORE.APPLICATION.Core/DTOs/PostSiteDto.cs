@@ -7,13 +7,13 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
 {
     public class PostSiteDto
     {
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "El titulo es requerido")]
         public string Titulo { get; set; }
 
         [Required(ErrorMessage = "La categoria es requerida")]
-        public int Categoria { get; set; }
+        public int[] Categoria { get; set; }
 
         [Required(ErrorMessage = "El Cuerpo es requerido")]
         public string Cuerpo { get; set; }

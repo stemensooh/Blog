@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Globalization;
 using System.Text;
 
@@ -54,22 +55,19 @@ namespace BLOGCORE.UI.Website.Angular
                 }
             );
 
-            services.AddCors(opt =>
-            {
-                opt.AddPolicy("CorsRule",
-                              builder =>
-                              {
-                                  builder.WithOrigins("localhost",
-                                      "http://localhost",   
-                                                      "http://localhost:4300",
-                                                      "*");
-                              });
+            //services.AddCors(opt =>
+            //{
+            //    //opt.AddPolicy("CorsRule",
+            //    //              builder =>
+            //    //              {
+            //    //                  builder.WithOrigins("*");
+            //    //              });
 
-                //opt.AddPolicy("CorsRule", rule =>
-                //{
-                //    rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost", "*");
-                //});
-            });
+            //    opt.AddPolicy("CorsRule", rule =>
+            //    {
+            //        rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost", "*");
+            //    });
+            //});
 
             BLOGCORE.UI.Website.Angular.Utilities.Constants.ExpiracionMinutos = int.Parse(Configuration["ExpiracionMinutos"]);
 
@@ -103,6 +101,8 @@ namespace BLOGCORE.UI.Website.Angular
 
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
 
             if (Configuration["TipoAlmacenamiento"] == "1")
             {
@@ -158,7 +158,7 @@ namespace BLOGCORE.UI.Website.Angular
 
             app.UseRouting();
 
-            app.UseCors("CorsRule");
+            //app.UseCors("CorsRule");
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -175,7 +175,7 @@ namespace BLOGCORE.UI.Website.Angular
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
-
+                spa.Options.StartupTimeout = new TimeSpan(0, 5, 0);
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())

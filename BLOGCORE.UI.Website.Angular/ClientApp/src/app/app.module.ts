@@ -20,7 +20,7 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import localeES from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
-import { AboutComponent } from './pages/about/about.component';
+import { NoImagePipe } from './core/pipes/no-image.pipe';
 
 registerLocaleData(localeES, 'es');
 

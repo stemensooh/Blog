@@ -13,6 +13,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<AccesoUsuario> AccesoUsuarios { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<CategoriasPost> CategoriasPosts { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Rol> Roles { get; set; }
         public DbSet<UsuarioRol> UsuariosRol { get; set; }
@@ -60,6 +61,21 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CategoriasPost>(entity =>
+            {
+                entity.ToTable("CategoriasPosts");
+
+                entity.HasOne(e => e.CategoriaNavigation)
+                .WithMany(p => p.Posts)
+                .HasForeignKey(d => d.CategoriaId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+                entity.HasOne(e => e.PostNavigation)
+                .WithMany(p => p.Categorias)
+                .HasForeignKey(d => d.PostId)
+                .OnDelete(DeleteBehavior.NoAction);
+            });
+
             modelBuilder.Entity<PostVistas>(entity =>
             {
                 entity.ToTable("Vistas");

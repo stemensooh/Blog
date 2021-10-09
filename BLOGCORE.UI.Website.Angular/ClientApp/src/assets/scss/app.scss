@@ -3,10 +3,10 @@
 -----------------------*/
 
 // @import "vendors/chartist";
-// @import "vendors/dropzone";
-// @import "vendors/scrollable";
-// @import "vendors/sticky";
-// @import "vendors/todo";
+//@import "vendors/dropzone";
+//@import "vendors/scrollable";
+//@import "vendors/sticky";
+//@import "vendors/todo";
 
 /* Ngx-owl-carousel-o */
 // @import "~ngx-owl-carousel-o/lib/styles/scss/owl.carousel";
@@ -24,7 +24,7 @@
 // @import "~@swimlane/ngx-datatable/assets/icons.css";
 
 /* Dropzone */
-// @import "~dropzone/dist/min/dropzone.min.css";
+@import "~dropzone/dist/min/dropzone.min.css";
 
 /* Leaflet Map */
 // @import "~leaflet/dist/leaflet.css";
@@ -37,7 +37,7 @@
 // @import "~perfect-scrollbar/css/perfect-scrollbar.css";
 
 /* Ng-select */
-// @import "~@ng-select/ng-select/scss/default.theme.scss";
+@import "~@ng-select/ng-select/scss/default.theme.scss";
 
 /* Datetime */
 // @import "~ng-pick-datetime/assets/style/picker.min.css";
@@ -48,9 +48,9 @@
 /* ---------------------
 	*** Theme Scss ***
 -----------------------*/
-// @import "~animate.css/animate.min.css";
+@import "~animate.css/animate.min.css";
 @import "~bootstrap/scss/bootstrap";
 @import "style";
-//@import "responsive";
+@import "responsive";
 
 

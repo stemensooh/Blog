@@ -16,10 +16,10 @@ export class AuthService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin':'*'
-    })
-  }
-  
+      'Access-Control-Allow-Origin': '*',
+    }),
+  };
+
   seguridadCambio = new Subject<boolean>();
   private usuario!: Usuario;
 
@@ -52,7 +52,7 @@ export class AuthService {
 
   obtenerToken(): string {
     // if(this.token){
-      
+
     // }else{
     //   return localStorage.getItem('token') ?? '';
     // }
@@ -82,12 +82,15 @@ export class AuthService {
   }
 
   login(loginData: LoginData): void {
-
     this.http
-      .post<Usuario>(URL_POST + '/SignIn', {
-        Email: loginData.email,
-        Password: loginData.password,
-      }, this.httpOptions)
+      .post<Usuario>(
+        URL_POST + '/SignIn',
+        {
+          Email: loginData.email,
+          Password: loginData.password,
+        },
+        this.httpOptions
+      )
       .subscribe((response) => {
         console.log('login respuesta', response);
 

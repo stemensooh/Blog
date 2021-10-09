@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { MENU } from '../../core/data/menu';
 import { RouteInfo } from '../../core/models/route-info.model';
 import { AuthService } from '../../core/services/auth.service';
+import { PostService } from '../../core/services/post.service';
 
 @Component({
   selector: 'app-topbar',
@@ -16,7 +18,8 @@ export class TopbarComponent implements OnInit {
 
   constructor(
     private _guardService: AuthGuard,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _postService: PostService
   ) {}
 
   ngOnInit() {
@@ -38,5 +41,12 @@ export class TopbarComponent implements OnInit {
 
   toggleMenu() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  search(form: NgForm){
+    console.log(form.value);
+    this._postService.search('date_asc', '', form.value).subscribe((data: any) => {
+      console.log(data);
+    });
   }
 }

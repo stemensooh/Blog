@@ -1,11 +1,11 @@
 <div class="card" (click)="VerPost(post.id)" style="cursor: pointer;" >
     <div class="blog-box blog-grid text-center">
-        <img class="img-fluid top-radius-blog" src="{{'data:image/jpg;base64,' + post.imagen}}" alt="" >
+        <img class="img-fluid top-radius-blog" src="{{ post.imagen | noImage }}" alt="" >
         <div class="blog-details-main">
             <ul class="blog-social">
                 <li class="digits">{{ post.fecha | date:'dd MMMM yyyy' }}</li>
                 <li class="digits">by: {{ post.autor }}</li>
-                <li class="digits">{{ post.vistas }} Hits</li>
+                <li class="digits">{{ post.vistas }} Vistas</li>
             </ul>
             <hr>
             <h6 class="blog-bottom-details">{{ post.titulo }}</h6>

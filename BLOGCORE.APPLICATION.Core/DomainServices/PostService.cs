@@ -14,10 +14,12 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
     public class PostService : IPostService
     {
         private readonly IPostRepositorio _postRepositorio;
+        private readonly ICategoriaRepositorio _categoriaRepositorio;
 
-        public PostService(IPostRepositorio postRepositorio)
+        public PostService(IPostRepositorio postRepositorio, ICategoriaRepositorio categoriaRepositorio)
         {
             _postRepositorio = postRepositorio;
+            _categoriaRepositorio = categoriaRepositorio;
         }
 
         public async Task<List<PostDto>> GetPosts()
@@ -59,29 +61,55 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
         public  bool AgregarPost(PostViewModel model)
         {
             Post post = new Post();
-            if (model.ID > 0)
+            if (model.Id > 0)
             {
-                post =  _postRepositorio.GetPost(model.ID, model.UsuarioId);
+                post =  _postRepositorio.GetPost(model.Id, model.UsuarioId);
                 if (post is null)
                 {
                     return false;
                 }
+
                 post.Titulo = model.Titulo;
-                post.CategoriaId = model.Categoria;
                 post.Cuerpo = model.Cuerpo;
                 post.Imagen = model.Imagen;
-                return  _postRepositorio.EditarPost(post);
+                post = _postRepositorio.EditarPost(post);
+                if (post is null) return false;
+
+                _categoriaRepositorio.LimpiarDetalleCategoria(post.Id);
+                foreach (var categoriaId in model.Categoria)
+                {
+                    if (categoriaId > 0)
+                    {
+                        _categoriaRepositorio.GuardarDetalle(post.Id, categoriaId);
+                    }
+                }
+
+                return true;
             }
             else
             {
-                post.Id = model.ID;
-                post.Titulo = model.Titulo;
-                post.CategoriaId = model.Categoria;
-                post.Cuerpo = model.Cuerpo;
-                post.Imagen = model.Imagen;
-                post.UsuarioId = model.UsuarioId;
-                
-                return  _postRepositorio.AgregarPost(post);
+                string cuerpo = model.Cuerpo;
+                post = new Post
+                {
+                    Id = model.Id,
+                    Titulo = model.Titulo,
+                    Cuerpo = cuerpo,
+                    Imagen = model.Imagen,
+                    UsuarioId = model.UsuarioId
+                };
+
+                post = _postRepositorio.AgregarPost(post);
+                if (post is null) return false;
+
+                foreach (var categoriaId in model.Categoria)
+                {
+                    if (categoriaId > 0)
+                    {
+                        _categoriaRepositorio.GuardarDetalle(post.Id, categoriaId);
+                    }
+                }
+
+                return true;
             }
         }
 
