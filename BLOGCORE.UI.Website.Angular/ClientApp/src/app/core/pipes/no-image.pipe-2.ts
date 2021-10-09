@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class NoImage2Pipe implements PipeTransform {
 
   transform(imagen: string): string {
-    
+    // console.log(imagen);
     if(imagen === undefined){
       return 'assets/images/sin-imagen.jpg';
     } else if(imagen === null){

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post/post.model';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { PostFormModel } from '../models/post/post-form.model';
 
 const URL_POST = `${environment.urlApi}/posts`;
@@ -16,6 +16,9 @@ export class PostService {
 
   private postsMasVistoSubject = new Subject<Post[]>();
   private postsMasVisto!: Post[];
+
+  public cargando: boolean = false;
+  private pagina = 1;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -47,35 +50,37 @@ export class PostService {
     return this.postsSubject.asObservable();
   }
 
-  search(
-    sortOrder: string,
-    currentFilter: string,
-    searchString: string,
-    pageNumber: number = 1,
-    pageSize: number = 10
-  ) {
-    let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
-    return this._http.get<Post[]>(urlFinal);
-  }
+  // search(
+  //   sortOrder: string,
+  //   currentFilter: string,
+  //   searchString: string,
+  //   pageNumber: number = 1,
+  //   pageSize: number = 5
+  // ) : Observable<Post[]> {
+  //   let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  //   return this._http.get<Post[]>(urlFinal);
+  // }
 
   obtenerPosts(
     sortOrder: string,
     currentFilter: string,
     searchString: string,
     pageNumber: number = 1,
-    pageSize: number = 10
+    pageSize: number = 5
   ) {
     let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    // console.log(pageSize);
     // this._http.get<Post[]>(urlFinal, options: { Headers: this.httpOptionsPost })
-    this._http.get<Post[]>(urlFinal).subscribe((data: any) => {
-      this.postsLista = data;
-      this.postsSubject.next([...this.postsLista]);
-    });
+    return this._http.get<Post[]>(urlFinal);
+    // .subscribe((data: any) => {
+    //   this.postsLista = data;
+    //   this.postsSubject.next([...this.postsLista]);
+    // });
   }
 
-  all() {
-    return this.postsSubject.asObservable();
-  }
+  // all() {
+  //   return this.postsSubject.asObservable();
+  // }
 
   consultarPostMasVisto() {
     let urlFinal = `${URL_POST}/VerPostsRecientes`;

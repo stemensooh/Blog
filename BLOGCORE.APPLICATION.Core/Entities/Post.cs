@@ -13,6 +13,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
             Vistas = new HashSet<PostVistas>();
             VistasAnonimas = new HashSet<PostVistasAnonimas>();
             Categorias = new HashSet<CategoriasPost>();
+            Comentarios = new HashSet<Comentario>();
         }
 
         [Key]
@@ -54,5 +55,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         public virtual ICollection<CategoriasPost> Categorias { get; set; }
         public virtual ICollection<PostVistas> Vistas { get; set; }
         public virtual ICollection<PostVistasAnonimas> VistasAnonimas { get; set; }
+        public virtual ICollection<Comentario> Comentarios { get; set; }
+
     }
 }

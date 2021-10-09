@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { MENU } from '../../core/data/menu';
 import { RouteInfo } from '../../core/models/route-info.model';
@@ -19,7 +20,7 @@ export class TopbarComponent implements OnInit {
   constructor(
     private _guardService: AuthGuard,
     private _authService: AuthService,
-    private _postService: PostService
+    private _route: Router
   ) {}
 
   ngOnInit() {
@@ -32,8 +33,6 @@ export class TopbarComponent implements OnInit {
         this.menuItems.push(element);
       }
     });
-
-    //this.menuItems = MENU.filter(listTitle => listTitle);
   }
   getTitle() {}
 
@@ -43,10 +42,13 @@ export class TopbarComponent implements OnInit {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
   }
 
-  search(form: NgForm){
-    console.log(form.value);
-    this._postService.search('date_asc', '', form.value).subscribe((data: any) => {
-      console.log(data);
-    });
+  search(form: NgForm) {
+    if (
+      form.value.searchText !== undefined &&
+      form.value.searchText !== null &&
+      form.value.searchText !== ''
+    ) {
+      this._route.navigate(['/search', form.value.searchText]);
+    }
   }
 }

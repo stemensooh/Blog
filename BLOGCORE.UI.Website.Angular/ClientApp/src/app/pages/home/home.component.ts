@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PostService } from '../../core/services/post.service';
 import { Post } from '../../core/models/post/post.model';
@@ -12,21 +12,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  private postsSubscription!: Subscription;
   private postSubscription!: Subscription;
   public posts: Post[] = [];
   public post: Post[] = [];
-
+  private pageNumber: number = 1;
   constructor(private _postService: PostService, private _router: Router) {}
   ngOnDestroy(): void {
-    this.postsSubscription.unsubscribe();
     this.postSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this._postService.obtenerPosts('date_desc', '', '',1, 20);
-    this.postsSubscription = this._postService
-      .all()
+    this._postService.obtenerPosts('date_desc', '', '',1, 5)
       .subscribe((posts: Post[]) => {
         this.posts = posts;
       });
@@ -46,15 +42,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   removePosts(id: number): void {
-    //console.log('removePosts primary', this.posts);
-
     this.posts = this.posts.filter((item) => item.id !== id);
-    //console.log('removePosts', this.posts);
   }
 
   VerPost(id: number){
-    // console.log(id);
     this._router.navigate(['/posts', id]);
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+
+    const pos = (document.documentElement.scrollTop || document.body.scrollTop ) + 1300;
+    const max = ( document.documentElement.scrollHeight || document.body.scrollHeight );
+    
+    if ( pos > max ) {
+      // TODO: llamar el servicio
+      if ( this._postService.cargando ) { return; }
+      this.pageNumber += 1;
+      this._postService.obtenerPosts('date_desc','','', this.pageNumber).subscribe( data => {
+        this.posts.push(...data );  
+      });
+    }
+    
     
   }
 }

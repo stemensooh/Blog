@@ -19,6 +19,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
         public DbSet<UsuarioRol> UsuariosRol { get; set; }
         public DbSet<PostVistas> Vistas { get; set; }
         public DbSet<PostVistasAnonimas> VistasAnonimas { get; set; }
+        public DbSet<Comentario> Comentarios { get; set; }
 
         public string DefaultConecctionString = string.Empty;
 
@@ -61,6 +62,16 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Comentario>(entity => {
+                entity.ToTable("Comentarios");
+
+                entity.HasOne(e => e.UsuarioNavigation)
+                .WithMany(p => p.Comentarios)
+                .HasForeignKey(d => d.UsuarioId)
+                .OnDelete(DeleteBehavior.NoAction);
+            });
+
+
             modelBuilder.Entity<CategoriasPost>(entity =>
             {
                 entity.ToTable("CategoriasPosts");

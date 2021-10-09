@@ -5,6 +5,7 @@ import { PostsComponent } from '../../pages/posts/posts.component';
 import { PostsDetailComponent } from '../../pages/posts-detail/posts-detail.component';
 import { AboutComponent } from '../../pages/about/about.component';
 import { PostsFormComponent } from '../../pages/posts-form/posts-form.component';
+import { SearchComponent } from '../../pages/search/search.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -37,5 +38,9 @@ export const AdminLayoutRoutes: Routes = [
   {
     path: "posts/:id",
     component: PostsDetailComponent,
+  },
+  {
+    path: "search/:text",
+    component: SearchComponent,
   },
 ];

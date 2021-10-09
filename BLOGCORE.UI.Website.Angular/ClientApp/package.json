@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "echo Starting... && ng serve",
     "build": "ng build",
     "build:ssr": "ng run BLOGCORE.UI.Website.Angular:server:dev",
     "watch": "ng build",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -37,6 +39,7 @@
     "ngx-dropzone": "^2.2.2",
     "ngx-dropzone-wrapper": "^9.0.0",
     "ngx-loading-bar": "0.0.9",
+    "protractor": "^7.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

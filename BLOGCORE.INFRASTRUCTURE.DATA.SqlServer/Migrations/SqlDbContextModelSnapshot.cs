@@ -97,6 +97,44 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.ToTable("CategoriasPosts");
                 });
 
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Comentario", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("ComentarioPadreId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Mensaje")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<long>("PostId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TotalReaccion")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UsuarioId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Comentarios");
+                });
+
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Perfil", b =>
                 {
                     b.Property<long>("Id")
@@ -327,6 +365,21 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Post", "PostNavigation")
                         .WithMany("Categorias")
                         .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Comentario", b =>
+                {
+                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Post", "PostNavigation")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Usuario", "UsuarioNavigation")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });

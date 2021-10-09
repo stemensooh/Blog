@@ -23,6 +23,7 @@ import { AdminLayoutRoutes } from './admin-layout.routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NoImagePipe } from '../../core/pipes/no-image.pipe';
 import { NoImage2Pipe } from '../../core/pipes/no-image.pipe-2';
+import { SearchComponent } from '../../pages/search/search.component';
 
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
@@ -39,7 +40,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     PostsDetailComponent,
     PostsFormComponent,
     AboutComponent,
-    NoImage2Pipe
+    NoImage2Pipe,
+    SearchComponent
   ],
   imports: [
     CommonModule,
