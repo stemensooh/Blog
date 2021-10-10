@@ -75,6 +75,10 @@ namespace BLOGCORE.UI.Website
 
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
+            services.AddScoped<IComentarioService, ComentarioService>();
+            services.AddScoped<IComentarioRepositorio, ComentarioRepositorio>();
             //services.AddScoped<IIOService>(provider => new S3IOService(Configuration["AMAZON:bucketName"], Configuration["AMAZON:accesskey"], Configuration["AMAZON:secretekey"]));
 
             if (Configuration["TipoAlmacenamiento"] == "1")

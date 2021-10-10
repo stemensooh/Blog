@@ -18,7 +18,6 @@ export class TopbarComponent implements OnInit {
   menuItems: RouteInfo[] = [];
 
   constructor(
-    private _guardService: AuthGuard,
     private _authService: AuthService,
     private _route: Router
   ) {}

@@ -19,6 +19,6 @@ export class AboutComponent implements OnInit {
 
 
   CrearSesion(){
-    this._authService.login({ email: 'stemensooh@gmail.com', password: '12345678' });
+    this._authService.login({ email: 'jcardenasp2@unemi.edu.ec', password: '12345678' });
   }
 }

@@ -11,20 +11,34 @@ import { ComentarioModel } from 'src/app/core/models/post/comentario.model';
   styleUrls: ['./posts-detail.component.scss'],
 })
 export class PostsDetailComponent implements OnInit {
-  public post!: Post;
+  public post: Post = {
+    cuerpo: '',
+    titulo: '',
+    categoriaId: [],
+    categoriaName: [],
+    imagen: '',
+    username: '',
+    autor: '',
+    fecha: new Date(),
+    fechaCreacion: '',
+    id: 0,
+    vistas: 0,
+    vistasPaginaAnonimo: 0,
+    vistasPaginaUsuario: 0,
+  };
   public comentarios: ComentarioModel[] = [];
 
-  constructor(private _postService: PostService, private rutaActiva: ActivatedRoute, private _comentarioService: ComentarioService) {
-    
-
-  }
+  constructor(
+    private _postService: PostService,
+    private _rutaActiva: ActivatedRoute,
+    private _comentarioService: ComentarioService
+  ) {}
 
   ngOnInit(): void {
-    let id = this.rutaActiva.snapshot.params.id;
+    let id = this._rutaActiva.snapshot.params.id;
 
     this._postService.verPost(id).subscribe((data: any) => {
       this.post = data;
-      console.log(data);
     });
 
     this._comentarioService.cargarComentariosPost(id).subscribe((data: any) => {

@@ -108,7 +108,12 @@ namespace BLOGCORE.UI.Website.Angular.Controllers
             if (ModelState.IsValid)
             {
                 MemoryStream ms = null;
-                byte[] bytes = System.Convert.FromBase64String(model.ImagenBase64);
+                byte[] bytes = null;
+                if (!model.MantenerImage)
+                {
+                    bytes = System.Convert.FromBase64String(model.ImagenBase64);
+                }
+                
                 if (bytes != null && bytes.Length > 0)
                 {
                     ms = new MemoryStream(bytes);
@@ -329,18 +334,24 @@ namespace BLOGCORE.UI.Website.Angular.Controllers
 
         private string ObtenerImagenBase64(string TipoAlmacenamiento, string Imagen, string FileName)
         {
-            MemoryStream ms = null;
-            if (TipoAlmacenamiento == "1")
+            
+            try
             {
-                ms = _storageService.ObtenerArchivo(Path.Combine("wwwroot", Imagen), ref mensaje, "images");
+                MemoryStream ms = null;
+                if (TipoAlmacenamiento == "1")
+                {
+                    ms = _storageService.ObtenerArchivo(Path.Combine("wwwroot", Imagen), ref mensaje, "images");
+                }
+                else
+                {
+                    ms = _storageService.ObtenerArchivo(Imagen, ref mensaje, "images");
+                }
+                return ms == null ? "" : Convert.ToBase64String(ms.ToArray());
             }
-            else
+            catch (Exception ex)
             {
-                ms = _storageService.ObtenerArchivo(Imagen, ref mensaje, "images");
+                return "";
             }
-
-            return ms == null ? "" : Convert.ToBase64String(ms.ToArray());
-        
         }
 
         #endregion

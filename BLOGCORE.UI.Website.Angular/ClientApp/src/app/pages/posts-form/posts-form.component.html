@@ -4,42 +4,26 @@
     <div class="col-sm-12">
       <div class="card">
         <div class="card-header">
-          <h5>Post Edit</h5>
+          <h5>{{ titulo }}</h5>
         </div>
-        <div class="card-body add-post">
-          <form class="row needs-validation">
+        <!-- (ngSubmit)="onSubmit()" [formGroup]="formPost" -->
+        <form class="row needs-validation">
+          <input class="form-control" type="hidden" [(ngModel)]="postFormModel.Id" name="Id">
+          <div class="card-body add-post">
             <div class="col-sm-12">
-              <div class="form-group">
-                <label for="validationCustom01">Title:</label>
-                <input class="form-control" id="validationCustom01" type="text" placeholder="Post Title" required="">
-                <div class="valid-feedback">Looks good!</div>
+              <div class="text-center">
+                <img class="rounded mx-auto d-block " height="200px" src="{{ postFormModel.ImagenBase64 | noImage2 }}" alt="">
               </div>
               <div class="form-group">
-                <label>Type:</label>
-                <div class="m-checkbox-inline">
-                  <label for="edo-ani">
-                    <input class="radio_animated" id="edo-ani" type="radio" name="rdo-ani" checked="">Text
-                  </label>
-                  <label for="edo-ani1">
-                    <input class="radio_animated" id="edo-ani1" type="radio" name="rdo-ani">Image
-                  </label>
-                  <label for="edo-ani2">
-                    <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani" checked="">Audio
-                  </label>
-                  <label for="edo-ani3">
-                    <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani">Video
-                  </label>
-                </div>
+                <label for="validationCustom01">Titulo:</label>
+                <input class="form-control" type="text" name="Titulo" [(ngModel)]="postFormModel.Titulo">
+                <!-- <input type="text" > -->
+                <!-- <div class="valid-feedback">Looks good!</div> -->
               </div>
               <div class="form-group">
-                <div class="col-form-label">Category:
-                  <ng-select class="mt-2" 
-                    [items]="categorias" 
-                    bindLabel="name" 
-                    bindValue="id"
-                    [(ngModel)]="selectedCategory"
-                    [multiple]="true"
-                    [ngModelOptions]="{standalone: true}">
+                <div class="col-form-label">Categoria:
+                  <ng-select class="mt-2" [items]="categorias" bindLabel="name" bindValue="id" name="Categoria"
+                    [(ngModel)]="postFormModel.Categoria" [multiple]="true" [ngModelOptions]="{standalone: true}">
                   </ng-select>
                 </div>
               </div>
@@ -47,28 +31,29 @@
                 <div class="theme-form">
                   <div class="form-group">
                     <label>Content:</label>
-                    <ckeditor [editor]="ClassicEditor" data="<p>Hello, world!</p>"></ckeditor>
+                    <ckeditor [data]="''" name="Cuerpo" [(ngModel)]="postFormModel.Cuerpo" [editor]="ClassicEditor">
+                    </ckeditor>
                   </div>
                 </div>
               </div>
+
+              <div class="form-group">
+                <div class="dropzone dropzone-primary" (init)="onUploadInit($event)" (error)="onUploadError($event)"
+                (success)="onUploadSuccess($event)" [dropzone]="config">
+                <div class="dz-message needsclick">
+                  <i class="icon-cloud-up"></i>
+                  <h6>Suelta los archivos aquí o haz clic para subirlos.</h6>
+                </div>
+              </div>
+              </div>
             </div>
-          </form>
-          <div class="dropzone dropzone-primary"
-              (init)="onUploadInit($event)"
-              (error)="onUploadError($event)"
-              (success)="onUploadSuccess($event)"
-              [dropzone]="config">
-            <div class="dz-message needsclick">
-              <i class="icon-cloud-up"></i>
-              <h6>Suelta los archivos aquí o haz clic para subirlos.</h6>
+
+            <div class="btn-showcase">
+              <button class="btn btn-warning" (click)="onSubmit()">Guardar Post</button>
+              <input class="btn btn-light" type="reset" value="Discard">
             </div>
           </div>
-          <div class="btn-showcase">
-            <button class="btn btn-warning" (click)="AddPost()" >Guardar Post</button>
-            <button class="btn btn-primary" type="submit">Post</button>
-            <input class="btn btn-light" type="reset" value="Discard">
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>

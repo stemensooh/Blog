@@ -7,4 +7,15 @@ export class PostFormModel{
     Imagen!: string;
     ImagenRuta!: string;
     ImagenBase64!: string;
+
+    // constructor(){
+    //     Id: 0;
+    //     Titulo: '';
+    //     Categoria: [];
+    //     Cuerpo: '';
+    //     MantenerImage: false;
+    //     Imagen: '';
+    //     ImagenRuta: '';
+    //     ImagenBase64: '';
+    // }
 }

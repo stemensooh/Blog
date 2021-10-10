@@ -26,6 +26,8 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         public string Email { get; set; }
 
         public DateTime FechaAcceso { get; set; }
+
+        public virtual Usuario Usuario { get; set; }
     }
 
 }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { DropzoneModule, DROPZONE_CONFIG, DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
@@ -21,7 +21,7 @@ import { AuthInterceptor } from '../../core/services/auth-interceptor';
 
 import { AdminLayoutRoutes } from './admin-layout.routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NoImagePipe } from '../../core/pipes/no-image.pipe';
+
 import { NoImage2Pipe } from '../../core/pipes/no-image.pipe-2';
 import { SearchComponent } from '../../pages/search/search.component';
 
@@ -48,6 +48,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     NgbModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     ComponentsModule,
     NgSelectModule,

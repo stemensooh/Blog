@@ -2,8 +2,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Post } from '../models/post/post.model';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { PostFormModel } from '../models/post/post-form.model';
+import { tap } from 'rxjs/operators';
 
 const URL_POST = `${environment.urlApi}/posts`;
 
@@ -11,14 +12,7 @@ const URL_POST = `${environment.urlApi}/posts`;
   providedIn: 'root',
 })
 export class PostService {
-  private postsSubject = new Subject<Post[]>();
-  private postsLista: Post[] = [];
-
-  private postsMasVistoSubject = new Subject<Post[]>();
-  private postsMasVisto!: Post[];
-
   public cargando: boolean = false;
-  private pagina = 1;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -38,28 +32,19 @@ export class PostService {
     pageNumber: number = 1,
     pageSize: number = 10
   ) {
+    if (this.cargando) {
+      return of([]);
+    }
+    this.cargando = true;
+
     let urlFinal = `${URL_POST}/MisPosts?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
-    // this._http.get<Post[]>(urlFinal, options: { Headers: this.httpOptionsPost })
-    this._http.get<Post[]>(urlFinal).subscribe((data: any) => {
-      this.postsLista = data;
-      this.postsSubject.next([...this.postsLista]);
-    });
+    return this._http.get<Post[]>(urlFinal).pipe(
+      tap(() => {
+        //this.carteleraPage += 1;
+        this.cargando = false;
+      })
+    );
   }
-
-  allMyPosts() {
-    return this.postsSubject.asObservable();
-  }
-
-  // search(
-  //   sortOrder: string,
-  //   currentFilter: string,
-  //   searchString: string,
-  //   pageNumber: number = 1,
-  //   pageSize: number = 5
-  // ) : Observable<Post[]> {
-  //   let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
-  //   return this._http.get<Post[]>(urlFinal);
-  // }
 
   obtenerPosts(
     sortOrder: string,
@@ -68,30 +53,23 @@ export class PostService {
     pageNumber: number = 1,
     pageSize: number = 5
   ) {
-    let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
-    // console.log(pageSize);
-    // this._http.get<Post[]>(urlFinal, options: { Headers: this.httpOptionsPost })
-    return this._http.get<Post[]>(urlFinal);
-    // .subscribe((data: any) => {
-    //   this.postsLista = data;
-    //   this.postsSubject.next([...this.postsLista]);
-    // });
-  }
+    if (this.cargando) {
+      return of([]);
+    }
+    this.cargando = true;
 
-  // all() {
-  //   return this.postsSubject.asObservable();
-  // }
+    let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this._http.get<Post[]>(urlFinal).pipe(
+      tap(() => {
+        //this.carteleraPage += 1;
+        this.cargando = false;
+      })
+    );
+  }
 
   consultarPostMasVisto() {
     let urlFinal = `${URL_POST}/VerPostsRecientes`;
-    this._http.get<Post[]>(urlFinal).subscribe((data: any) => {
-      this.postsMasVisto = data;
-      this.postsMasVistoSubject.next([...this.postsMasVisto]);
-    });
-  }
-
-  mostViews() {
-    return this.postsMasVistoSubject.asObservable();
+    return this._http.get<Post[]>(urlFinal);
   }
 
   verPost(id: number) {
@@ -101,6 +79,7 @@ export class PostService {
 
   addPost(form: PostFormModel) {
     let urlFinal = `${URL_POST}/Registrar`;
+    console.log(form);
     return this._http.post<PostFormModel>(urlFinal, form, this.httpOptions);
   }
 }
