@@ -42,6 +42,18 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return postDto;
         }
 
+        public async Task<PostDto> GetPostUsuario(long PostId, long usuarioId)
+        {
+            PostDto postDto = new PostDto();
+            var post = await _postRepositorio.GetPostUsuario(PostId, usuarioId);
+            if (post is null)
+            {
+                return null;
+            }
+            postDto = new PostDto(post);
+            return postDto;
+        }
+
         public async Task<List<PostDto>> GetPosts(long UsuarioId)
         {
             List<PostDto> postDtos = new List<PostDto>();

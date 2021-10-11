@@ -77,9 +77,35 @@ export class PostService {
     return this._http.get<Post>(urlFinal);
   }
 
-  addPost(form: PostFormModel) {
+  registrarPostPost(form: PostFormModel) {
     let urlFinal = `${URL_POST}/Registrar`;
     console.log(form);
-    return this._http.post<PostFormModel>(urlFinal, form, this.httpOptions);
+    return this._http.post<PostFormModel>(
+      urlFinal, form,
+      // {
+      //   Id: form.id,
+      //   Titulo: form.titulo,
+      //   //Categoria: form.categoria,
+      //   Cuerpo: form.cuerpo,
+      //   MantenerImage: form.mantenerImage,
+      //   Imagen: form.imagen,
+      //   ImagenBase64: form.imagenBase64,
+      // },
+
+      this.httpOptions
+    );
+  }
+
+  registrarPostGet(Id: number) {
+    let urlFinal = `${URL_POST}/Registrar/${Id}`;
+    return this._http.get<PostFormModel>(urlFinal);
+  }
+
+  eliminar(Id: number) {
+    let urlFinal = `${URL_POST}/EliminarPost/${Id}`;
+    return this._http.delete(urlFinal);
+    // .subscribe((data: any) => {
+    //   console.log(data);
+    // });
   }
 }

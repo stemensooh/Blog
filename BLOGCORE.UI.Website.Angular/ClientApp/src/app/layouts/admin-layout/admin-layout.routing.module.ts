@@ -30,10 +30,12 @@ export const AdminLayoutRoutes: Routes = [
   {
     path: "posts/add",
     component: PostsFormComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "posts/edit/:id",
     component: PostsFormComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "posts/:id",

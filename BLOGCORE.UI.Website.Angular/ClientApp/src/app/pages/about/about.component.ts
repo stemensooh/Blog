@@ -16,9 +16,4 @@ export class AboutComponent implements OnInit {
     console.log(this._cookieService.get('Test'));
     // this._cookieService = this._cookieService.get('Test');
   }
-
-
-  CrearSesion(){
-    this._authService.login({ email: 'jcardenasp2@unemi.edu.ec', password: '12345678' });
-  }
 }

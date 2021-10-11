@@ -11,6 +11,7 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
         Task<List<Post>> GetPosts();
         Task<List<Post>> GetPosts(int Top);
         Task<List<Post>> GetPosts(long UsuarioId);
+        Task<Post> GetPostUsuario(long PostId, long usuarioId);
         Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip);
         Post GetPost(long PostId, long UsuarioId);
         Post AgregarPost(Post post);

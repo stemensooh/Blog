@@ -120,5 +120,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.Mysql.Repositories
         {
             return context.VistasAnonimas.Where(x => x.PostId == PostId).ToList();
         }
+
+        public Task<Post> GetPostUsuario(long PostId, long usuarioId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

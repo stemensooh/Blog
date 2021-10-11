@@ -27,7 +27,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
 
         public DateTime FechaAcceso { get; set; }
 
-        public virtual Usuario Usuario { get; set; }
+        //public virtual Usuario Usuario { get; set; }
     }
 
 }

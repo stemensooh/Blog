@@ -1,33 +1,15 @@
 import { Routes } from "@angular/router";
+import { SigninComponent } from '../../pages/signin/signin.component';
 
 export const AuthLayoutRoutes: Routes = [
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "signin",
     pathMatch: "full",
   },
   {
-    path: "dashboard",
-    //component: DashboardComponent,
+    path: "signin",
+    component: SigninComponent,
   },
-  {
-    path: "user-profile",
-    //component: UserProfileComponent,
-  },
-  {
-    path: "tables",
-    //component: TablesComponent,
-  },
-  {
-    path: "icons",
-    //component: IconsComponent,
-  },
-  {
-    path: "maps",
-    //component: MapsComponent,
-  },
-  {
-    path: "ventas",
-    //loadChildren: () => import("src/app/pages/ventas/ventas.module").then((m) => m.VentasModule),
-  },
+  
 ];

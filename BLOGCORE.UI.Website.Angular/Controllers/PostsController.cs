@@ -102,6 +102,25 @@ namespace BLOGCORE.UI.Website.Angular.Controllers
             }
         }
 
+        [HttpGet("Registrar/{ID}")]
+        public async Task<IActionResult> Registrar(long ID)
+        {
+            PostSiteDto model = new PostSiteDto();
+            var post = await _postService.GetPostUsuario(ID, GetUsuarioId());
+            if (post != null)
+            {
+                model.Id = post.ID;
+                model.Titulo = post.Titulo;
+                model.Categoria = post.CategoriaId;
+                model.Cuerpo = post.Cuerpo;
+                model.MantenerImage = string.IsNullOrEmpty(post.Imagen) ? false : true;
+                model.ImagenRuta = post.Imagen;
+                model.ImagenBase64 = ObtenerImagenBase64(_configuration["TipoAlmacenamiento"], post.Imagen, "");
+            }
+
+            return Ok(model);
+        }
+
         [HttpPost("Registrar")]
         public IActionResult Registrar(PostSiteDto model)
         {
@@ -164,7 +183,7 @@ namespace BLOGCORE.UI.Website.Angular.Controllers
                     BadRequest("No se ha podido actualizar el registro correctamente");
                 }
             }
-            return Ok(model);
+            return BadRequest(model);
         }
 
         [AllowAnonymous]

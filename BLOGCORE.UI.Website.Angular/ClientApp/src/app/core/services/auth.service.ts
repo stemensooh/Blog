@@ -1,10 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment.prod';
 import { Usuario } from '../models/usuario.model';
 import { Subject } from 'rxjs';
 import { LoginData } from '../models/login-data.model';
+import { LoginResponse } from '../models/login-response';
 
 const URL_POST = `${environment.urlApi}/account`;
 
@@ -21,8 +26,8 @@ export class AuthService {
   };
 
   seguridadCambio = new Subject<boolean>();
-  private usuario!: Usuario;
-
+  private usuario: Usuario | null = null;
+  public loginResponse!: LoginResponse;
   cargarUsuario(): void {
     const tokenBrowser = localStorage.getItem('token');
     if (!tokenBrowser) {
@@ -33,8 +38,6 @@ export class AuthService {
     this.seguridadCambio.next(true);
 
     this.http.get<Usuario>(URL_POST + '').subscribe((response) => {
-      console.log('login respuesta', response);
-
       this.token = response.token;
       this.usuario = {
         email: response.email,
@@ -86,39 +89,43 @@ export class AuthService {
       .post<Usuario>(
         URL_POST + '/SignIn',
         {
-          Email: loginData.email,
-          Password: loginData.password,
+          Email: loginData.Email,
+          Password: loginData.Password,
         },
         this.httpOptions
       )
-      .subscribe((response) => {
-        console.log('login respuesta', response);
-
-        this.token = response.token;
-        this.usuario = {
-          email: response.email,
-          nombre: response.nombre,
-          apellido: response.apellido,
-          token: response.token,
-          password: '',
-          username: response.username,
-          usuarioId: response.usuarioId,
-        };
-        this.seguridadCambio.next(true);
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/']);
-      });
+      .subscribe(
+        (response: any) => {
+          this.loginResponse = response;
+          this.token = response.token;
+          this.usuario = {
+            email: response.email,
+            nombre: response.nombre,
+            apellido: response.apellido,
+            token: response.token,
+            password: '',
+            username: response.username,
+            usuarioId: response.usuarioId,
+          };
+          this.seguridadCambio.next(true);
+          localStorage.setItem('token', response.token);
+          this.router.navigate(['/']);
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error);
+        }
+      );
   }
 
   salirSesion() {
-    // this.usuario = null;
+    this.usuario = null;
     this.seguridadCambio.next(false);
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 
-  obtenerUsuario() {
-    return { ...this.usuario };
+  obtenerUsuario(): Usuario | null {
+    return this.usuario;
   }
 
   onSesion() {

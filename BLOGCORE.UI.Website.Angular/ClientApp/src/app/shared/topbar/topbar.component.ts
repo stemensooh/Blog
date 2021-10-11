@@ -6,6 +6,7 @@ import { MENU } from '../../core/data/menu';
 import { RouteInfo } from '../../core/models/route-info.model';
 import { AuthService } from '../../core/services/auth.service';
 import { PostService } from '../../core/services/post.service';
+import { Usuario } from '../../core/models/usuario.model';
 
 @Component({
   selector: 'app-topbar',
@@ -16,22 +17,21 @@ export class TopbarComponent implements OnInit {
   focus: boolean = false;
   isNavbarCollapsed = true;
   menuItems: RouteInfo[] = [];
-
-  constructor(
-    private _authService: AuthService,
-    private _route: Router
-  ) {}
+  usuario: Usuario | null = null;
+  tieneSesion: boolean = false;
+  constructor(private _authService: AuthService, private _route: Router) {}
 
   ngOnInit() {
-    MENU.forEach((element) => {
-      if (element.privado) {
-        if (this._authService.onSesion()) {
-          this.menuItems.push(element);
-        }
-      } else {
-        this.menuItems.push(element);
+    console.log('build menu');
+
+    setTimeout(() => {
+      if (this._authService.onSesion()) {
+        this.usuario = this._authService.obtenerUsuario();
+        this.tieneSesion = this._authService.onSesion();
       }
-    });
+
+      this.construirMenu();
+    }, 2000);
   }
   getTitle() {}
 
@@ -49,5 +49,27 @@ export class TopbarComponent implements OnInit {
     ) {
       this._route.navigate(['/search', form.value.searchText]);
     }
+  }
+
+  construirMenu(){
+    this.menuItems = [];
+    MENU.forEach((element) => {
+      if (element.privado) {
+        if (this._authService.onSesion()) {
+          console.log('tiene sesion');
+          this.menuItems.push(element);
+        }
+      } else {
+        this.menuItems.push(element);
+      }
+    });
+  }
+
+  cerrarSesion(){
+    this.tieneSesion = false;
+    this._authService.salirSesion();
+    setTimeout(() => {
+      this.construirMenu();
+    }, 2000);
   }
 }

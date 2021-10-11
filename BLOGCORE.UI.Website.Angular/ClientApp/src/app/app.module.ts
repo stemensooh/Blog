@@ -20,6 +20,7 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import localeES from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
+import { SigninComponent } from './pages/signin/signin.component';
 
 registerLocaleData(localeES, 'es');
 
@@ -27,7 +28,7 @@ registerLocaleData(localeES, 'es');
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthLayoutComponent,    
+    AuthLayoutComponent,
   ],
   imports: [
     BrowserModule,

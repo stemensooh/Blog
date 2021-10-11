@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <div class="blog-single">
+            <div class="blog-single" *ngIf="post">
                 <div class="blog-box blog-details">
                     <img class="img-fluid w-100" src="{{ post.imagen | noImage2 }}" alt="blog-main">
                     <div class="blog-details">

@@ -4,6 +4,8 @@ import { PostService } from '../../core/services/post.service';
 import { Post } from '../../core/models/post/post.model';
 import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { SweetAlert2Service } from '../../core/services/sweet-alert-2.service';
 
 @Component({
   selector: 'app-posts',
@@ -14,12 +16,16 @@ export class PostsComponent implements OnInit, OnDestroy {
   public posts: Post[] = [];
   private pageNumber: number = 1;
 
-  constructor(private _postService: PostService, private _route: Router) {}
+  constructor(
+    private _swal: SweetAlert2Service,
+    private _postService: PostService,
+    private _route: Router
+  ) {}
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
     this._postService
-      .obtenerMisPosts('date_desc', '', '', 1, 8)
+      .obtenerMisPosts('date_desc', '', '', this.pageNumber, 8)
       .subscribe((posts: Post[]) => {
         this.posts = posts;
       });
@@ -27,6 +33,30 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   nuevoPost() {
     this._route.navigate(['/posts/add']);
+  }
+
+  eliminarPost(Id: number) {
+    Swal.fire({
+      title: 'Eliminar registro',
+      text: '¡No podrás revertir esto!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      confirmButtonText: 'Eliminar',
+      cancelButtonColor: '#dc3545',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._postService.eliminar(Id).subscribe((data: any) => {
+          if (data.estado) {
+            this.posts = this.posts.filter((x) => x.id != Id);
+            this._swal.mensajeGenericoConfirmacion('', data.mensaje, 'success');
+          } else {
+            this._swal.mensajeGenericoConfirmacion('', data.mensaje, 'error');
+          }
+        });
+      }
+    });
   }
 
   @HostListener('window:scroll', ['$event'])

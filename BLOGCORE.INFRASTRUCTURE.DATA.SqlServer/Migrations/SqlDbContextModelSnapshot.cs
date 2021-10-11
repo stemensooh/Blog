@@ -53,8 +53,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
-
                     b.ToTable("AccesoUsuarios");
                 });
 
@@ -354,15 +352,6 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("UsuariosRol");
-                });
-
-            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.AccesoUsuario", b =>
-                {
-                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Usuario", "Usuario")
-                        .WithMany("AccesosUsuario")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.CategoriasPost", b =>

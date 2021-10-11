@@ -25,6 +25,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NoImage2Pipe } from '../../core/pipes/no-image.pipe-2';
 import { SearchComponent } from '../../pages/search/search.component';
 
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -56,10 +58,13 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     CKEditorModule,
     NgxDropzoneModule,
     DropzoneModule,
+
+    
   ],
   providers: [
     { provide: DROPZONE_CONFIG, useValue: DEFAULT_DROPZONE_CONFIG },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    
 
     PostService
   ]

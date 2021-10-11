@@ -1,14 +1,18 @@
-<div class="card" (click)="VerPost(post.id)" style="cursor: pointer;" >
+<div class="card" >
     <div class="blog-box blog-grid text-center">
-        <img class="img-fluid top-radius-blog" src="{{ post.imagen | noImage }}" alt="" >
+        <img class="img-fluid top-radius-blog" src="{{ post.imagen | noImage }}" alt="" (click)="VerPost(post.id)" style="cursor: pointer;">
         <div class="blog-details-main">
+            <span class="badge bg-success" style="color: white" *ngFor="let categoria of post.categoriaName" >
+                {{ categoria }}
+            </span >
             <ul class="blog-social">
                 <li class="digits">{{ post.fecha | date:'dd MMMM yyyy' }}</li>
                 <li class="digits">by: {{ post.autor }}</li>
                 <li class="digits">{{ post.vistas }} Vistas</li>
             </ul>
+            
             <hr>
-            <h6 class="blog-bottom-details">{{ post.titulo }}</h6>
+            <h6 (click)="VerPost(post.id)" style="cursor: pointer;" class="blog-bottom-details">{{ post.titulo }}</h6>
         </div>
     </div>
 </div>

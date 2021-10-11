@@ -28,11 +28,19 @@
                 <i class="icofont icofont-search"></i>
               </span>
             </div>
-            <input class="form-control" placeholder="Buscar" type="text" (focus)="focus = true" (blur)="focus = false" ngModel name="searchText" id="searchText">
+            <input class="form-control" placeholder="Buscar" type="text" (focus)="focus = true" (blur)="focus = false"
+              ngModel name="searchText" id="searchText">
           </div>
         </div>
       </form>
 
+      <div style="color: white;">
+        <div *ngIf="tieneSesion">
+          <p> {{ usuario?.username ?? '' }} </p>
+          <a href="#!" (click)="cerrarSesion()">Cerrar sesión</a>
+        </div>
+        <a *ngIf="!tieneSesion" routerLink="/account">Iniciar sesión</a>
+      </div>
     </div>
   </div>
 </nav>

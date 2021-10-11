@@ -46,6 +46,13 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
                 .Where(x => x.UsuarioId == UsuarioId && x.Estado == true).ToListAsync();
         }
 
+        public async Task<Post> GetPostUsuario(long PostId, long usuarioId)
+        {
+            return await context.Posts
+                .Include(x => x.Categorias).ThenInclude(x => x.CategoriaNavigation)
+                .FirstOrDefaultAsync(x => x.Id == PostId && x.UsuarioId == usuarioId && x.Estado == true);
+        }
+
         public async Task<Post> GetPost(long PostId, long usuarioId, bool Pantalla, string Ip)
         {
             var post = await context.Posts
