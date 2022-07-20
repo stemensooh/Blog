@@ -1,0 +1,77 @@
+<!-- <app-breadcrumb [title]="'Add Post'" [items]="['Apps', 'Blog']" [active_item]="'Add Post'"></app-breadcrumb> -->
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>{{ titulo }}</h5>
+        </div>
+        <!-- (ngSubmit)="onSubmit()" [formGroup]="formPost" -->
+        <form class="row needs-validation" (ngSubmit)="onSubmit()" [formGroup]="postFormGroup">
+          <input class="form-control" type="hidden" name="Id" formControlName="id">
+          <div class="card-body add-post">
+            <div class="col-sm-12">
+              <div class="text-center">
+                <img class="rounded mx-auto d-block " height="200px" src="{{ postFormModel.imagenBase64 | noImage2 }}"
+                  alt="">
+              </div>
+
+              <div class="form-group">
+                <label for="">Titulo:</label>
+                <input class="form-control" type="text" name="titulo" formControlName="titulo">
+                <div *ngIf="f.titulo.invalid && (f.titulo.dirty || f.titulo.touched)" style="color: red">
+                  <div *ngIf="f.titulo.errors?.required">El Titulo es requerido</div>
+                  <div *ngIf="f.titulo.errors?.minlength">Ingrese mínimo 8 caracteres</div>
+                  <div *ngIf="f.titulo.errors?.maxlength">Ingrese máximo 200 caracteres</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-form-label">Categoria:
+                  <ng-select class="mt-2" [items]="categorias" bindLabel="name" bindValue="id"
+                    formControlName="categoria" [multiple]="true">
+                  </ng-select>
+                </div>
+                <div *ngIf="f.categoria.invalid && (f.categoria.dirty || f.categoria.touched)" style="color: red">
+                  <div *ngIf="f.categoria.errors?.required">Categoria es requerida</div>
+                </div>
+              </div>
+
+              <div class="email-wrapper">
+                <div class="theme-form">
+                  <div class="form-group">
+                    <label>Mensaje:</label>
+                    <ckeditor [data]="''" name="Cuerpo" [editor]="ClassicEditor" formControlName="cuerpo">
+                    </ckeditor>
+                  </div>
+                </div>
+                <div *ngIf="f.cuerpo.invalid && (f.cuerpo.dirty || f.cuerpo.touched)" style="color: red">
+                  <div *ngIf="f.cuerpo.errors?.required">El mensaje es requerido</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="dropzone dropzone-primary" (init)="onUploadInit($event)" (error)="onUploadError($event)"
+                  (success)="onUploadSuccess($event)" [dropzone]="config">
+                  <div class="dz-message needsclick">
+                    <i class="icon-cloud-up"></i>
+                    <h6>Suelta una imagen como banner</h6>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+
+            <div class="btn-showcase">
+
+              <input type="submit" name="submit" class="btn btn-success btn-md" value="Guardar">
+              <!-- <input type="submit" name="submit" class="btn btn-success btn-md" [disabled]="!postFormGroup.valid" value="Guardar"> -->
+
+              <a class="btn btn-danger" type="button" routerLink="/posts">Cancelar</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -64,7 +64,13 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                 if (result.Roles.Where(x => x.RolNavigation.Nombre == Constants.Constantes.Rol.SuperAdministrador.ToString() || x.RolNavigation.Nombre == Constants.Constantes.Rol.Administrador.ToString()).Any()) return null;
             }
 
-            return new PerfilDto() { Apellido = result.Perfil?.Apellidos??"", Nombre = result.Perfil?.Nombres ?? "", Username = result.Username ?? "" } ;
+            return new PerfilDto(result.Perfil?.Nombres ?? "", result.Perfil?.Apellidos ?? "", result.Username ?? "", result.Perfil?.Direccion ?? "");
+            //return new PerfilDto()
+            //{ 
+            //    Apellido = result.Perfil?.Apellidos??"", 
+            //    Nombre = result.Perfil?.Nombres ?? "", 
+            //    Username = result.Username ?? "" 
+            //} ;
         }
 
         public Usuario SignUp(UsuarioSignUpViewModel model)

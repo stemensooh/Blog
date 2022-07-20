@@ -1,56 +1,31 @@
-<div id="comments" class="post-block mt-5 post-comments">
-    <h4 class="mb-3">Comentarios</h4>
-
-    <ul class="comments">
-        <li *ngFor="let comentario of comentarios">
-            <div class="comment">
-                <div class="img-thumbnail img-thumbnail-no-borders d-none d-sm-block">
-                    <img class="avatar" alt="" src="assets/images/blog/comment.jpg">
-                </div>
-                <div class="comment-block">
-                    <div class="comment-arrow"></div>
-                    <span class="comment-by">
-                        <strong [innerText]="comentario.nombreCompleto"></strong>
-                        <span class="float-end">
-                            <span>
-                                <a href="#">
-                                    <i class="icofont icofont-reply"></i>
-                                    Reply
-                                </a>
-                            </span>
-                        </span>
-                    </span>
+<div class="comments" id="comments">
+    <div class="comment_number">
+        Comments <span>(2)</span>
+    </div>
+    <div class="comment-list">
+        <!-- Comment -->
+        <div class="comment" id="comment-{{comentario.id}}" *ngFor="let comentario of comentarios">
+            <div class="image"><img alt="" src="/assets/images/blog/comment.jpg" class="avatar"></div>
+            <div class="text">
+                <h5 class="name">{{ comentario.nombreCompleto }}</h5>
+                <span class="comment_date">{{ comentario.fecha }}</span>
+                <!-- <a class="comment-reply-link" href="#">Reply</a> -->
+                <div class="text_holder">
                     <p [innerText]="comentario.mensaje"></p>
-                    <span class="date float-end">{{ comentario.fecha }}</span>
                 </div>
             </div>
-
-            <ul class="comments reply">
-                <li *ngFor="let comentarioHijo of comentario.comentarios">
-                    <div class="comment">
-                        <div class="img-thumbnail img-thumbnail-no-borders d-none d-sm-block">
-                            <img class="avatar" alt="" src="assets/images/blog/comment.jpg">
-                        </div>
-                        <div class="comment-block">
-                            <div class="comment-arrow"></div>
-                            <span class="comment-by">
-                                <strong [innerText]="comentarioHijo.nombreCompleto"></strong>
-                                <span class="float-end">
-                                    <span>
-                                        <a href="#">
-                                            <i class="icofont icofont-reply"></i>
-                                            Reply
-                                        </a>
-                                    </span>
-                                </span>
-                            </span>
-                            <p [innerText]="comentarioHijo.mensaje"></p>
-                            <span class="date float-end">{{ comentarioHijo.fecha }}</span>
-                        </div>
+            <div class="comment" id="comment-{{ comentario.id }}-{{ comentarioHijo.id }}"
+                *ngFor="let comentarioHijo of comentario.comentarios">
+                <div class="image"><img alt="" src="/assets/images/blog/comment.jpg" class="avatar"></div>
+                <div class="text">
+                    <h5 class="name">{{ comentarioHijo.nombreCompleto }}</h5>
+                    <span class="comment_date">{{ comentarioHijo.fecha }}</span>
+                    <!-- <a class="comment-reply-link" href="#">Reply</a> -->
+                    <div class="text_holder">
+                        <p [innerText]="comentarioHijo.mensaje"></p>
                     </div>
-                </li>
-            </ul>
-        </li>
-    </ul>
-
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

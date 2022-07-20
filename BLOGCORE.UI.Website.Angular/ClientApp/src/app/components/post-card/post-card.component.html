@@ -7,7 +7,11 @@
             </span >
             <ul class="blog-social">
                 <li class="digits">{{ post.fecha | date:'dd MMMM yyyy' }}</li>
-                <li class="digits">by: {{ post.autor }}</li>
+                <li class="digits">autor: 
+                    <a [routerLink]="['/', 'profile', post.autor]">
+                        {{ post.autor }}
+                    </a>
+                </li>
                 <li class="digits">{{ post.vistas }} Vistas</li>
             </ul>
             

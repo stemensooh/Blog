@@ -5,6 +5,7 @@ import { Post } from '../models/post/post.model';
 import { Observable, of, Subject } from 'rxjs';
 import { PostFormModel } from '../models/post/post-form.model';
 import { tap } from 'rxjs/operators';
+import { PostParametroModel } from '../models/post-parametro.model';
 
 const URL_POST = `${environment.urlApi}/posts`;
 
@@ -14,30 +15,31 @@ const URL_POST = `${environment.urlApi}/posts`;
 export class PostService {
   public cargando: boolean = false;
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    }),
-  };
+  // httpOptions = {
+  //   headers: new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //   }),
+  // };
 
   constructor(private _http: HttpClient) {
     console.log('I am pointing to web api: ' + URL_POST);
   }
 
   obtenerMisPosts(
-    sortOrder: string,
-    currentFilter: string,
-    searchString: string,
-    pageNumber: number = 1,
-    pageSize: number = 10
+    postParametroModel: PostParametroModel
+    // sortOrder: string,
+    // currentFilter: string,
+    // searchString: string,
+    // pageNumber: number = 1,
+    // pageSize: number = 10
   ) {
     if (this.cargando) {
       return of([]);
     }
     this.cargando = true;
 
-    let urlFinal = `${URL_POST}/MisPosts?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    let urlFinal = `${URL_POST}/MisPosts?sortOrder=${postParametroModel.sortOrder}&currentFilter=${postParametroModel.currentFilter}&searchString=${postParametroModel.searchString}&pageNumber=${postParametroModel.pageNumber}&pageSize=${postParametroModel.pageSize}`;
     return this._http.get<Post[]>(urlFinal).pipe(
       tap(() => {
         //this.carteleraPage += 1;
@@ -47,21 +49,15 @@ export class PostService {
   }
 
   obtenerPosts(
-    sortOrder: string,
-    currentFilter: string,
-    searchString: string,
-    pageNumber: number = 1,
-    pageSize: number = 5
+    postParametroModel: PostParametroModel
   ) {
     if (this.cargando) {
       return of([]);
     }
     this.cargando = true;
-
-    let urlFinal = `${URL_POST}?sortOrder=${sortOrder}&currentFilter=${currentFilter}&searchString=${searchString}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    let urlFinal = `${URL_POST}?sortOrder=${postParametroModel.sortOrder}&currentFilter=${postParametroModel.currentFilter}&searchString=${postParametroModel.searchString}&pageNumber=${postParametroModel.pageNumber}&pageSize=${postParametroModel.pageSize}&profile=${postParametroModel.profile}`;
     return this._http.get<Post[]>(urlFinal).pipe(
       tap(() => {
-        //this.carteleraPage += 1;
         this.cargando = false;
       })
     );
@@ -81,18 +77,7 @@ export class PostService {
     let urlFinal = `${URL_POST}/Registrar`;
     console.log(form);
     return this._http.post<PostFormModel>(
-      urlFinal, form,
-      // {
-      //   Id: form.id,
-      //   Titulo: form.titulo,
-      //   //Categoria: form.categoria,
-      //   Cuerpo: form.cuerpo,
-      //   MantenerImage: form.mantenerImage,
-      //   Imagen: form.imagen,
-      //   ImagenBase64: form.imagenBase64,
-      // },
-
-      this.httpOptions
+      urlFinal, form
     );
   }
 
@@ -104,8 +89,5 @@ export class PostService {
   eliminar(Id: number) {
     let urlFinal = `${URL_POST}/EliminarPost/${Id}`;
     return this._http.delete(urlFinal);
-    // .subscribe((data: any) => {
-    //   console.log(data);
-    // });
   }
 }

@@ -84,6 +84,8 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                 post.Titulo = model.Titulo;
                 post.Cuerpo = model.Cuerpo;
                 post.Imagen = model.Imagen;
+                post.Ip = model.Ip;
+
                 post = _postRepositorio.EditarPost(post);
                 if (post is null) return false;
 
@@ -107,7 +109,8 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                     Titulo = model.Titulo,
                     Cuerpo = cuerpo,
                     Imagen = model.Imagen,
-                    UsuarioId = model.UsuarioId
+                    UsuarioId = model.UsuarioId,
+                    Ip = model.Ip
                 };
 
                 post = _postRepositorio.AgregarPost(post);

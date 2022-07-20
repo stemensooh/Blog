@@ -8,6 +8,7 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces
 {
     public interface IComentarioService
     {
-        Task<List<ComentariosPostDto>> GetComentariosPostId(long Id);
+        Task<RespuestaComentarioDto> GetComentariosPostId(long Id);
+        Task<bool> Registrar(ComentarioAddDto comentario);
     }
 }

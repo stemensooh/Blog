@@ -18,12 +18,12 @@ const URL_POST = `${environment.urlApi}/account`;
 })
 export class AuthService {
   private token!: string;
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    }),
-  };
+  // httpOptions = {
+  //   headers: new HttpHeaders({
+  //     // 'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': 'http://localhost:4201/',
+  //   }),
+  // };
 
   seguridadCambio = new Subject<boolean>();
   private usuario: Usuario | null = null;
@@ -37,7 +37,7 @@ export class AuthService {
     this.token = tokenBrowser;
     this.seguridadCambio.next(true);
 
-    this.http.get<Usuario>(URL_POST + '').subscribe((response) => {
+    this.http.get<Usuario>(URL_POST + '/Validate').subscribe((response) => {
       this.token = response.token;
       this.usuario = {
         email: response.email,
@@ -49,7 +49,7 @@ export class AuthService {
         usuarioId: response.usuarioId,
       };
       this.seguridadCambio.next(true);
-      localStorage.setItem('token', response.token);
+      // localStorage.setItem('token', response.token);
     });
   }
 
@@ -92,7 +92,7 @@ export class AuthService {
           Email: loginData.Email,
           Password: loginData.Password,
         },
-        this.httpOptions
+        // this.httpOptions
       )
       .subscribe(
         (response: any) => {

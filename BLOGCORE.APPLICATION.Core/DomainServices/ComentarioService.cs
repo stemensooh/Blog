@@ -18,7 +18,7 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             _comentarioRepositorio = comentarioRepositorio;
         }
 
-        public async Task<List<ComentariosPostDto>> GetComentariosPostId(long Id)
+        public async Task<RespuestaComentarioDto> GetComentariosPostId(long Id)
         {
             List<ComentariosPostDto> comentariosPostDtos = new List<ComentariosPostDto>();
             var comentarios = await _comentarioRepositorio.GetComentariosPostId(Id);
@@ -32,15 +32,17 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                     Id = comentario.Id,
                     Mensaje = comentario.Mensaje,
                     Fecha = comentario.FechaCreacion,
-                    Usuario = comentario.UsuarioNavigation.Username,
-                    NombreCompleto = comentario.UsuarioNavigation.Perfil.Nombres + " " + comentario.UsuarioNavigation.Perfil.Apellidos,
+                    //Usuario = comentario.UsuarioNavigation.Username,
+                    NombreCompleto = comentario.NombreCompleto,
+                    Email = comentario.Email,
+                    Ip = comentario.Ip,
                     Comentarios = CargarComentarioSecuendario(comentario.Id, comentariosSecuendarios.ToList())
                 };
 
                 comentariosPostDtos.Add(comentarioDto);
             }
 
-            return comentariosPostDtos;
+            return new RespuestaComentarioDto { Comentarios = comentariosPostDtos, TotalComentario = comentarios.Count() };
         }
 
         private List<ComentariosPostDto> CargarComentarioSecuendario(long Id, List<Entities.Comentario> comentariosSecuendarios)
@@ -53,8 +55,10 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
                     Id = comentario.Id,
                     Mensaje = comentario.Mensaje,
                     Fecha = comentario.FechaCreacion,
-                    Usuario = comentario.UsuarioNavigation.Username,
-                    NombreCompleto = comentario.UsuarioNavigation.Perfil.Nombres + " " + comentario.UsuarioNavigation.Perfil.Apellidos,
+                    //Usuario = comentario.UsuarioNavigation.Username,
+                    NombreCompleto = comentario.NombreCompleto,
+                    Email = comentario.Email,
+                    Ip = comentario.Ip,
                     Comentarios = CargarComentarioSecuendario(comentario.Id, comentariosSecuendarios.ToList())
                 };
 
@@ -64,5 +68,20 @@ namespace BLOGCORE.APPLICATION.Core.DomainServices
             return comentariosPostDtos;
         }
 
+        public async Task<bool> Registrar(ComentarioAddDto comentario)
+        {
+            return (await _comentarioRepositorio.Add(new Entities.Comentario
+            {
+                Email = comentario.Email,
+                Estado = true,
+                FechaCreacion = DateTime.Now,
+                Ip = comentario.Ip,
+                Mensaje = comentario.Comentario,
+                NombreCompleto = comentario.NombreCompleto,
+                TotalReaccion = 0,
+                ComentarioPadreId = comentario.ComentarioPadreId,
+                PostId = comentario.PostId,
+            })) > 0;
+        }
     }
 }

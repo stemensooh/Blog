@@ -1,0 +1,86 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand me-2" routerLink="/home">
+            <img src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.webp" height="16" alt="" loading="lazy"
+                style="margin-top: -1px;" />
+            <small><b>BCAR</b></small>
+        </a>
+
+        <button class="navbar-toggler" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarButtonsExample" [ngbCollapse]="isNavbarCollapsed">
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="tieneSesion" >
+                <li class="nav-item">
+                    <a routerLinkActive="active" class="nav-link" routerLink="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" class="nav-link" routerLink="/posts">Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" class="nav-link" routerLink="/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" class="nav-link" routerLink="/tags">Tags</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="!tieneSesion" >
+                <li class="nav-item">
+                    <a routerLinkActive="active" class="nav-link" routerLink="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" class="nav-link" routerLink="/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLinkActive="active" class="nav-link" routerLink="/tags">Tags</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center">
+                <form class="d-flex input-group w-auto" #f="ngForm" (ngSubmit)="search(f)"
+                    [ngClass]="{ 'focused': focus === true }">
+                    <input class="form-control" placeholder="Buscar" type="text" (focus)="focus = true"
+                        (blur)="focus = false" ngModel name="searchText" id="searchText">
+                    <button class="btn btn-outline-primary" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+                
+                <div *ngIf="tieneSesion" ngbDropdown class="d-inline-block">
+                    <a style="color: white; cursor: pointer;" class="nav-link dropdown-toggle d-flex align-items-center"
+                        id="dropdownBasic1" ngbDropdownToggle>
+                        <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).webp" class="rounded-circle"
+                            height="22" alt="" loading="lazy" />
+                        <span class="mb-0 ml-2 text-sm font-weight-bold">{{ usuario?.username ?? '' }}</span>
+                    </a>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <div class=" dropdown-header noti-title">
+                            <h6 class="text-overflow m-0">¡Bienvenido!</h6>
+                        </div>
+                        <a routerLink="/profile/{{ usuario?.username ?? ''}}" class="dropdown-item">
+                            <i class="fa-solid fa-user-large mr-2"></i>
+                            <span>Mi perfil</span>
+                        </a>
+                        <a routerLink="/settings" class="dropdown-item">
+                            <i class="fa-solid fa-gears mr-2"></i>
+                            <span>Configuración</span>
+                        </a>
+                        <a routerLink="/support" class="dropdown-item">
+                            <i class="fa-solid fa-headset mr-2"></i>
+                            <span>Soporte</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#!" class="dropdown-item" (click)="cerrarSesion()">
+                            <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i>
+                            <span>Cerrar sesion</span>
+                        </a>
+                    </div>
+                </div>
+                <a *ngIf="!tieneSesion" class=" px-3 me-2" routerLink="/account">Iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+</nav>

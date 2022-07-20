@@ -1,0 +1,15 @@
+<div class="body-inner">
+    <div id="header" data-fullwidth="true">
+        <!-- <app-topbar [tieneSesion]="tieneSesion"></app-topbar> -->
+        <!-- <app-header></app-header> -->
+
+    </div>
+    <app-navbar [tieneSesion]="tieneSesion"></app-navbar>
+    <section id="page-content" class="sidebar-right">
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+
+        <app-footer></app-footer>
+    </section>
+</div>

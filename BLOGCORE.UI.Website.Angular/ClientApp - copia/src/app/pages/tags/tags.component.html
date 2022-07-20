@@ -1,0 +1,26 @@
+
+<!-- Portfolio Filter -->
+<nav class="grid-filter gf-outline" data-layout="#blog">
+    <ul>
+        <li class=" {{ texto === undefined ? 'active' : '' }} ">
+            <a (click)="limpiarTexto()" data-category="*" style="cursor: pointer;">Todos</a>
+        </li>
+        <li routerLinkActive="active" *ngFor="let item of categorias">
+            <a routerLink="/tags/{{ item.name }}" data-category=".bc-general">{{ item.name }}</a>
+        </li>
+    </ul>
+    <div class="grid-active-title">Show All</div>
+</nav>
+<!-- end: Portfolio Filter -->
+ <!-- Blog -->
+ <div id="blog" class="grid-layout post-3-columns m-b-30" data-item="post-item">
+    <!-- Post item-->
+    
+    <!-- end: Post item-->
+</div>
+<!-- end: Blog -->
+<div class="row">
+    <div class="col-md-4 col-xl-4 box-col-6 xl-50" *ngFor="let post of posts">
+        <app-post-card [post]="post"></app-post-card>
+    </div>
+</div>

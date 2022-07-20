@@ -1,0 +1,52 @@
+<form class="form-gray-fields" [formGroup]="commentForm" (ngSubmit)="registrarComentario()">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="upper" for="name">Nombre</label>
+                <input [maxlength]="500" class="form-control required" name="senderName" id="name" aria-required="true"
+                    type="text" formControlName="username">
+                <div *ngIf="f.username.invalid && (f.username.dirty || f.username.touched)" style="color: red">
+                    <div *ngIf="f.username.errors?.required">Este campo es requerido</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="upper" for="email">Email</label>
+                <input [maxlength]="500" class="form-control required email" name="senderEmail" id="email"
+                    aria-required="true" type="email" formControlName="email">
+                <div *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)" style="color: red">
+                    <div *ngIf="f.email.errors?.required">Este campo es requerido</div>
+                    <div *ngIf="f.email.errors?.email">El email no es válido</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label class="upper" for="comment">Tu comentario</label>
+                <textarea [maxlength]="1000" class="form-control required" name="comment" rows="9" id="comment"
+                    aria-required="true" formControlName="comment"></textarea>
+                <div *ngIf="f.comment.invalid && (f.comment.dirty || f.comment.touched)" style="color: red">
+                    <div *ngIf="f.comment.errors?.required">Este campo es requerido</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group text-center">
+                <re-captcha (resolved)="resolved($event)" siteKey="{{captchaSiteKey}}"></re-captcha>
+                <!-- <button (click)="executeImportantAction()">Important action</button> -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group text-center">
+                <button [disabled]="!commentForm.valid" class="btn btn-primary" type="submit">Enviar comentario</button>
+            </div>
+        </div>
+    </div>
+</form>

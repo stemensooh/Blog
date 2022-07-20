@@ -1,0 +1,4 @@
+<h4 class="widget-title">Categorias</h4>
+<div class="tags">
+    <a [routerLink]="['/', 'tags', item.name]" *ngFor="let item of categorias">{{ item.name }}</a>
+</div>

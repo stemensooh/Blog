@@ -24,11 +24,7 @@ export class PostsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
-    this._postService
-      .obtenerMisPosts('date_desc', '', '', this.pageNumber, 8)
-      .subscribe((posts: Post[]) => {
-        this.posts = posts;
-      });
+    this.consultarPosts(true);
   }
 
   nuevoPost() {
@@ -71,11 +67,26 @@ export class PostsComponent implements OnInit, OnDestroy {
         return;
       }
       this.pageNumber += 1;
-      this._postService
-        .obtenerMisPosts('date_desc', '', '', this.pageNumber, 4)
-        .subscribe((data) => {
-          this.posts.push(...data);
-        });
+      this.consultarPosts(true);
     }
+  }
+
+  private consultarPosts(cargar: boolean){
+    this._postService
+    .obtenerMisPosts({
+        sortOrder: 'date_desc', 
+        currentFilter: '',
+        searchString: '',
+        pageNumber: this.pageNumber,
+        pageSize: 8,
+        profile: ''
+      })
+    .subscribe((data) => {
+      if (cargar){
+        this.posts.push(...data);
+      }else{
+        this.posts = data;
+      }
+    });
   }
 }

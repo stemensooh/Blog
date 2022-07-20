@@ -1,0 +1,182 @@
+/* Made with love by Mutiullah Samim*/
+
+/* @import url("https://fonts.googleapis.com/css?family=Numans");
+
+html,
+body {
+  background-image: url("http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg") !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  height: 100% !important;
+  font-family: "Numans", sans-serif !important;
+}
+
+.card {
+  height: 370px !important;
+  margin-top: auto;
+  margin-bottom: auto !important;
+  width: 400px !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.social_icon span {
+  font-size: 60px !important;
+  margin-left: 10px !important;
+  color: #ffc312 !important;
+}
+
+.social_icon span:hover {
+  color: white !important;
+  cursor: pointer !important;
+}
+
+.card-header h3 {
+  color: white !important;
+}
+
+.social_icon {
+  position: absolute !important;
+  right: 20px !important;
+  top: -45px !important;
+}
+
+.input-group-prepend span {
+  width: 50px !important;
+  background-color: #ffc312 !important;
+  color: black !important;
+  border: 0 !important;
+}
+
+input:focus {
+  outline: 0 0 0 0 !important;
+  box-shadow: 0 0 0 0 !important;
+}
+
+.remember {
+  color: white !important;
+}
+
+.remember input {
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: 15px !important;
+  margin-right: 5px !important;
+}
+
+.login_btn {
+  color: black !important;
+  background-color: #ffc312 !important;
+  width: 100px !important;
+}
+
+.login_btn:hover {
+  color: black !important;
+  background-color: white !important;
+}
+
+.links {
+  color: white !important;
+}
+
+.links a {
+  margin-left: 4px !important;
+} */
+
+/* .card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+}
+
+.card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+}
+
+.card-footer {
+  padding: 0.75rem 1.25rem;
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+}
+
+.card-footer:last-child {
+  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+}
+
+.card-footer:last-child {
+  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+}
+
+.card-footer:last-child {
+  border-radius: 0 0 calc(0.25rem - 1px) calc(0.25rem - 1px);
+} */
+
+/* .card-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.card-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.card-body {
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 0.25rem;
+}
+
+.card {
+  height: 370px;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 400px;
+  background-color: rgba(0,0,0,0.5) !important;
+}
+
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 0.25rem;
+}
+
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 0.25rem;
+} */

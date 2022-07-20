@@ -21,6 +21,8 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         public string Usuario { get; set; }
         public string NombreCompleto { get; set; }
         public string Mensaje { get; set; }
+        public string Email { get; set; }
+        public string Ip { get; set; }
         public DateTime Fecha { get; set; }
         public List<ComentariosPostDto> Comentarios { get; set; }
     }

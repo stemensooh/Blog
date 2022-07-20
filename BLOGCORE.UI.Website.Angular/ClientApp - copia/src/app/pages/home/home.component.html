@@ -1,0 +1,90 @@
+<div class="row" *ngIf="post.length > 0">
+    <div class="col-xl-6 box-col-12 xl-100">
+        <!-- <app-post-card-primary></app-post-card-primary> -->
+        <div class="card" (click)="VerPost(post[0].id)" style="cursor: pointer;">
+
+            <div class="blog-box blog-shadow">
+
+                <img class="img-fluid" src="{{  post[0].imagen | noImage2  }}" alt="" >
+                <!-- <img class="img-fluid" src="assets/images/sin-imagen.jpg" alt="" *ngIf="!post[0].imagen"> -->
+
+                <div class="blog-details">
+                    <p class="digits">{{post[0].fecha | date:'dd MMMM yyyy' }}</p>
+                    <h4>{{post[0].titulo}}</h4>
+                    <ul class="blog-social">
+                        <li>
+                            <i class="icofont icofont-user"></i>
+                            <a [routerLink]="['/', 'profile', post[0].autor]">
+                                {{ post[0].autor }}
+                            </a>
+                        </li>
+                        <li class="digits"><i class="icofont icofont-eye-alt"></i>{{ post[0].vistas }} Vistas</li>
+                        <li class="digits"><i class="icofont icofont-ui-chat"></i>{{post[0].vistas}} Comments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6 box-col-12 xl-100">
+        <div class="card" (click)="VerPost(post[1].id)" style="cursor: pointer;">
+            <div class="blog-box blog-list row">
+                <div class="col-sm-5">
+                    <img class="img-fluid sm-100-w" src="{{post[1].imagen | noImage2}}" alt="" >
+                </div>
+                <div class="col-sm-7">
+                    <div class="blog-details">
+                        <div class="blog-date digits">
+                            <span>{{ post[1].fecha | date:'dd' }}</span>
+                            {{ post[1].fecha | date:'MMMM yyyy'  }}
+                        </div>
+                        <h6>{{post[1].titulo}}</h6>
+                        <div class="blog-bottom-content">
+                            <ul class="blog-social">
+                                <li>autor:
+                                    <a [routerLink]="['/', 'profile', post[1].autor]">
+                                        {{ post[1].autor }}
+                                    </a>
+                                </li>
+                                <li class="digits">{{post[1].vistas}} Vistas</li>
+                            </ul>
+                            <hr>
+                            <!-- <div class="truncate"  [innerHtml]="post[1].cuerpo"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" (click)="VerPost(post[2].id)" style="cursor: pointer;">
+            <div class="blog-box blog-list row">
+                <div class="col-sm-5">
+                    <img class="img-fluid sm-100-w" src="{{ post[2].imagen | noImage2}}" alt="" >
+                </div>
+                <div class="col-sm-7">
+                    <div class="blog-details">
+                        <div class="blog-date digits">
+                            <span>{{ post[2].fecha | date:'dd' }}</span>
+                            {{ post[2].fecha | date:'MMMM yyyy'  }}
+                        </div>
+                        <h6>{{post[2].titulo}}</h6>
+                        <div class="blog-bottom-content">
+                            <ul class="blog-social">
+                                <li>autor:
+                                    <a [routerLink]="['/', 'profile', post[2].autor]">
+                                        {{ post[2].autor }}
+                                    </a>
+                                </li>
+                                <li class="digits">{{post[2].vistas}} Vistas</li>
+                            </ul>
+                            <hr>
+                            <!-- <div class="truncate"  [innerHtml]="post[2].cuerpo"> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-xl-4 box-col-6 xl-50" *ngFor="let post of posts">
+        <app-post-card [misPosts]="false" [post]="post"></app-post-card>
+    </div>
+    
+</div>

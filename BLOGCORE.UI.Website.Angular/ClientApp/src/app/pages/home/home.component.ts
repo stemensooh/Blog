@@ -18,9 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this._postService.obtenerPosts('date_desc', '', '', 1, 5).subscribe((posts: Post[]) => {
-        this.posts = posts;
-      });
+    this.consultarPosts(false);
 
     setTimeout(() => {
       this._postService.consultarPostMasVisto().subscribe((post: Post[]) => {
@@ -52,11 +50,26 @@ export class HomeComponent implements OnInit, OnDestroy {
         return;
       }
       this.pageNumber += 1;
-      this._postService
-        .obtenerPosts('date_desc', '', '', this.pageNumber)
-        .subscribe((data) => {
-          this.posts.push(...data);
-        });
+      this.consultarPosts(true);
     }
+  }
+
+  private consultarPosts(cargar: boolean){
+    this._postService
+    .obtenerPosts({
+        sortOrder: 'date_desc', 
+        currentFilter: '',
+        searchString: '',
+        pageNumber: this.pageNumber,
+        pageSize: 5,
+        profile: ''
+      })
+    .subscribe((data) => {
+      if (cargar){
+        this.posts.push(...data);
+      }else{
+        this.posts = data;
+      }
+    });
   }
 }

@@ -57,16 +57,16 @@ namespace BLOGCORE.UI.Website.Angular
 
             services.AddCors(opt =>
             {
-                //opt.AddPolicy("CorsRule",
-                //              builder =>
-                //              {
-                //                  builder.WithOrigins("*");
-                //              });
+                opt.AddPolicy("CorsRule",
+                              builder =>
+                              {
+                                  builder.WithOrigins("*");
+                              });
 
-                opt.AddPolicy("CorsRule", rule =>
-                {
-                    rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost", "*");
-                });
+                //opt.AddPolicy("CorsRule", rule =>
+                //{
+                //    rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("*", "localhost", "http://localhost", "http://localhost:20623/");
+                //});
             });
 
             BLOGCORE.UI.Website.Angular.Utilities.Constants.ExpiracionMinutos = int.Parse(Configuration["ExpiracionMinutos"]);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import { Post } from '../../core/models/post/post.model';
 import { PostService } from '../../core/services/post.service';
 import { PostFormModel } from '../../core/models/post/post-form.model';

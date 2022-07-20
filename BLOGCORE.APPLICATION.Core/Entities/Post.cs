@@ -51,6 +51,7 @@ namespace BLOGCORE.APPLICATION.Core.Entities
         //public virtual int CategoriaId { get; set; }
         public long TotalVistas { get; set; }
         public long TotalVistasAnonimas { get; set; }
+        public long TotalComentarios { get; set; }
 
         public virtual ICollection<CategoriasPost> Categorias { get; set; }
         public virtual ICollection<PostVistas> Vistas { get; set; }

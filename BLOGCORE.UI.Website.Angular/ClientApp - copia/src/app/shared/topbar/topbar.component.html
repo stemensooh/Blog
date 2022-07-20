@@ -1,0 +1,105 @@
+<nav id="header" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <!-- <img src="assets/images/platzi-logo.png" alt="Platzi logo"> -->
+      <b>BCAR</b>
+    </a>
+    <button class="navbar-toggler hidden-sm-up" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed"
+      data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbar" id="navbarsDefault">
+      <ul class="navbar-nav ml-auto" *ngIf="tieneSesion">
+        <!-- <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+          <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
+            <i class="ni {{menuItem.icon}}"></i>
+            {{menuItem.title}}
+          </a>
+        </li> -->
+
+        <li class=" nav-item">
+          <a routerLinkActive="active" [routerLink]="['/home']" class="nav-link">HOME</a>
+        </li>
+        <li class=" nav-item">
+          <a routerLinkActive="active" [routerLink]="['/posts']" class="nav-link">MIS POST</a>
+        </li>
+        <li class=" nav-item">
+          <a routerLinkActive="active" [routerLink]="['/about']" class="nav-link">ABOUT</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ml-auto" *ngIf="!tieneSesion">
+        <!-- <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
+          <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
+            <i class="ni {{menuItem.icon}}"></i>
+            {{menuItem.title}}
+          </a>
+        </li> -->
+
+        <li class=" nav-item">
+          <a routerLinkActive="active" [routerLink]="['/home']" class="nav-link">HOME</a>
+        </li>
+        <li class=" nav-item">
+          <a routerLinkActive="active" [routerLink]="['/about']" class="nav-link">ABOUT</a>
+        </li>
+      </ul>
+
+      <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto" #f="ngForm"
+        (ngSubmit)="search(f)">
+        <div class="form-group mb-0" [ngClass]="{ 'focused': focus === true }">
+          <div class="input-group input-group-alternative">
+            <div class="input-group-prepend">
+              <span class="input-group-text">
+                <i class="fa fa-search"></i>
+              </span>
+            </div>
+            <input class="form-control" placeholder="Buscar" type="text" (focus)="focus = true" (blur)="focus = false"
+              ngModel name="searchText" id="searchText">
+          </div>
+        </div>
+      </form>
+
+      <!-- <div style="color: white;">
+        <div *ngIf="tieneSesion">
+          <p> {{ usuario?.username ?? '' }} </p>
+          <a href="#!" (click)="cerrarSesion()">Cerrar sesión</a>
+        </div>
+        <a *ngIf="!tieneSesion" routerLink="/account">Iniciar sesión</a>
+      </div> -->
+
+      <div *ngIf="tieneSesion">
+        <ul class="navbar-nav align-items-center d-none d-md-flex">
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+              <span class="mb-0 text-sm font-weight-bold">{{ usuario?.username ?? '' }}</span>
+            </a>
+            <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+              <div class=" dropdown-header noti-title">
+                <h6 class="text-overflow m-0">¡Bienvenido!</h6>
+              </div>
+              <a routerLinkActive="active" [routerLink]="['/profile', usuario?.username ?? '' ]" class="dropdown-item">
+                <i class="icofont icofont-user"></i>
+                <span>Mi perfil</span>
+              </a>
+              <a routerLinkActive="active" [routerLink]="['/settings']" class="dropdown-item">
+                <i class="icofont icofont-settings"></i>
+                <span>Configuración</span>
+              </a>
+              <a routerLinkActive="active" [routerLink]="['/support']" class="dropdown-item">
+                <i class="icofont icofont-support"></i>
+                <span>Soporte</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#!" class="dropdown-item" (click)="cerrarSesion()">
+                <i class="icofont icofont-sign-out"></i>
+                <span>Cerrar sesion</span>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <a *ngIf="!tieneSesion" routerLink="/account">Iniciar sesión</a>
+    </div>
+  </div>
+</nav>

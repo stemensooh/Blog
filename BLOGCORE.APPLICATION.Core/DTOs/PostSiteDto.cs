@@ -24,5 +24,6 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         public string Imagen { get; set; }
         public string ImagenRuta { get; set; }
         public string ImagenBase64 { get; set; }
+        public string Captcha { get; set; }
     }
 }

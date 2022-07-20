@@ -34,13 +34,46 @@
         </div>
       </form>
 
-      <div style="color: white;">
+      <!-- <div style="color: white;">
         <div *ngIf="tieneSesion">
           <p> {{ usuario?.username ?? '' }} </p>
           <a href="#!" (click)="cerrarSesion()">Cerrar sesión</a>
         </div>
         <a *ngIf="!tieneSesion" routerLink="/account">Iniciar sesión</a>
+      </div> -->
+
+      <div *ngIf="tieneSesion">
+        <ul class="navbar-nav align-items-center d-none d-md-flex">
+          <li class="nav-item dropdown" ngbDropdown>
+            <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+              <span class="mb-0 text-sm font-weight-bold">{{ usuario?.username ?? '' }}</span>
+            </a>
+            <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+              <div class=" dropdown-header noti-title">
+                <h6 class="text-overflow m-0">¡Bienvenido!</h6>
+              </div>
+              <a routerLinkActive="active" [routerLink]="['/profile', usuario?.username ?? '' ]" class="dropdown-item">
+                <i class="icofont icofont-user"></i>
+                <span>Mi perfil</span>
+              </a>
+              <a routerLinkActive="active" [routerLink]="['/settings']" class="dropdown-item">
+                <i class="icofont icofont-settings"></i>
+                <span>Configuración</span>
+              </a>
+              <a routerLinkActive="active" [routerLink]="['/support']" class="dropdown-item">
+                <i class="icofont icofont-support"></i>
+                <span>Soporte</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="#!" class="dropdown-item" (click)="cerrarSesion()">
+                <i class="icofont icofont-sign-out"></i>
+                <span>Cerrar sesion</span>
+              </a>
+            </div>
+          </li>
+        </ul>
       </div>
+      <a *ngIf="!tieneSesion" routerLink="/account">Iniciar sesión</a>
     </div>
   </div>
 </nav>

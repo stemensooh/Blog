@@ -1,0 +1,19 @@
+
+<!-- <a class="btn btn-xs btn-slide btn-twitter" href="#" data-width="100">
+    <i class="fab fa-twitter"></i>
+    <span> Twitter</span>
+</a>
+<a class="btn btn-xs btn-slide btn-instagram" href="#" data-width="118">
+    <i class="fab fa-instagram"></i>
+    <span> Instagram</span>
+</a>
+<a class="btn btn-xs btn-slide btn-googleplus" href="mailto:#" data-width="80">
+    <i class="icon-mail"></i>
+    <span> Mail</span>
+</a> -->
+
+
+<a class="btn btn-xs btn-slide" *ngFor="let red of redes" href="{{ red.url | urlMailTo }}" target="_blank">
+    <i class="{{ red.icono }}"></i>
+    <span> {{ red.nombre }}</span>
+</a>

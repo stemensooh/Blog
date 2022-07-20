@@ -1,0 +1,80 @@
+<div class="row">
+    <!-- content -->
+    <div class="content col-lg-9">
+        <!-- Blog -->
+        <div id="blog" class="single-post" *ngIf="post">
+            <!-- Post item-->
+            <div class="post-item">
+                <div class="post-item-wrap">
+                    <div class="post-image">
+                        <a href="#">
+                            <img alt="" src="{{ post.imagen | noImage2 }}">
+                        </a>
+                    </div>
+                    <div class="post-item-description">
+                        <h2>{{ post.titulo }}</h2>
+                        <div class="post-meta">
+                            <span class="post-meta-date"><i class="fa fa-calendar-o"></i>{{ post.fecha |
+                                date:'dd MMMM yyyy' }}</span>
+                            <span class="post-meta-comments">
+                                <i class="fa fa-comments-o"></i>
+                                {{ post.comentarios }} Comentarios
+                            </span>
+                            <span class="post-meta-category">
+                                <a [routerLink]="['/', 'profile', post.autor]"><i class="fa fa-tag"></i> {{
+                                    post.autor }}</a>
+                            </span>
+                            <div class="post-meta-share">
+                                <app-social-network [username]="post.autor"></app-social-network>
+                            </div>
+                        </div>
+                        <div [innerHtml]="post.cuerpo">
+                        </div>
+                    </div>
+                    <div class="post-tags">
+                        <a *ngFor="let categoria of post.categoriaName" [routerLink]="['/', 'tags', categoria ]">{{
+                            categoria }}</a>
+                    </div>
+                    <app-comments [postId]="post.id"></app-comments>
+                    <!-- <app-comments-form></app-comments-form> -->
+                </div>
+            </div>
+        </div>
+        <!-- end: Post item-->
+    </div>
+    <!-- end: content -->
+
+    <!-- Sidebar-->
+    <div class="sidebar col-lg-3">
+        <!--Tabs with Posts-->
+        <div class="widget ">
+            <app-post-recent></app-post-recent>
+        </div>
+        <!--End: Tabs with Posts-->
+
+        <!--widget tags -->
+        <div class="widget  widget-tags">
+            <app-tag ></app-tag>
+
+        </div>
+        <!--end: widget tags -->
+        <!--widget newsletter-->
+        <!-- <div class="widget  widget-newsletter">
+        <form class="widget-subscribe-form" novalidate action="include/subscribe-form.php" role="form"
+            method="post">
+            <h4 class="widget-title">Newsletter</h4>
+            <small>Stay informed on our latest news!</small>
+            <div class="input-group">
+                <input type="email" required name="widget-subscribe-form-email"
+                    class="form-control required email" placeholder="Enter your Email">
+                <span class="input-group-btn">
+                    <button type="submit" id="widget-subscribe-submit-button" class="btn btn-primary"><i
+                            class="fa fa-paper-plane"></i></button>
+                </span>
+            </div>
+        </form>
+    </div> -->
+        <!--end: widget newsletter-->
+    </div>
+    <!-- end: sidebar-->
+</div>

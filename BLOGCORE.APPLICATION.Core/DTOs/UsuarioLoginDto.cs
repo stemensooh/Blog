@@ -15,6 +15,6 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         public string RefreshToken { get; set; }
         public string Errors { get; set; }
         public bool Autenticado { get; set; }
-        public DateTime ExpiresIn { get; set; }
+        public DateTimeOffset? ExpiresIn { get; set; }
     }
 }

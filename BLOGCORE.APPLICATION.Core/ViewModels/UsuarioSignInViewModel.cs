@@ -16,5 +16,6 @@ namespace BLOGCORE.APPLICATION.Core.ViewModels
         public string Password { get; set; }
 
         public string Ip { get; set; }
+        public string Captcha { get; set; }
     }
 }

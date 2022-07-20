@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { FeatherIconsComponent } from './feather-icons/feather-icons.component';
 import { NoImagePipe } from '../core/pipes/no-image.pipe';
 import { CommentsComponent } from './comments/comments.component';
+import { CommentsFormComponent } from './comments-form/comments-form.component';
 
 
 
@@ -13,8 +14,10 @@ import { CommentsComponent } from './comments/comments.component';
   declarations: [
     PostCardComponent,
     NoImagePipe,
-    CommentsComponent
-    
+    CommentsComponent,
+    BreadcrumbComponent,
+    FeatherIconsComponent,
+    CommentsFormComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +25,10 @@ import { CommentsComponent } from './comments/comments.component';
   ],
   exports: [
     PostCardComponent,
-    CommentsComponent
+    CommentsComponent,
+    BreadcrumbComponent,
+    FeatherIconsComponent,
+    CommentsFormComponent
   ]
 })
 export class ComponentsModule { }

@@ -9,5 +9,6 @@ namespace BLOGCORE.APPLICATION.Core.Interfaces.Data
     public interface IComentarioRepositorio
     {
         Task<List<Comentario>> GetComentariosPostId(long Id);
+        Task<int> Add(Comentario comentario);
     }
 }

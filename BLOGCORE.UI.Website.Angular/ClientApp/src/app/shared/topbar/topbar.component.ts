@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { MENU } from '../../core/data/menu';
 import { RouteInfo } from '../../core/models/route-info.model';
 import { AuthService } from '../../core/services/auth.service';
-import { PostService } from '../../core/services/post.service';
 import { Usuario } from '../../core/models/usuario.model';
 
 @Component({
@@ -23,19 +21,9 @@ export class TopbarComponent implements OnInit {
 
   ngOnInit() {
     console.log('build menu');
-
-    setTimeout(() => {
-      if (this._authService.onSesion()) {
-        this.usuario = this._authService.obtenerUsuario();
-        this.tieneSesion = this._authService.onSesion();
-      }
-
-      this.construirMenu();
-    }, 2000);
+    this.construirMenu();
   }
   getTitle() {}
-
-  logout() {}
 
   toggleMenu() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
@@ -51,25 +39,26 @@ export class TopbarComponent implements OnInit {
     }
   }
 
-  construirMenu(){
+  construirMenu() {
     this.menuItems = [];
-    MENU.forEach((element) => {
-      if (element.privado) {
-        if (this._authService.onSesion()) {
-          console.log('tiene sesion');
+    setTimeout(() => {
+      MENU.forEach((element) => {
+        if (element.privado) {
+          if (this._authService.onSesion()) {
+            this.usuario = this._authService.obtenerUsuario();
+            this.tieneSesion = this._authService.onSesion();
+            this.menuItems.push(element);
+          }
+        } else {
           this.menuItems.push(element);
         }
-      } else {
-        this.menuItems.push(element);
-      }
-    });
+      });
+    }, 2000);
   }
 
-  cerrarSesion(){
+  cerrarSesion() {
     this.tieneSesion = false;
     this._authService.salirSesion();
-    setTimeout(() => {
-      this.construirMenu();
-    }, 2000);
+    this.construirMenu();
   }
 }

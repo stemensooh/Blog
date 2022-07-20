@@ -20,6 +20,8 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Data
         public DbSet<PostVistas> Vistas { get; set; }
         public DbSet<PostVistasAnonimas> VistasAnonimas { get; set; }
         public DbSet<Comentario> Comentarios { get; set; }
+        public DbSet<RedesSociales> RedesSociales { get; set; }
+        public DbSet<TipoRedSocial> TipoRedSocial { get; set; }
 
         public string DefaultConecctionString = string.Empty;
 

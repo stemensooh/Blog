@@ -107,15 +107,23 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.Property<long>("ComentarioPadreId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(500)");
+
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaCreacion")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Ip")
+                        .HasColumnType("varchar(20)");
+
                     b.Property<string>("Mensaje")
-                        .HasColumnType("nvarchar(1000)")
-                        .HasMaxLength(1000);
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("NombreCompleto")
+                        .HasColumnType("varchar(500)");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -123,7 +131,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.Property<long>("TotalReaccion")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UsuarioId")
+                    b.Property<long?>("UsuarioId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -203,6 +211,9 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
+                    b.Property<long>("TotalComentarios")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("TotalVistas")
                         .HasColumnType("bigint");
 
@@ -272,6 +283,35 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.ToTable("VistasAnonimas");
                 });
 
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.RedesSociales", b =>
+                {
+                    b.Property<long>("RedesSocialesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Icono")
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<long>("PerfilId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("varchar(5000)");
+
+                    b.HasKey("RedesSocialesId");
+
+                    b.HasIndex("PerfilId");
+
+                    b.ToTable("RedesSociales");
+                });
+
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Rol", b =>
                 {
                     b.Property<int>("Id")
@@ -290,6 +330,27 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.TipoRedSocial", b =>
+                {
+                    b.Property<int>("TipoRedSocialId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Icono")
+                        .HasColumnType("varchar(30)");
+
+                    b.Property<string>("Nombre")
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("TipoRedSocialId");
+
+                    b.ToTable("TipoRedSocial");
                 });
 
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Usuario", b =>
@@ -380,8 +441,7 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Usuario", "UsuarioNavigation")
                         .WithMany("Comentarios")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
                 });
 
             modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.Perfil", b =>
@@ -422,6 +482,15 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Migrations
                     b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Post", "PostNavigation")
                         .WithMany("VistasAnonimas")
                         .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLOGCORE.APPLICATION.Core.Entities.RedesSociales", b =>
+                {
+                    b.HasOne("BLOGCORE.APPLICATION.Core.Entities.Perfil", "Perfil")
+                        .WithMany("RedesSociales")
+                        .HasForeignKey("PerfilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

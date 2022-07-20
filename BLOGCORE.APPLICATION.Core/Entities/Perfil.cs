@@ -28,5 +28,6 @@ namespace BLOGCORE.APPLICATION.Core.Entities
 
 
         public Usuario Usuario { get; set; }
+        public virtual List<RedesSociales> RedesSociales { get; set; }
     }
 }

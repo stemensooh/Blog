@@ -34,6 +34,7 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
             VistasPaginaAnonimo = post.VistasAnonimas != null && post.VistasAnonimas.Any() ? post.VistasAnonimas.Count() : post.TotalVistasAnonimas;
             VistasPaginaUsuario = post.Vistas != null && post.Vistas.Any() ? post.Vistas.Count() : post.TotalVistas;
             Vistas = ( post.Vistas != null && post.Vistas.Any() )? post.Vistas.GroupBy(x => x.UsuarioId).Count() : post.TotalVistas;
+            Comentarios = post.TotalComentarios;
         }
 
         public long ID { get; set; }
@@ -50,5 +51,6 @@ namespace BLOGCORE.APPLICATION.Core.DTOs
         public long Vistas { get; set; }
         public long VistasPaginaUsuario { get; set; }
         public long VistasPaginaAnonimo { get; set; }
+        public long Comentarios { get; set; }
     }
 }

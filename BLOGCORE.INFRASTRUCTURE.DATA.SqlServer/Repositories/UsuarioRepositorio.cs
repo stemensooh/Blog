@@ -77,7 +77,10 @@ namespace BLOGCORE.INFRASTRUCTURE.DATA.SqlServer.Repositories
 
         public Usuario GetUsuario(string username, string email)
         {
-            return context.Usuarios.Include(x => x.Roles).ThenInclude(x => x.RolNavigation).Include(x => x.Perfil).FirstOrDefault(x => (x.Email == email || x.Username == username) && (x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo || x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.PorConfirmar));
+            return context.Usuarios
+                .Include(x => x.Roles).ThenInclude(x => x.RolNavigation)
+                .Include(x => x.Perfil)
+                .FirstOrDefault(x => (x.Email == email || x.Username == username) && (x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.Activo || x.Estado == (int)APPLICATION.Core.Constants.Constantes.EstadoUsuario.PorConfirmar));
         }
 
         public int AddUsuario(Usuario usuario)

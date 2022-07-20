@@ -14,7 +14,12 @@
                         <p class="digits">{{post[0].fecha | date:'dd MMMM yyyy' }}</p>
                         <h4>{{post[0].titulo}}</h4>
                         <ul class="blog-social">
-                            <li><i class="icofont icofont-user"></i>{{post[0].autor}}</li>
+                            <li>
+                                <i class="icofont icofont-user"></i>
+                                <a [routerLink]="['/', 'profile', post[0].autor]">
+                                    {{ post[0].autor }}
+                                </a>
+                            </li>
                             <li class="digits"><i class="icofont icofont-eye-alt"></i>{{ post[0].vistas }} Vistas</li>
                             <li class="digits"><i class="icofont icofont-ui-chat"></i>{{post[0].vistas}} Comments</li>
                         </ul>
@@ -37,7 +42,11 @@
                             <h6>{{post[1].titulo}}</h6>
                             <div class="blog-bottom-content">
                                 <ul class="blog-social">
-                                    <li>by: {{post[1].autor}}</li>
+                                    <li>autor:
+                                        <a [routerLink]="['/', 'profile', post[1].autor]">
+                                            {{ post[1].autor }}
+                                        </a>
+                                    </li>
                                     <li class="digits">{{post[1].vistas}} Vistas</li>
                                 </ul>
                                 <hr>
@@ -61,7 +70,11 @@
                             <h6>{{post[2].titulo}}</h6>
                             <div class="blog-bottom-content">
                                 <ul class="blog-social">
-                                    <li>by: {{post[2].autor}}</li>
+                                    <li>autor:
+                                        <a [routerLink]="['/', 'profile', post[2].autor]">
+                                            {{ post[2].autor }}
+                                        </a>
+                                    </li>
                                     <li class="digits">{{post[2].vistas}} Vistas</li>
                                 </ul>
                                 <hr>

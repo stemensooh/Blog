@@ -1,0 +1,59 @@
+<!-- <div class="card">
+    <div class="blog-box blog-grid text-center">
+        <img alt="">
+        <div class="blog-details-main">
+            <span class="badge bg-success" style="color: white" *ngFor="let categoria of post.categoriaName">
+                {{ categoria }}
+            </span>
+            <ul class="blog-social">
+                <li class="digits">{{ post.fecha | date:'dd MMMM yyyy' }}</li>
+                <li class="digits">autor:
+                    <a [routerLink]="['/', 'profile', post.autor]">
+                        {{ post.autor }}
+                    </a>
+                </li>
+                <li class="digits">{{ post.vistas }} Vistas</li>
+            </ul>
+
+            <hr>
+            <h6 (click)="VerPost(post.id)" style="cursor: pointer;" class="blog-bottom-details">{{ post.titulo }}</h6>
+        </div>
+    </div>
+</div> -->
+
+<div class="post-item border">
+    <div class="post-item-wrap">
+        <div class="post-image">
+            <a (click)="VerPost(post.id)" style="cursor: pointer;">
+                <img alt="" src="{{ post.imagen | noImage }}" >
+            </a>
+            <span class="post-meta-category">
+                <a [routerLink]="['/', 'tags', categoria ]" class="badge bg-success" style="color: white" *ngFor="let categoria of post.categoriaName">
+                    {{ categoria }}
+                </a>
+            </span>
+        </div>
+        <div class="post-item-description">
+            <span class="post-meta-date">
+                <i class="fa fa-calendar-o"></i>
+                {{ post.fecha | date:'dd MMMM yyyy' }}
+            </span>
+            <!-- <span class="post-meta-comments">
+                <a [routerLink]="['/', 'profile', post.autor]">
+                    <i class="fa fa-comments-o"></i>
+                    {{ post.autor }}
+                </a>
+            </span> -->
+            <span class="post-meta-comments"><i class="fa fa-comments-o"></i>{{ post.comentarios }} Comentarios</span>
+            <h2>
+                {{ post.titulo }}
+            </h2>
+            
+            <div class="truncate"  [innerHtml]="post.cuerpo">
+            </div>
+            <!-- <p>Curabitur pulvinar euismod ante, ac sagittis ante posuere ac. Vivamus luctus commodo dolor porta feugiat.
+                Fusce at velit id ligula pharetra laoreet.</p> -->
+            <a (click)="VerPost(post.id)" style="cursor: pointer;" class="item-link">Leer más... <i class="icon-chevron-right"></i></a>
+        </div>
+    </div>
+</div>

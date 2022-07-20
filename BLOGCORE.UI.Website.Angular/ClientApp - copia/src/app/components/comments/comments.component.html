@@ -1,0 +1,62 @@
+<div class="comments" id="comments">
+    <div class="comment_number">
+        Comentarios <span>({{totalComentarios}}) </span> 
+        <button class="btn btn-primary" type="button" (click)="open(content, 0)" style="cursor: pointer;">
+            Agregar comentario
+        </button>
+    </div>
+    <div class="comment-list">
+        <!-- Comment -->
+        <div class="comment" id="comment-{{comentario.id}}" *ngFor="let comentario of comentarios">
+            <div class="image"><img alt="" src="/assets/images/blog/comment.jpg" class="avatar"></div>
+            <div class="text">
+                <h5 class="name">{{ comentario.nombreCompleto }}</h5>
+                <span class="comment_date">{{ comentario.fecha | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+                <a class="comment-reply-link btn" style="font-size: 16px !important;" (click)="open(content, comentario.id)" style="cursor: pointer;">
+                    RESPONDER
+                </a>
+                <div class="text_holder">
+                    <p [innerText]="comentario.mensaje"></p>
+                </div>
+            </div>
+            <div class="comment">
+                <!--  -->
+            </div>
+            <div class="comment" id="comment-{{ comentario.id }}-{{ comentarioHijo.id }}"
+                *ngFor="let comentarioHijo of comentario.comentarios">
+                <div class="image"><img alt="" src="/assets/images/blog/comment.jpg" class="avatar"></div>
+                <div class="text">
+                    <h5 class="name">{{ comentarioHijo.nombreCompleto }}</h5>
+                    <span class="comment_date">{{ comentarioHijo.fecha | date:'dd/MM/yyyy HH:mm:ss' }}</span>
+                    <!-- <a class="comment-reply-link" href="#">Reply</a> -->
+                    <div class="text_holder">
+                        <p [innerText]="comentarioHijo.mensaje"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="respond-form" id="respond" *ngIf="tieneSesion">
+    <div class="row">
+        <div class="col-lg-12">
+            
+        </div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<ng-template #content let-modal class="jw-modal-open">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title" *ngIf="ComentarioPadreId === 0">Nuevo comentario</h4>
+        <h5 class="modal-title" id="modal-basic-title" *ngIf="ComentarioPadreId > 0">Responder comentario</h5>
+        <!-- <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button> -->
+    </div>
+    <div class="modal-body">
+        <app-comments-form [ComentarioPadreId]="ComentarioPadreId" [postId]="postId" (propagar)="procesaPropagar($event, content)"></app-comments-form>
+    </div>
+    <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div> -->
+</ng-template>

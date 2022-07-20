@@ -9,6 +9,8 @@ import { FeatherIconsComponent } from '../components/feather-icons/feather-icons
 import { BreadcrumbComponent } from '../components/breadcrumb/breadcrumb.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 
 
 
@@ -18,8 +20,8 @@ import { FormsModule } from '@angular/forms';
     TopbarComponent,
     LoaderComponent,
     TapToTopComponent,
-    FeatherIconsComponent,
-    BreadcrumbComponent
+    MainLayoutComponent,
+    AuthLayoutComponent
   ],
   imports: [
     CommonModule,
@@ -32,8 +34,6 @@ import { FormsModule } from '@angular/forms';
     TopbarComponent,
     LoaderComponent,
     TapToTopComponent,
-    FeatherIconsComponent,
-    BreadcrumbComponent
   ]
 })
 export class SharedModule { }

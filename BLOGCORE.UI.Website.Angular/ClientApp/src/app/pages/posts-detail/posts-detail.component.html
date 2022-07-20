@@ -10,7 +10,7 @@
                             <li class="digits">{{ post.fecha | date:'dd MMMM yyyy' }}</li>
                             <li>
                                 <i class="icofont icofont-user"></i>
-                                {{post.autor}}
+                                <a [routerLink]="['/', 'profile', post.autor]">{{ post.autor }}</a>
                             </li>
                             <li class="digits">
                                 <i class="icofont icofont-eye-alt"></i>{{ post.vistas }}
@@ -26,8 +26,9 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="comentarios.length > 0">
+                <div>
                     <app-comments [comentarios]="comentarios"></app-comments>
+                    <app-comments-form></app-comments-form>
                 </div>
             </div>
         </div>
